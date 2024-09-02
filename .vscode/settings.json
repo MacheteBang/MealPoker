@@ -1,0 +1,8 @@
+{
+    "rest-client.environmentVariables": {
+        "$shared": {},
+        "Development": {
+            "ApiHost": "http://localhost:42069"
+        }
+    }
+}
