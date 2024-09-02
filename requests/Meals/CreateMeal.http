@@ -1,0 +1,7 @@
+POST {{ApiHost}}/meals
+Content-Type: application/json
+
+{
+  "name": "Macaroni & Cheese",
+  "description": "Mac's Famous Macaroni & Cheese"
+}

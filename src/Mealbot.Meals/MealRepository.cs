@@ -1,0 +1,11 @@
+namespace Mealbot.Meals;
+
+public sealed class MealRepository : IMealRepository
+{
+    private readonly List<Meal> _meals = [];
+
+    public async Task AddMeal(Meal meal)
+    {
+        _meals.Add(meal);
+    }
+}

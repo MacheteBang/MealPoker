@@ -1,0 +1,8 @@
+using Mealbot.Meals.Models;
+
+namespace Mealbot.Meals.Interfaces;
+
+public interface IMealRepository
+{
+    Task AddMeal(Meal meal);
+}
