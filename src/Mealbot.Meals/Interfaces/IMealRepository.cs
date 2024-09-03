@@ -5,4 +5,5 @@ namespace Mealbot.Meals.Interfaces;
 public interface IMealRepository
 {
     Task AddMeal(Meal meal);
+    Task<List<Meal>> GetMeals();
 }

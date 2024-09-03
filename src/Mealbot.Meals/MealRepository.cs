@@ -8,4 +8,9 @@ public sealed class MealRepository : IMealRepository
     {
         _meals.Add(meal);
     }
+
+    public async Task<List<Meal>> GetMeals()
+    {
+        return [.. _meals];
+    }
 }
