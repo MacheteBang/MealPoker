@@ -18,7 +18,7 @@ GET {{ApiHost}}/meals/health
 ```
 
 ### Create Meal
-Create a new meal in the backing store.
+Create a new meal.
 
 #### Request
 ```js
@@ -45,7 +45,7 @@ Content-Type: application/json
 ```
 
 ### Get Meals
-Gets all of the meals in the backing store.
+Gets all of the meals.
 
 #### Request
 ```js
@@ -75,4 +75,25 @@ GET {{ApiHost}}/meals
     "description": "A classic Italian dish."
   }
 ]
+```
+
+### Get Meal
+Gets a single meal.
+
+#### Request
+```js
+GET {{ApiHost}}/meals{{mealId}}
+```
+
+#### Response
+```js
+200 OK
+```
+
+```json
+{
+  "mealId": "622623e3-2a26-44dc-aebc-2e3fdd3691be",
+  "name": "Macaroni & Cheese",
+  "description": "Mac's Famous Macaroni & Cheese"
+}
 ```

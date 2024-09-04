@@ -1,3 +1,4 @@
+
 namespace Mealbot.Meals;
 
 public sealed class MealRepository : IMealRepository
@@ -12,5 +13,10 @@ public sealed class MealRepository : IMealRepository
     public async Task<List<Meal>> GetMeals()
     {
         return [.. _meals];
+    }
+
+    public async Task<Meal?> GetMeal(Guid mealId)
+    {
+        return _meals.Find(meal => meal.MealId == mealId);
     }
 }

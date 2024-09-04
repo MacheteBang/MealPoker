@@ -1,3 +1,4 @@
+global using Mealbot.Meals.Errors;
 global using Mealbot.Meals.Interfaces;
 global using Mealbot.Meals.Models;
 

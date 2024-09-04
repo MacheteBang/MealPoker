@@ -1,0 +1,3 @@
+@mealId = 3380eb9f-0773-492b-ac0e-b7174997643d
+
+GET {{ApiHost}}/meals/{{mealId}}
