@@ -129,3 +129,18 @@ Content-Type: application/json
   "description": "Mac's Famous Macaroni & Cheese"
 }
 ```
+
+### Delete Meal
+Deletes a single meal.
+
+#### Request
+```js
+@mealId = 24d3ac0b-cb15-4646-8740-2c4a8b2bfc4a
+
+DELETE {{ApiHost}}/meals/{{mealId}}
+```
+
+#### Response
+```js
+204 OK
+```

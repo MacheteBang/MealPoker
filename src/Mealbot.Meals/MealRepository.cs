@@ -31,4 +31,16 @@ public sealed class MealRepository : IMealRepository
         _meals[existingMeal] = meal;
         return meal;
     }
+
+    public async Task<bool> DeleteMeal(Guid mealId)
+    {
+        var existingMeal = _meals.FindIndex(m => m.MealId == mealId);
+        if (existingMeal == -1)
+        {
+            return false;
+        }
+
+        _meals.RemoveAt(existingMeal);
+        return true;
+    }
 }

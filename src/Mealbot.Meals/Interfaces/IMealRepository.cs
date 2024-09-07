@@ -1,5 +1,3 @@
-using MealBot.Meals.Models;
-
 namespace MealBot.Meals.Interfaces;
 
 public interface IMealRepository
@@ -8,4 +6,5 @@ public interface IMealRepository
     Task<List<Meal>> GetMeals();
     Task<Meal?> GetMeal(Guid mealId);
     Task<Meal?> UpdateMeal(Meal meal);
+    Task<bool> DeleteMeal(Guid mealId);
 }
