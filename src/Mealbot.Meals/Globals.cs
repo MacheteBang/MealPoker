@@ -1,4 +1,4 @@
-namespace Mealbot.Meals;
+namespace MealBot.Meals;
 
 public static class Globals
 {

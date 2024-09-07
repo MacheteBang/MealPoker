@@ -1,9 +1,9 @@
 
-namespace Mealbot.Meals.Features.GetMeals;
+namespace MealBot.Meals.Features.GetMeals;
 
-public sealed class GetMealsEndpoint : IMealsEndpoint
+public sealed class GetMealsEndpoint : MealsEndpoint
 {
-    public void AddRoutes(IEndpointRouteBuilder app)
+    public override void AddRoutes(IEndpointRouteBuilder app)
     {
         app.MapGet(Globals.BaseRoute, async (ISender sender) =>
         {

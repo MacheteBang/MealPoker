@@ -1,4 +1,4 @@
-namespace Mealbot.Meals.Features.CreateMeal;
+namespace MealBot.Meals.Features.CreateMeal;
 
 public record CreateMealRequest(
     string Name,

@@ -1,6 +1,6 @@
 using System.Reflection;
 
-namespace Mealbot.Meals;
+namespace MealBot.Meals;
 
 public static class StartupExtensions
 {
@@ -28,11 +28,11 @@ public static class StartupExtensions
         Assembly thisAssembly = typeof(StartupExtensions).Assembly;
 
         var endpoints = thisAssembly.GetTypes()
-            .Where(t => typeof(IMealsEndpoint).IsAssignableFrom(t) && t.IsClass && !t.IsInterface && !t.IsAbstract);
+            .Where(t => typeof(MealsEndpoint).IsAssignableFrom(t) && t.IsClass && !t.IsInterface && !t.IsAbstract);
 
         foreach (var endpoint in endpoints)
         {
-            var instance = Activator.CreateInstance(endpoint) as IMealsEndpoint;
+            var instance = Activator.CreateInstance(endpoint) as IEndpoint;
             instance?.AddRoutes(app);
         }
     }

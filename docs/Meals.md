@@ -1,4 +1,4 @@
-# Mealbot
+# MealBot
 
 ## Meals
 Operations relating to viewing and managing meals.

@@ -1,10 +1,10 @@
-using Mealbot.Meals;
+using MealBot.Meals;
 
 namespace MealBot.Meals.Features.GetMeal;
 
-public sealed class GetMealEndpoint : IMealsEndpoint
+public sealed class GetMealEndpoint : MealsEndpoint
 {
-    public void AddRoutes(IEndpointRouteBuilder app)
+    public override void AddRoutes(IEndpointRouteBuilder app)
     {
         app.MapGet(Globals.BaseRoute + "/{mealId}", async (Guid mealId, ISender sender) =>
         {
@@ -12,7 +12,7 @@ public sealed class GetMealEndpoint : IMealsEndpoint
 
             return result.Match(
                 meal => Results.Ok(meal),
-                error => Results.Problem());
+                errors => Problem(errors));
         });
     }
 }

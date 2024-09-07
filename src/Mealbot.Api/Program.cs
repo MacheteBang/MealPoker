@@ -1,4 +1,4 @@
-using Mealbot.Meals;
+using MealBot.Meals;
 using Serilog.Core;
 
 Log.Logger = CreateLoggerConfiguration();
@@ -6,7 +6,7 @@ Log.Logger = CreateLoggerConfiguration();
 var builder = WebApplication.CreateBuilder(args);
 {
     // Add services to the container.
-    builder.Services.AddSerilog();
+    builder.Services.AddPresentation();
     builder.Services.AddMeals();
 }
 

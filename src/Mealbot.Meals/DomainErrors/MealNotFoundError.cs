@@ -1,4 +1,4 @@
-namespace Mealbot.Meals.Errors;
+namespace MealBot.Meals.DomainErrors;
 
 public static partial class Errors
 {

@@ -1,6 +1,6 @@
-using Mealbot.Meals.Models;
+using MealBot.Meals.Models;
 
-namespace Mealbot.Meals.Interfaces;
+namespace MealBot.Meals.Interfaces;
 
 public interface IMealRepository
 {

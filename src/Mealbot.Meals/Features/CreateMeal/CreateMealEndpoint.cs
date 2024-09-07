@@ -1,8 +1,8 @@
-namespace Mealbot.Meals.Features.CreateMeal;
+namespace MealBot.Meals.Features.CreateMeal;
 
-public sealed class CreateMealEndpoint : IMealsEndpoint
+public sealed class CreateMealEndpoint : MealsEndpoint
 {
-    public void AddRoutes(IEndpointRouteBuilder app)
+    public override void AddRoutes(IEndpointRouteBuilder app)
     {
         app.MapPost(Globals.BaseRoute, async (CreateMealRequest request, ISender sender) =>
         {

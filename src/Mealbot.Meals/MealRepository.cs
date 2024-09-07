@@ -1,5 +1,5 @@
 
-namespace Mealbot.Meals;
+namespace MealBot.Meals;
 
 public sealed class MealRepository : IMealRepository
 {

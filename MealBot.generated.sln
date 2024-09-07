@@ -3,11 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{D244C06C-BF02-4942-8660-7F135A8EC5D8}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{65F4BC21-BE56-4CAC-97FC-C81682F275CD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mealbot.Api", "src\Mealbot.Api\Mealbot.Api.csproj", "{9486901E-FE15-44F2-9F06-4EF116CAB7A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MealBot.Api", "src\Mealbot.Api\MealBot.Api.csproj", "{6AB2CE7C-6086-495F-BDF1-5BC8676C2995}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Mealbot.Meals", "src\Mealbot.Meals\Mealbot.Meals.csproj", "{75B0B898-79C9-459B-8458-178EE6A2738B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MealBot.Common", "src\Mealbot.Common\MealBot.Common.csproj", "{308A2DD1-6D26-43B3-B000-15EB8FE4C58D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MealBot.Meals", "src\Mealbot.Meals\MealBot.Meals.csproj", "{EB34F599-1271-49CE-82CE-1E91B942C44C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,23 +17,28 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9486901E-FE15-44F2-9F06-4EF116CAB7A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9486901E-FE15-44F2-9F06-4EF116CAB7A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9486901E-FE15-44F2-9F06-4EF116CAB7A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9486901E-FE15-44F2-9F06-4EF116CAB7A6}.Release|Any CPU.Build.0 = Release|Any CPU
-		{75B0B898-79C9-459B-8458-178EE6A2738B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{75B0B898-79C9-459B-8458-178EE6A2738B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{75B0B898-79C9-459B-8458-178EE6A2738B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{75B0B898-79C9-459B-8458-178EE6A2738B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AB2CE7C-6086-495F-BDF1-5BC8676C2995}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AB2CE7C-6086-495F-BDF1-5BC8676C2995}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AB2CE7C-6086-495F-BDF1-5BC8676C2995}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AB2CE7C-6086-495F-BDF1-5BC8676C2995}.Release|Any CPU.Build.0 = Release|Any CPU
+		{308A2DD1-6D26-43B3-B000-15EB8FE4C58D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{308A2DD1-6D26-43B3-B000-15EB8FE4C58D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{308A2DD1-6D26-43B3-B000-15EB8FE4C58D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{308A2DD1-6D26-43B3-B000-15EB8FE4C58D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EB34F599-1271-49CE-82CE-1E91B942C44C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EB34F599-1271-49CE-82CE-1E91B942C44C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EB34F599-1271-49CE-82CE-1E91B942C44C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EB34F599-1271-49CE-82CE-1E91B942C44C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{9486901E-FE15-44F2-9F06-4EF116CAB7A6} = {D244C06C-BF02-4942-8660-7F135A8EC5D8}
-		{75B0B898-79C9-459B-8458-178EE6A2738B} = {D244C06C-BF02-4942-8660-7F135A8EC5D8}
+		{6AB2CE7C-6086-495F-BDF1-5BC8676C2995} = {65F4BC21-BE56-4CAC-97FC-C81682F275CD}
+		{308A2DD1-6D26-43B3-B000-15EB8FE4C58D} = {65F4BC21-BE56-4CAC-97FC-C81682F275CD}
+		{EB34F599-1271-49CE-82CE-1E91B942C44C} = {65F4BC21-BE56-4CAC-97FC-C81682F275CD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {2A649A09-54B3-4C0E-B740-60D4E3500381}
+		SolutionGuid = {363C7769-0AAE-4044-9CCF-0EF3512A641A}
 	EndGlobalSection
 EndGlobal

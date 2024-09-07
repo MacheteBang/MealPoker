@@ -1,4 +1,4 @@
-namespace Mealbot.Meals.Features.GetMeals;
+namespace MealBot.Meals.Features.GetMeals;
 
 public sealed class GetMealsQueryHandler(IMealRepository mealRepository) : IRequestHandler<GetMealsQuery, ErrorOr<List<Meal>>>
 {

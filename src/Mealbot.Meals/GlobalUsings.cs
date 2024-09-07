@@ -1,6 +1,9 @@
-global using Mealbot.Meals.Errors;
-global using Mealbot.Meals.Interfaces;
-global using Mealbot.Meals.Models;
+global using MealBot.Meals.Common;
+global using MealBot.Meals.DomainErrors;
+global using MealBot.Meals.Interfaces;
+global using MealBot.Meals.Models;
+
+global using MealBot.Common;
 
 global using ErrorOr;
 

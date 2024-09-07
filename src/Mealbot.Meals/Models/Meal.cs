@@ -1,4 +1,4 @@
-namespace Mealbot.Meals.Models;
+namespace MealBot.Meals.Models;
 
 public class Meal
 {
