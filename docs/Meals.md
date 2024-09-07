@@ -36,6 +36,7 @@ Content-Type: application/json
 ```js
 200 OK
 ```
+
 ```json
 {
   "mealId": "7fff53a0-9905-418c-bebd-a0bb14a8bf5b",
@@ -82,12 +83,43 @@ Gets a single meal.
 
 #### Request
 ```js
-GET {{ApiHost}}/meals{{mealId}}
+@mealId = 24d3ac0b-cb15-4646-8740-2c4a8b2bfc4a
+
+GET {{ApiHost}}/meals/{{mealId}}
 ```
 
 #### Response
 ```js
 200 OK
+```
+
+```json
+{
+  "mealId": "622623e3-2a26-44dc-aebc-2e3fdd3691be",
+  "name": "Macaroni & Cheese",
+  "description": "Mac's Famous Macaroni & Cheese"
+}
+```
+
+### Update Meal
+Update a meal.
+
+#### Request
+```js
+@mealId = 24d3ac0b-cb15-4646-8740-2c4a8b2bfc4a
+
+PUT {{ApiHost}}/meals/{{mealId}}
+Content-Type: application/json
+
+{
+  "name": "Spaghetti and Meatballs",
+  "description": "A classic Italian dish with a twist!"
+}
+```
+
+#### Response
+```js
+204 OK
 ```
 
 ```json

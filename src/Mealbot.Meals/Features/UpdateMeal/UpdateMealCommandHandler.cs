@@ -1,0 +1,24 @@
+namespace MealBot.Meals.Features.UpdateMeal;
+
+public sealed class UpdateMealCommandHandler(IMealRepository mealRepository) : IRequestHandler<UpdateMealCommand, ErrorOr<Meal>>
+{
+    private readonly IMealRepository _mealRepository = mealRepository;
+
+    public async Task<ErrorOr<Meal>> Handle(UpdateMealCommand request, CancellationToken cancellationToken)
+    {
+        var meal = new Meal
+        {
+            MealId = request.MealId,
+            Name = request.Name,
+            Description = request.Description
+        };
+
+        var updatedMeal = await _mealRepository.UpdateMeal(meal);
+
+        return meal switch
+        {
+            null => Errors.MealNotFoundError(request.MealId),
+            _ => updatedMeal!
+        };
+    }
+}

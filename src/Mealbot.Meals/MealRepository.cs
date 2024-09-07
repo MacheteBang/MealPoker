@@ -19,4 +19,16 @@ public sealed class MealRepository : IMealRepository
     {
         return _meals.Find(meal => meal.MealId == mealId);
     }
+
+    public async Task<Meal?> UpdateMeal(Meal meal)
+    {
+        var existingMeal = _meals.FindIndex(m => m.MealId == meal.MealId);
+        if (existingMeal == -1)
+        {
+            return null;
+        }
+
+        _meals[existingMeal] = meal;
+        return meal;
+    }
 }
