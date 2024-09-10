@@ -1,46 +1,50 @@
+using MealBot.Meals.Infrastructure;
+using Microsoft.EntityFrameworkCore;
 
 namespace MealBot.Meals;
 
-public sealed class MealRepository : IMealRepository
+public sealed class MealRepository(MealsDbContext dbContext) : IMealRepository
 {
-    private readonly List<Meal> _meals = [];
+    private readonly MealsDbContext _dbContext = dbContext;
 
     public async Task AddMeal(Meal meal)
     {
-        _meals.Add(meal);
+        _dbContext.Add(meal);
+        await _dbContext.SaveChangesAsync();
     }
 
     public async Task<List<Meal>> GetMeals()
     {
-        return [.. _meals];
+        return await _dbContext.Meals.ToListAsync();
     }
 
     public async Task<Meal?> GetMeal(Guid mealId)
     {
-        return _meals.Find(meal => meal.MealId == mealId);
+        return await _dbContext.Meals.FirstOrDefaultAsync(meal => meal.MealId == mealId);
     }
 
     public async Task<Meal?> UpdateMeal(Meal meal)
     {
-        var existingMeal = _meals.FindIndex(m => m.MealId == meal.MealId);
-        if (existingMeal == -1)
+        var existingMeal = await _dbContext.Meals.FirstOrDefaultAsync(m => m.MealId == meal.MealId);
+        if (existingMeal is null)
         {
             return null;
         }
 
-        _meals[existingMeal] = meal;
+        existingMeal = meal;
+        await _dbContext.SaveChangesAsync();
         return meal;
     }
 
     public async Task<bool> DeleteMeal(Guid mealId)
     {
-        var existingMeal = _meals.FindIndex(m => m.MealId == mealId);
-        if (existingMeal == -1)
+        var existingMeal = await _dbContext.Meals.FirstOrDefaultAsync(m => m.MealId == mealId);
+        if (existingMeal is null)
         {
             return false;
         }
 
-        _meals.RemoveAt(existingMeal);
+        _dbContext.Meals.Remove(existingMeal);
         return true;
     }
 }
