@@ -1,3 +1,3 @@
-@mealId = 14defc86-2fbb-4e9e-9cdb-22a82e6fba82
+@mealId = 54532533-0884-41e2-a7b7-42374322d6a1
 
 DELETE {{ApiHost}}/meals/{{mealId}}

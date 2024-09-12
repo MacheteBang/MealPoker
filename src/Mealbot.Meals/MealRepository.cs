@@ -45,6 +45,7 @@ public sealed class MealRepository(MealsDbContext dbContext) : IMealRepository
         }
 
         _dbContext.Meals.Remove(existingMeal);
+        await _dbContext.SaveChangesAsync();
         return true;
     }
 }
