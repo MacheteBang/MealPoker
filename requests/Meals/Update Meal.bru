@@ -1,0 +1,22 @@
+meta {
+  name: Update Meal
+  type: http
+  seq: 6
+}
+
+put {
+  url: {{mealbotApiUrl}}/meals/:mealId
+  body: json
+  auth: none
+}
+
+params:path {
+  mealId: da6e6605-08b6-4db9-9b94-461bbaf2d138
+}
+
+body:json {
+  {
+    "name": "Spaghetti and Meatballs",
+    "description": "A classic Italian dish for everyone."
+  }
+}

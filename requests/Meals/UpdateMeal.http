@@ -1,9 +1,0 @@
-@mealId = 24d3ac0b-cb15-4646-8740-2c4a8b2bfc4a
-
-PUT {{ApiHost}}/meals/{{mealId}}
-Content-Type: application/json
-
-{
-  "name": "Spaghetti and Meatballs",
-  "description": "A classic Italian dish with a twist!"
-}

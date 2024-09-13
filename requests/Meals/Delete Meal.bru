@@ -1,0 +1,15 @@
+meta {
+  name: Delete Meal
+  type: http
+  seq: 3
+}
+
+delete {
+  url: {{mealbotApiUrl}}/meals/:mealId
+  body: none
+  auth: none
+}
+
+params:path {
+  mealId: 0cc3827c-0a5c-4ef8-8232-0369ccbd76e1
+}

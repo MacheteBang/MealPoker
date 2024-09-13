@@ -1,0 +1,18 @@
+meta {
+  name: Create Meal
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{mealbotApiUrl}}/meals
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Spaghetti and Meatballs",
+    "description": "A classic Italian dish."
+  }
+}

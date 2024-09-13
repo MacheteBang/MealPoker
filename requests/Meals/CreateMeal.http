@@ -1,7 +1,0 @@
-POST {{ApiHost}}/meals
-Content-Type: application/json
-
-{
-  "name": "Spaghetti and Meatballs",
-  "description": "A classic Italian dish."
-}

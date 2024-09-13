@@ -1,0 +1,15 @@
+meta {
+  name: Get Single Meal
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{mealbotApiUrl}}/meals/:mealId
+  body: none
+  auth: none
+}
+
+params:path {
+  mealId: da6e6605-08b6-4db9-9b94-461bbaf2d138
+}

@@ -1,3 +1,0 @@
-@mealId = 54532533-0884-41e2-a7b7-42374322d6a1
-
-DELETE {{ApiHost}}/meals/{{mealId}}
