@@ -12,6 +12,3 @@ global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.AspNetCore.Mvc.Infrastructure;
 global using Microsoft.AspNetCore.Mvc.ModelBinding;
 global using Microsoft.Extensions.Options;
-
-
-
