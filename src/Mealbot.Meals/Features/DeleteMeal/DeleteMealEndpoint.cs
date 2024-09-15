@@ -10,7 +10,7 @@ public sealed class DeleteMealEndpoint : MealsEndpoint
 
             return result.Match(
                 success => Results.NoContent(),
-                error => Results.Problem());
+                errors => Problem(errors));
         });
     }
 }

@@ -11,7 +11,7 @@ public sealed class GetMealsEndpoint : MealsEndpoint
 
             return result.Match(
                 meals => Results.Ok(meals),
-                error => Results.Problem());
+                errors => Problem(errors));
         });
     }
 }

@@ -10,7 +10,7 @@ public sealed class UpdateMealEndpoint : MealsEndpoint
 
             return result.Match(
                 meal => Results.Ok(meal),
-                error => Results.Problem());
+                errors => Problem(errors));
         });
     }
 }

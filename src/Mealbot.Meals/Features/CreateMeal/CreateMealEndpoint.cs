@@ -10,7 +10,7 @@ public sealed class CreateMealEndpoint : MealsEndpoint
 
             return result.Match(
                 meal => Results.Created($"{Globals.BaseRoute}/{meal.MealId}", meal),
-                error => Results.Problem());
+                errors => Problem(errors));
         });
     }
 }
