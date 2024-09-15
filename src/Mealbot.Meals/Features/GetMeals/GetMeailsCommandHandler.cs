@@ -6,7 +6,7 @@ public sealed class GetMealsQueryHandler(IMealRepository mealRepository) : IRequ
 
     public async Task<ErrorOr<List<Meal>>> Handle(GetMealsQuery request, CancellationToken cancellationToken)
     {
-        var meals = await _mealRepository.GetMeals();
+        var meals = await _mealRepository.GetMealsAsync();
 
         return meals;
     }

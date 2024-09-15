@@ -6,7 +6,7 @@ public sealed class GetMealQueryHandler(IMealRepository mealRepository) : IReque
 
     public async Task<ErrorOr<Meal>> Handle(GetMealQuery request, CancellationToken cancellationToken)
     {
-        var meal = await _mealRepository.GetMeal(request.MealId);
+        var meal = await _mealRepository.GetMealAsync(request.MealId);
 
         return meal switch
         {

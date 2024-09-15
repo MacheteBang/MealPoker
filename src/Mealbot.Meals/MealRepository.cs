@@ -1,51 +1,49 @@
-using MealBot.Meals.Infrastructure;
-using Microsoft.EntityFrameworkCore;
-
 namespace MealBot.Meals;
 
-public sealed class MealRepository(MealsDbContext dbContext) : IMealRepository
+public sealed class MealRepository : IMealRepository
 {
-    private readonly MealsDbContext _dbContext = dbContext;
+    private readonly List<Meal> _meals = [];
 
-    public async Task AddMeal(Meal meal)
+    public Task AddMeal(Meal meal)
     {
-        _dbContext.Add(meal);
-        await _dbContext.SaveChangesAsync();
+        _meals.Add(meal);
+        return Task.CompletedTask;
     }
 
-    public async Task<List<Meal>> GetMeals()
+    public Task<List<Meal>> GetMealsAsync()
     {
-        return await _dbContext.Meals.ToListAsync();
+        return Task.FromResult(_meals);
     }
 
-    public async Task<Meal?> GetMeal(Guid mealId)
+    public Task<Meal?> GetMealAsync(Guid mealId)
     {
-        return await _dbContext.Meals.FirstOrDefaultAsync(meal => meal.MealId == mealId);
+        return Task.FromResult(_meals.FirstOrDefault(m => m.MealId == mealId));
     }
 
-    public async Task<Meal?> UpdateMeal(Meal meal)
+    public Task<Meal?> UpdateMeal(Meal meal)
     {
-        var existingMeal = await _dbContext.Meals.FirstOrDefaultAsync(m => m.MealId == meal.MealId);
+        var existingMeal = _meals.FirstOrDefault(m => m.MealId == meal.MealId);
         if (existingMeal is null)
         {
-            return null;
+            return Task.FromResult<Meal?>(null);
         }
 
-        existingMeal = meal;
-        await _dbContext.SaveChangesAsync();
-        return meal;
+        existingMeal.Name = meal.Name;
+        existingMeal.Description = meal.Description;
+        return Task.FromResult<Meal?>(existingMeal);
     }
 
-    public async Task<bool> DeleteMeal(Guid mealId)
+    public Task<bool> DeleteMeal(Guid mealId)
     {
-        var existingMeal = await _dbContext.Meals.FirstOrDefaultAsync(m => m.MealId == mealId);
+        var existingMeal = _meals.FirstOrDefault(m => m.MealId == mealId);
         if (existingMeal is null)
         {
-            return false;
+            return Task.FromResult(false);
         }
 
-        _dbContext.Meals.Remove(existingMeal);
-        await _dbContext.SaveChangesAsync();
-        return true;
+        _meals.Remove(existingMeal);
+        return Task.FromResult(true);
     }
 }
+
+
