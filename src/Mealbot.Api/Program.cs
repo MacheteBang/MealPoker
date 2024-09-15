@@ -8,6 +8,11 @@ var builder = WebApplication.CreateBuilder(args);
     // Add services to the container.
     builder.Services.AddPresentation();
     builder.Services.AddMeals();
+
+    builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
+    {
+        options.SerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+    });
 }
 
 var app = builder.Build();
@@ -18,8 +23,6 @@ var app = builder.Build();
 }
 
 app.Run();
-
-
 
 
 static Logger CreateLoggerConfiguration()

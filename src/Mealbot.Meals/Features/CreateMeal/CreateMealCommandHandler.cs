@@ -9,7 +9,8 @@ public sealed class CreateMealCommandHandler(IMealRepository mealRepository) : I
         var meal = new Meal
         {
             Name = request.Name,
-            Description = request.Description
+            Description = request.Description,
+            MealParts = request.MealParts
         };
 
         await _mealRepository.AddMeal(meal);

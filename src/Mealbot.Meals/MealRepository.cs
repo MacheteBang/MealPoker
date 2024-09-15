@@ -28,9 +28,10 @@ public sealed class MealRepository : IMealRepository
             return Task.FromResult<Meal?>(null);
         }
 
-        existingMeal.Name = meal.Name;
-        existingMeal.Description = meal.Description;
-        return Task.FromResult<Meal?>(existingMeal);
+        _meals.Remove(existingMeal);
+        _meals.Add(meal);
+
+        return Task.FromResult<Meal?>(meal);
     }
 
     public Task<bool> DeleteMeal(Guid mealId)

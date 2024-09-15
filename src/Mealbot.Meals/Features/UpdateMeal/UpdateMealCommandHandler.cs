@@ -10,12 +10,13 @@ public sealed class UpdateMealCommandHandler(IMealRepository mealRepository) : I
         {
             MealId = request.MealId,
             Name = request.Name,
-            Description = request.Description
+            Description = request.Description,
+            MealParts = request.MealParts
         };
 
         var updatedMeal = await _mealRepository.UpdateMeal(meal);
 
-        return meal switch
+        return updatedMeal switch
         {
             null => Errors.MealNotFoundError(request.MealId),
             _ => updatedMeal!
