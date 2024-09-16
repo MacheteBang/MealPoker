@@ -10,6 +10,8 @@ public static class DependencyInjection
 
         services.AddMediatR(mediatROptions => mediatROptions.RegisterServicesFromAssembly(thisAssembly));
 
+        services.AddValidatorsFromAssembly(thisAssembly);
+
         services.AddSingleton<IMealRepository, MealRepository>();
 
         return services;
