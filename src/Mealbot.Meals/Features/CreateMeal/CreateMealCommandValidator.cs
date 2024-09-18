@@ -13,18 +13,7 @@ public class CreateMealCommandValidator : AbstractValidator<CreateMealCommand>
         RuleFor(x => x.MealParts)
             .NotEmpty();
 
-        RuleForEach(x => x.MealParts).ChildRules(mealPart =>
-        {
-            mealPart.RuleFor(y => y.Category)
-                .IsInEnum()
-                .NotEqual(MealPartCategory.Unknown);
-
-            mealPart.RuleFor(x => x.Name)
-                .NotEmpty();
-
-            mealPart.RuleFor(x => x.Description)
-                .MaximumLength(500);
-        });
-
+        RuleForEach(x => x.MealParts)
+            .SetValidator(new MealPartValidator());
     }
 }
