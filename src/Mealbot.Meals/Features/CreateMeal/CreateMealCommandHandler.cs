@@ -11,7 +11,7 @@ public sealed class CreateMealCommandHandler(IValidator<CreateMealCommand> valid
         if (!validationResult.IsValid)
         {
             return validationResult.Errors
-                .Select(x => Errors.InvalidRequest(x.ErrorMessage))
+                .Select(x => Errors.InvalidRequest($"{x.FormattedMessagePlaceholderValues.SingleOrDefault(c => c.Key == "PropertyPath").Value}: {x.ErrorMessage}"))
                 .ToList();
         }
 

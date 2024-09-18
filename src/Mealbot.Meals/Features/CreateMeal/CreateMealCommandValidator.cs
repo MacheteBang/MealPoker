@@ -11,7 +11,20 @@ public class CreateMealCommandValidator : AbstractValidator<CreateMealCommand>
             .MaximumLength(500);
 
         RuleFor(x => x.MealParts)
-            .NotEmpty()
-            .ForEach(x => x.SetValidator(new MealPartValidator()));
+            .NotEmpty();
+
+        RuleForEach(x => x.MealParts).ChildRules(mealPart =>
+        {
+            mealPart.RuleFor(y => y.Category)
+                .IsInEnum()
+                .NotEqual(MealPartCategory.Unknown);
+
+            mealPart.RuleFor(x => x.Name)
+                .NotEmpty();
+
+            mealPart.RuleFor(x => x.Description)
+                .MaximumLength(500);
+        });
+
     }
 }

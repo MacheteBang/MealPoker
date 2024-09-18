@@ -1,15 +1,15 @@
 using System.Text.Json.Serialization;
 
-namespace MealBot.Common.Enums
+namespace MealBot.Meals.Enums;
+
+[JsonConverter(typeof(MealPartCategoryConverter))]
+public enum MealPartCategory
 {
-    [JsonConverter(typeof(JsonStringEnumConverter))]
-    public enum MealPartCategory
-    {
-        MainCourse,
-        Veggie,
-        SideDish,
-        Dessert,
-        Drink,
-        Other
-    }
+    Unknown,
+    MainCourse,
+    Veggie,
+    SideDish,
+    Dessert,
+    Drink,
+    Other
 }

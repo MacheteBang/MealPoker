@@ -1,7 +1,13 @@
+global using System.Text.Json;
+global using System.Text.Json.Serialization;
+
 global using MealBot.Meals.Common;
+global using MealBot.Meals.Contracts;
 global using MealBot.Meals.DomainErrors;
+global using MealBot.Meals.Enums;
 global using MealBot.Meals.Interfaces;
 global using MealBot.Meals.Models;
+global using MealBot.Meals.ValueObjects;
 
 global using MealBot.Common;
 

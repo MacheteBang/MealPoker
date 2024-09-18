@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace MealBot.Common;
 
@@ -37,7 +36,9 @@ public abstract class EndpointBase : IEndpoint
 
     private IResult ValidationProblem(List<Error> errors)
     {
-        var validationErrorDictionary = errors.ToDictionary(e => e.Code, e => new[] { e.Description });
+        var validationErrorDictionary = errors
+            .GroupBy(e => e.Code)
+            .ToDictionary(g => g.Key, g => g.Select(e => e.Description).ToArray());
 
         return Results.ValidationProblem(validationErrorDictionary);
     }

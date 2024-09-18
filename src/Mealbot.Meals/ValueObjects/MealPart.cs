@@ -1,11 +1,9 @@
-using MealBot.Common.Enums;
-
-namespace MealBot.Meals.Models;
+namespace MealBot.Meals.ValueObjects;
 
 public class MealPart(MealPartCategory category, string name, string? description, string? url) : ValueObject
 {
-    public required MealPartCategory Category { get; init; } = category;
-    public required string Name { get; init; } = name;
+    public MealPartCategory Category { get; init; } = category;
+    public string Name { get; init; } = name;
     public string? Description { get; } = description;
     public string? Url { get; } = url;
 
