@@ -1,6 +1,6 @@
 {
   "version": "1",
-  "name": "Meals",
+  "name": "MealBot",
   "type": "collection",
   "ignore": [
     "node_modules",
