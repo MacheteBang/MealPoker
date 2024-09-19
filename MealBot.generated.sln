@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MealBot.Common", "src\Mealb
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MealBot.Meals", "src\Mealbot.Meals\MealBot.Meals.csproj", "{EB34F599-1271-49CE-82CE-1E91B942C44C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mealbot.Auth", "src\Mealbot.Auth\Mealbot.Auth.csproj", "{41FC63B2-BC86-42B9-90D5-DD5D913B8DA3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,6 +31,10 @@ Global
 		{EB34F599-1271-49CE-82CE-1E91B942C44C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB34F599-1271-49CE-82CE-1E91B942C44C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB34F599-1271-49CE-82CE-1E91B942C44C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41FC63B2-BC86-42B9-90D5-DD5D913B8DA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41FC63B2-BC86-42B9-90D5-DD5D913B8DA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41FC63B2-BC86-42B9-90D5-DD5D913B8DA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41FC63B2-BC86-42B9-90D5-DD5D913B8DA3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -37,6 +43,7 @@ Global
 		{6AB2CE7C-6086-495F-BDF1-5BC8676C2995} = {65F4BC21-BE56-4CAC-97FC-C81682F275CD}
 		{308A2DD1-6D26-43B3-B000-15EB8FE4C58D} = {65F4BC21-BE56-4CAC-97FC-C81682F275CD}
 		{EB34F599-1271-49CE-82CE-1E91B942C44C} = {65F4BC21-BE56-4CAC-97FC-C81682F275CD}
+		{41FC63B2-BC86-42B9-90D5-DD5D913B8DA3} = {65F4BC21-BE56-4CAC-97FC-C81682F275CD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {363C7769-0AAE-4044-9CCF-0EF3512A641A}

@@ -1,3 +1,4 @@
+using Mealbot.Auth;
 using MealBot.Meals;
 using Serilog.Core;
 
@@ -8,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
     // Add services to the container.
     builder.Services.AddPresentation();
     builder.Services.AddMeals();
+    builder.Services.AddAuth();
 
     builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
     {
@@ -20,6 +22,7 @@ var app = builder.Build();
     // Configure the HTTP request pipeline.
     app.UseSerilogRequestLogging();
     app.UseMeals();
+    app.UseAuth();
 }
 
 app.Run();
