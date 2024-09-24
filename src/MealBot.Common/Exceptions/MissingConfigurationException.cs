@@ -1,4 +1,4 @@
-namespace Mealbot.Common.Exceptions;
+namespace MealBot.Common.Exceptions;
 
 public class MissingConfigurationException(string configurationKey)
     : Exception($"Configuration key '{configurationKey}' is missing")

@@ -1,4 +1,4 @@
-using Mealbot.Auth;
+using MealBot.Auth;
 using MealBot.Meals;
 using Serilog.Core;
 

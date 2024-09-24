@@ -1,4 +1,4 @@
-namespace Mealbot.Auth;
+namespace MealBot.Auth;
 
 public static class DependecyInjection
 {

@@ -1,6 +1,6 @@
 using Microsoft.Extensions.Configuration;
 
-namespace Mealbot.Common.Extensions;
+namespace MealBot.Common.Extensions;
 
 public static class ConfigurationManagerExtensions
 {

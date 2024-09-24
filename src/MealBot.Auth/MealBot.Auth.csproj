@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <ItemGroup>
-    <ProjectReference Include="..\Mealbot.Common\MealBot.Common.csproj" />
+    <ProjectReference Include="..\MealBot.Common\MealBot.Common.csproj" />
   </ItemGroup>
 
   <PropertyGroup>

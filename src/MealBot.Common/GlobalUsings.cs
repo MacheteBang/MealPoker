@@ -1,4 +1,4 @@
-global using Mealbot.Common.Exceptions;
+global using MealBot.Common.Exceptions;
 
 global using Microsoft.AspNetCore.Routing;
 
