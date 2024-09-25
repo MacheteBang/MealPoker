@@ -1,7 +1,23 @@
 ﻿@page "/authentication/{action}"
 @using Microsoft.AspNetCore.Components.WebAssembly.Authentication
-<RemoteAuthenticatorView Action="@Action" />
+@inject IAccessTokenProvider TokenProvider
+<RemoteAuthenticatorView Action="@Action" OnLogOutSucceeded="HandleLogOutSucceeded"
+    OnLogInSucceeded="HandleLoginSucceeded" />
 
-@code{
+@code {
     [Parameter] public string? Action { get; set; }
+
+    [CascadingParameter]
+    private Task<AuthenticationState> authenticationStateTask { get; set; }
+
+    private async Task HandleLogOutSucceeded(RemoteAuthenticationState arg)
+    {
+
+    }
+
+    private async Task HandleLoginSucceeded(RemoteAuthenticationState arg)
+    {
+        // TODO: Capture this and use it to authenticate with the API
+        var x = await TokenProvider.RequestAccessToken();
+    }
 }
