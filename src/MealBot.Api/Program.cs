@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
     // Add services to the container.
     builder.Services.AddPresentation();
     builder.Services.AddMeals();
-    builder.Services.AddAuth();
+    builder.Services.AddAuth(builder.Configuration);
 
     builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
     {

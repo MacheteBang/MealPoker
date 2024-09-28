@@ -8,6 +8,8 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddAuth(this IServiceCollection services, IConfigurationManager configuration)
     {
+        services.AddScoped<IUserRepository, UserRepository>();
+
         Assembly thisAssembly = typeof(DependencyInjection).Assembly;
 
         services.AddMediatR(mediatROptions => mediatROptions.RegisterServicesFromAssembly(thisAssembly));
