@@ -15,6 +15,8 @@ public static class DependencyInjection
         services.AddMediatR(mediatROptions => mediatROptions.RegisterServicesFromAssembly(thisAssembly));
 
         services.Configure<AuthenticationOptions>(configuration.GetSection("Authentication"));
+        services.Configure<AuthorizationOptions>(configuration.GetSection("Authorization"));
+        services.Configure<RefreshTokenOptions>(configuration.GetSection("Authorization:RefreshTokenOptions"));
         return services;
     }
 
