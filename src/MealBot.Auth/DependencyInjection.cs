@@ -8,6 +8,10 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddAuth(this IServiceCollection services, IConfigurationManager configuration)
     {
+        Assembly thisAssembly = typeof(DependencyInjection).Assembly;
+
+        services.AddMediatR(mediatROptions => mediatROptions.RegisterServicesFromAssembly(thisAssembly));
+
         services.Configure<AuthenticationOptions>(configuration.GetSection("Authentication"));
         return services;
     }
