@@ -1,5 +1,3 @@
-using MealBot.Auth.Options;
-using Microsoft.Extensions.Configuration;
 using System.Reflection;
 
 namespace MealBot.Auth;
