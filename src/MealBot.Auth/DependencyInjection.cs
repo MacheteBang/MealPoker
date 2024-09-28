@@ -1,10 +1,16 @@
+using MealBot.Auth.Options;
+using Microsoft.Extensions.Configuration;
 using System.Reflection;
 
 namespace MealBot.Auth;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddAuth(this IServiceCollection services) => services;
+    public static IServiceCollection AddAuth(this IServiceCollection services, IConfigurationManager configuration)
+    {
+        services.Configure<AuthenticationOptions>(configuration.GetSection("Authentication"));
+        return services;
+    }
 
     public static WebApplication UseAuth(this WebApplication app)
     {
