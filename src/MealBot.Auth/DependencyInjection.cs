@@ -1,3 +1,4 @@
+using MealBot.Auth.Services;
 using System.Reflection;
 
 namespace MealBot.Auth;
@@ -7,6 +8,7 @@ public static class DependencyInjection
     public static IServiceCollection AddAuth(this IServiceCollection services, IConfigurationManager configuration)
     {
         services.AddScoped<IUserRepository, UserRepository>();
+        services.AddScoped<ITokenService, TokenService>();
 
         Assembly thisAssembly = typeof(DependencyInjection).Assembly;
 

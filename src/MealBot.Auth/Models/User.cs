@@ -7,5 +7,5 @@ public class User
     public required string EmailAddress { get; set; }
 
     public string? RefreshToken { get; set; }
-    public DateTime? RefreshTokenExpiresOn { get; set; }
+    public DateTime? RefreshTokenExpiresAt { get; set; }
 }

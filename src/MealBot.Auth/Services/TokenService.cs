@@ -1,5 +1,3 @@
-using MealBot.Auth.DomainErrors;
-
 namespace MealBot.Auth.Services;
 
 internal class TokenService(IOptions<AuthorizationOptions> options) : ITokenService
@@ -33,14 +31,14 @@ internal class TokenService(IOptions<AuthorizationOptions> options) : ITokenServ
         return jwt;
     }
 
-    public ErrorOr<RefreshToken> GenerateRefreshToken(User user)
+    public ErrorOr<AccessToken> GenerateRefreshToken(User user)
     {
         var config = options.Value.RefreshTokenOptions!;
 
-        return new RefreshToken
+        return new AccessToken
         (
             Value: Guid.NewGuid().ToString(),
-            ExpiresUtc: DateTime.UtcNow.AddMinutes(config.TokenLifetimeInMinutes)
+            ExpiresAt: DateTime.UtcNow.AddMinutes(config.TokenLifetimeInMinutes)
         );
     }
 
@@ -52,7 +50,7 @@ internal class TokenService(IOptions<AuthorizationOptions> options) : ITokenServ
 
         if (token.Issuer != config.ValidIssuer)
         {
-            return Errors.InvalidTokenIssuerError(token.Issuer);
+            return Errors.InvalidToken();
         }
 
         var userId = token.Claims.FirstOrDefault(c => c.Type == "id")?.Value;
