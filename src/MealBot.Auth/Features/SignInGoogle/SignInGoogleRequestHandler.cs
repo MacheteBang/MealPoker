@@ -1,6 +1,3 @@
-
-using Microsoft.AspNetCore.Http.HttpResults;
-
 namespace MealBot.Auth.Features.SignInGoogle;
 
 public sealed class SignInGooglRequestHandler(IHttpClientFactory httpClientFactory, IOptions<AuthenticationOptions> options, IAuthenticationService authenticationService) : IRequestHandler<SignInGoogleQuery, ErrorOr<AccessTokenSet>>
@@ -28,7 +25,7 @@ public sealed class SignInGooglRequestHandler(IHttpClientFactory httpClientFacto
 
     private async Task<ErrorOr<ExternalAuthenticationResponse>> AuthenticateWithGoogleAsync(string authorizationCode, CancellationToken cancellationToken)
     {
-        var config = options.Value.GoogleOptions!;
+        var config = _options.Value.GoogleOptions!;
 
         var idTokenRequestContent = new FormUrlEncodedContent
         ([
@@ -40,7 +37,7 @@ public sealed class SignInGooglRequestHandler(IHttpClientFactory httpClientFacto
         ]);
 
         // Exchange the Google authorization code for access token
-        var authorizationCodeExchangeRequest = await httpClientFactory.CreateClient().PostAsync(
+        var authorizationCodeExchangeRequest = await _httpClientFactory.CreateClient().PostAsync(
             config.AuthorizationCodeEndpoint, idTokenRequestContent, cancellationToken);
 
         if (!authorizationCodeExchangeRequest.IsSuccessStatusCode)
