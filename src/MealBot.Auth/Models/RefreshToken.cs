@@ -1,6 +1,6 @@
 namespace MealBot.Auth.Models;
 
-public sealed record AccessToken(
+public sealed record RefreshToken(
     string Value,
     DateTime ExpiresAt
 );

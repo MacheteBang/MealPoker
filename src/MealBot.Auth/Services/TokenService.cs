@@ -31,11 +31,11 @@ internal class TokenService(IOptions<AuthorizationOptions> options) : ITokenServ
         return jwt;
     }
 
-    public ErrorOr<AccessToken> GenerateRefreshToken(User user)
+    public ErrorOr<RefreshToken> GenerateRefreshToken(User user)
     {
         var config = options.Value.RefreshTokenOptions!;
 
-        return new AccessToken
+        return new RefreshToken
         (
             Value: Guid.NewGuid().ToString(),
             ExpiresAt: DateTime.UtcNow.AddMinutes(config.TokenLifetimeInMinutes)

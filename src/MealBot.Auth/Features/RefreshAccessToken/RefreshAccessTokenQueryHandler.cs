@@ -3,13 +3,13 @@ namespace MealBot.Auth.Features.RefreshAccessToken;
 public sealed class RefreshAccessTokenQueryHandler(
     IOptions<RefreshTokenOptions> refreshTokenOptions,
     ITokenService tokenService,
-    IUserRepository userRepository) : IRequestHandler<RefreshAccessTokenQuery, ErrorOr<AccessToken>>
+    IUserRepository userRepository) : IRequestHandler<RefreshAccessTokenQuery, ErrorOr<RefreshToken>>
 {
     private readonly IOptions<RefreshTokenOptions> _refreshTokenOptions = refreshTokenOptions;
     private readonly ITokenService _tokenService = tokenService;
     private readonly IUserRepository _userRepository = userRepository;
 
-    public async Task<ErrorOr<AccessToken>> Handle(RefreshAccessTokenQuery query, CancellationToken cancellationToken)
+    public async Task<ErrorOr<RefreshToken>> Handle(RefreshAccessTokenQuery query, CancellationToken cancellationToken)
     {
         var userId = _tokenService.GetUserId(query.AccessToken);
 
@@ -39,6 +39,6 @@ public sealed class RefreshAccessTokenQueryHandler(
             return Errors.InvalidToken();
         }
 
-        return new AccessToken(newAccessTokenResult.Value, DateTime.UtcNow.AddHours(1));
+        return new RefreshToken(newAccessTokenResult.Value, DateTime.UtcNow.AddHours(1));
     }
 }
