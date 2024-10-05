@@ -21,7 +21,7 @@ public abstract class EndpointBase : IEndpoint
         return Problem(errors.First());
     }
 
-    private IResult Problem(Error error)
+    protected static IResult Problem(Error error)
     {
         var statusCode = error.Type switch
         {
@@ -34,7 +34,7 @@ public abstract class EndpointBase : IEndpoint
         return Results.Problem(statusCode: statusCode, title: error.Description);
     }
 
-    private IResult ValidationProblem(List<Error> errors)
+    private static IResult ValidationProblem(List<Error> errors)
     {
         var validationErrorDictionary = errors
             .GroupBy(e => e.Code)
