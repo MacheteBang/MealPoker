@@ -1,0 +1,17 @@
+meta {
+  name: Get Auth Url
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{mealbotApiUrl}}/auth/urls?provider=Google&state=1234&callBackUrl=https://googl.com
+  body: none
+  auth: none
+}
+
+params:query {
+  provider: Google
+  state: 1234
+  callBackUrl: https://googl.com
+}

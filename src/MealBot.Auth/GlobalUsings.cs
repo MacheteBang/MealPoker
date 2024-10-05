@@ -1,6 +1,5 @@
 global using MealBot.Auth.Common;
 global using MealBot.Auth.Contracts;
-global using MealBot.Auth.Contracts.Google;
 global using MealBot.Auth.DomainErrors;
 global using MealBot.Auth.Enums;
 global using MealBot.Auth.Interfaces;

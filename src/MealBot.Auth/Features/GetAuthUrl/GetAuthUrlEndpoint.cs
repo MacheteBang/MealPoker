@@ -1,34 +1,34 @@
-namespace MealBot.Auth.Features.GetSignInLocation;
+namespace MealBot.Auth.Features.GetAuthUrl;
 
-public sealed class GetSignInLocationEndpoint : AuthEndpoint
+public sealed class GetAuthUrlEndpoint : AuthEndpoint
 {
     public override void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGet(Globals.SignInLocationRoute, async (
-            Provider provider,
+        app.MapGet(Globals.AuthUrlRoute, async (
+            AuthProvider provider,
             string state,
-            string returnUrl,
+            string callbackUrl,
             ISender sender) =>
         {
             // TODO: Implement global error handling on the API for QSPs that are missing / empty
             // TODO: Implement global error handling on the API for invalid enum values
 
-            if (provider == Provider.Unknown)
+            if (provider == AuthProvider.Unknown)
             {
                 return Problem(Errors.ProviderNotSupported());
             }
 
-            var query = new GetSignInLocationQuery
+            var query = new GetAuthUrlQuery
             {
                 Provider = provider,
                 State = state,
-                ReturnUrl = returnUrl
+                CallbackUrl = callbackUrl
             };
 
             var result = await sender.Send(query);
 
             return result.Match(
-                url => Results.Ok(new SignInLocationResponse(provider, url)),
+                url => Results.Ok(new AuthUrlReponse(provider, url)),
                 error => Problem(error));
         });
     }
