@@ -1,6 +1,14 @@
-namespace MealBot.Auth.Repositories;
+namespace MealBot.Auth.Services;
 
-public sealed class UserRepository : IUserRepository
+public interface IUserService
+{
+    Task<ErrorOr<User>> AddAsync(User user);
+    Task<ErrorOr<User>> GetByEmailAddressAsync(string emailAddress);
+    Task<ErrorOr<User>> UpdateAsync(User user);
+    Task<ErrorOr<Success>> DeleteAsync(Guid userId);
+}
+
+public sealed class UserService : IUserService
 {
     public Task<ErrorOr<User>> AddAsync(User user)
     {

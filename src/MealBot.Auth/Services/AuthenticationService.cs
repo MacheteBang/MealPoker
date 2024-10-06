@@ -5,9 +5,9 @@ internal interface IAuthenticationService
     Task<ErrorOr<User>> AddOrGetUserAsync(ExternalIdentity externalIdentity);
 }
 
-internal sealed class AuthenticationService(IUserRepository _userRepository) : IAuthenticationService
+internal sealed class AuthenticationService(IUserService _userRepository) : IAuthenticationService
 {
-    private readonly IUserRepository userRepository = _userRepository;
+    private readonly IUserService userRepository = _userRepository;
 
     public async Task<ErrorOr<User>> AddOrGetUserAsync(ExternalIdentity externalIdentity)
     {
@@ -39,19 +39,30 @@ internal sealed class AuthenticationService(IUserRepository _userRepository) : I
             return newUser;
         }
 
-        // TODO: Only  update the user if the information is different
-        var foundUser = userResult.Value;
-        foundUser.AuthProvider = externalIdentity.AuthProvider;
-        foundUser.ExternalId = externalIdentity.Id;
-        foundUser.FirstName = externalIdentity.FirstName;
-        foundUser.LastName = externalIdentity.LastName;
-        foundUser.PictureUri = externalIdentity.ProfilePictureUri;
+        if (IsUserDifferent(userResult.Value, externalIdentity))
+        {
+            var foundUser = userResult.Value;
+            foundUser.AuthProvider = externalIdentity.AuthProvider;
+            foundUser.ExternalId = externalIdentity.Id;
+            foundUser.FirstName = externalIdentity.FirstName;
+            foundUser.LastName = externalIdentity.LastName;
+            foundUser.PictureUri = externalIdentity.ProfilePictureUri;
 
-        var updateResult = await userRepository.UpdateAsync(foundUser);
+            var updateResult = await userRepository.UpdateAsync(foundUser);
 
-        return updateResult.Match<ErrorOr<User>>(
-            user => user,
-            errors => errors
-        );
+            return updateResult.Match<ErrorOr<User>>(
+                user => user,
+                errors => errors
+            );
+        }
+
+        return userResult.Value;
     }
+
+    private static bool IsUserDifferent(User user, ExternalIdentity externalIdentity) =>
+        user.AuthProvider != externalIdentity.AuthProvider ||
+        user.ExternalId != externalIdentity.Id ||
+        user.FirstName != externalIdentity.FirstName ||
+        user.LastName != externalIdentity.LastName ||
+        user.PictureUri != externalIdentity.ProfilePictureUri;
 }
