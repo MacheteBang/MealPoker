@@ -2,7 +2,7 @@ namespace MealBot.Auth.Options;
 
 public sealed class AuthenticationOptions
 {
-    public GoogleOptions? GoogleOptions { get; set; }
+    public required GoogleOptions GoogleOptions { get; set; }
 }
 
 public sealed class GoogleOptions

@@ -1,4 +1,3 @@
-
 namespace MealBot.Auth.Features.GetAuthUrl;
 
 internal sealed class GetAuthUrlHandler(IOptions<AuthenticationOptions> authenticationOptions) : IRequestHandler<GetAuthUrlQuery, ErrorOr<string>>
@@ -12,20 +11,20 @@ internal sealed class GetAuthUrlHandler(IOptions<AuthenticationOptions> authenti
 
         return request.Provider switch
         {
-            AuthProvider.Google => HandleGoogle(_authenticationOptions.Value.GoogleOptions!, request.State, request.CallbackUrl),
+            AuthProvider.Google => HandleGoogle(_authenticationOptions.Value.GoogleOptions!, request.State, request.CallbackUri),
             _ => Errors.ProviderNotSupported()
         };
     }
 
-    private static string HandleGoogle(GoogleOptions options, string state, string callbackUrl)
+    private static string HandleGoogle(GoogleOptions options, string state, string callbackUri)
     {
         var googleAuthUrl =
             $"{options.AuthenticationEndpoint}?" +
             $"response_type={options.ResponseType}&" +
             $"client_id={options.ClientId}&" +
-            $"redirect_uri={callbackUrl}&" +
+            $"redirect_uri={Uri.EscapeDataString(callbackUri)}&" +
             $"scope={options.Scope}&" +
-            $"state={state}&" +
+            $"state={Uri.EscapeDataString(state)}&" +
             $"nonce={Guid.NewGuid()}";
 
         return googleAuthUrl;

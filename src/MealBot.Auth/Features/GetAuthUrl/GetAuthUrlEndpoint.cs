@@ -7,7 +7,7 @@ public sealed class GetAuthUrlEndpoint : AuthEndpoint
         app.MapGet(Globals.AuthUrlRoute, async (
             AuthProvider provider,
             string state,
-            string callbackUrl,
+            string callbackUri,
             ISender sender) =>
         {
             // TODO: Implement global error handling on the API for QSPs that are missing / empty
@@ -22,7 +22,7 @@ public sealed class GetAuthUrlEndpoint : AuthEndpoint
             {
                 Provider = provider,
                 State = state,
-                CallbackUrl = callbackUrl
+                CallbackUri = callbackUri
             };
 
             var result = await sender.Send(query);

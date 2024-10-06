@@ -1,0 +1,16 @@
+meta {
+  name: Get Token Google
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{mealbotApiUrl}}/auth/tokens/google?authorizationCode=4/0AVG7fiQUj9SW3cBm2MGJzuWIahwS5lVhq5hx9PEByNzlH1JKAN7kEi2-RKj5PMxn_yJBXg&callBackUri=https://localhost:7188/google-callback
+  body: none
+  auth: none
+}
+
+params:query {
+  authorizationCode: 4/0AVG7fiQUj9SW3cBm2MGJzuWIahwS5lVhq5hx9PEByNzlH1JKAN7kEi2-RKj5PMxn_yJBXg
+  callBackUri: https://localhost:7188/google-callback
+}

@@ -8,6 +8,8 @@ public static class DependencyInjection
     {
         services.AddHttpClient();
 
+        services.AddScoped<IAuthenticationService, AuthenticationService>();
+        services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IUserRepository, UserRepository>();
 
         Assembly thisAssembly = typeof(DependencyInjection).Assembly;

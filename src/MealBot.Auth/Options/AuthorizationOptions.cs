@@ -2,7 +2,7 @@ namespace MealBot.Auth.Options;
 
 public sealed class AuthorizationOptions
 {
-    public JwtOptions? JwtOptions { get; set; }
+    public required JwtOptions JwtOptions { get; set; }
     public RefreshTokenOptions? RefreshTokenOptions { get; set; }
 }
 
