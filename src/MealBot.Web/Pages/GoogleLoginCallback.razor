@@ -1,0 +1,24 @@
+﻿@* This is a callback page where Google redirects the user after successful authentication *@
+
+@page "/google-callback"
+@attribute [AllowAnonymous]
+
+@inject IHttpClientFactory HttpClientFactory
+@inject NavigationManager Navigation
+
+@using Microsoft.AspNetCore.Authorization
+
+<p Text="Hang on, we're signing you in.."></p>
+<p>Code = @AuthorizationCode</p>
+<p>State = @State</p>
+
+@code
+{
+    // The authorization code sent by Google after successful authentication
+    [SupplyParameterFromQuery(Name = "code")]
+    public string? AuthorizationCode { get; set; }
+
+    // Optional state included in the redirect URI
+    [SupplyParameterFromQuery(Name = "state")]
+    public string? State { get; set; }
+}
