@@ -1,11 +1,11 @@
 namespace MealBot.Auth.Options;
 
-public sealed class AuthenticationOptions
+internal sealed class AuthenticationOptions
 {
     public required GoogleOptions GoogleOptions { get; set; }
 }
 
-public sealed class GoogleOptions
+internal sealed class GoogleOptions
 {
     public required string AuthenticationEndpoint { get; set; }
     public required string AuthorizationCodeEndpoint { get; set; }

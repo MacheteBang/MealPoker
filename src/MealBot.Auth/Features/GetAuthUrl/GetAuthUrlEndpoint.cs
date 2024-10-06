@@ -1,6 +1,6 @@
 namespace MealBot.Auth.Features.GetAuthUrl;
 
-public sealed class GetAuthUrlEndpoint : AuthEndpoint
+internal sealed class GetAuthUrlEndpoint : AuthEndpoint
 {
     public override void AddRoutes(IEndpointRouteBuilder app)
     {
@@ -28,7 +28,7 @@ public sealed class GetAuthUrlEndpoint : AuthEndpoint
             var result = await sender.Send(query);
 
             return result.Match(
-                url => Results.Ok(new AuthUrlReponse(provider, url)),
+                url => Results.Ok(new AuthUrlReponse(provider.ToString(), url)),
                 error => Problem(error));
         });
     }

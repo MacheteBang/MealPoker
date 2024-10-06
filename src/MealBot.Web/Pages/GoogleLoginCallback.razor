@@ -7,11 +7,22 @@
 @inject NavigationManager _navigationManager
 
 @using Microsoft.AspNetCore.Authorization
+@using System.Text.Json
 
-<p Text="Hang on, we're signing you in.."></p>
-<p>Code = @AuthorizationCode</p>
-<p>State = @State</p>
-<p>@AccessToken</p>
+@if (_accessToken is null)
+{
+    <p Text="Hang on, we're signing you in.."></p>
+}
+else
+{
+    <p>
+        You have successfully signed in with Google. Here is your access token:
+    </p>
+    <p>
+        @JsonSerializer.Serialize(_accessToken, new JsonSerializerOptions { WriteIndented = true })
+    </p>
+}
+
 
 @code
 {
@@ -23,7 +34,7 @@
     [SupplyParameterFromQuery(Name = "state")]
     public string? State { get; set; }
 
-    public string AccessToken { get; set; }
+    private TokenResponse? _accessToken { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -41,8 +52,7 @@
                 var response = await client.SendAsync(request);
                 if (response.IsSuccessStatusCode)
                 {
-                    AccessToken = await response.Content.ReadAsStringAsync();
-                    var accessToken = await response.Content.ReadFromJsonAsync<TokenResponse>();
+                    _accessToken = await response.Content.ReadFromJsonAsync<TokenResponse>();
                 }
             }
             catch (Exception e)
@@ -52,3 +62,10 @@
         }
     }
 }
+using System.Text.Json;
+
+#line default
+#line hidden
+#nullable disable
+#nullable restore
+#line 4 "d:\src\jxg\MealBot\src\MealBot.Web\Pages\GoogleLoginCallback.razor"

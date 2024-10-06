@@ -1,3 +1,3 @@
 namespace MealBot.Auth.Common;
 
-public abstract class AuthEndpoint : EndpointBase { }
+internal abstract class AuthEndpoint : EndpointBase { }

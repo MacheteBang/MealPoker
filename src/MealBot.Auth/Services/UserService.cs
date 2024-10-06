@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MealBot.Auth.Services;
 
-public interface IUserService
+internal interface IUserService
 {
     Task<ErrorOr<User>> AddAsync(User user);
     Task<ErrorOr<User>> GetByEmailAddressAsync(string emailAddress);
@@ -10,7 +10,7 @@ public interface IUserService
     Task<ErrorOr<Success>> DeleteAsync(string emailAddress);
 }
 
-public sealed class UserService(AuthDbContext dbContext) : IUserService
+internal sealed class UserService(AuthDbContext dbContext) : IUserService
 {
     private readonly AuthDbContext _dbContext = dbContext;
 

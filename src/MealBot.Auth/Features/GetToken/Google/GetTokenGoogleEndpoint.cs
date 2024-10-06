@@ -1,6 +1,6 @@
 namespace MealBot.Auth.Features.GetToken.Google;
 
-public sealed class GetTokenEndpoint : AuthEndpoint
+internal sealed class GetTokenEndpoint : AuthEndpoint
 {
     public override void AddRoutes(IEndpointRouteBuilder app)
     {

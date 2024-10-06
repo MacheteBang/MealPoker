@@ -1,6 +1,6 @@
 namespace MealBot.Auth.Models;
 
-public record ExternalIdentity(
+internal record ExternalIdentity(
     AuthProvider AuthProvider,
     string Id,
     string EmailAddress,

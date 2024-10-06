@@ -1,6 +1,6 @@
 namespace MealBot.Auth.Common;
 
-public class AuthProviderConverter : JsonConverter<AuthProvider>
+internal class AuthProviderConverter : JsonConverter<AuthProvider>
 {
     public override AuthProvider Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {

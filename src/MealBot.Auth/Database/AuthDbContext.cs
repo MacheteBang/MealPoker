@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MealBot.Auth.Database;
 
-public class AuthDbContext(DbContextOptions<AuthDbContext> options) : DbContext(options)
+internal sealed class AuthDbContext(DbContextOptions<AuthDbContext> options) : DbContext(options)
 {
     public DbSet<User> Users { get; set; }
 

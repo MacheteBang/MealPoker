@@ -1,6 +1,6 @@
 namespace MealBot.Auth.Models;
 
-public class User
+internal sealed class User
 {
     public required string EmailAddress { get; set; }
     public AuthProvider AuthProvider { get; set; }
