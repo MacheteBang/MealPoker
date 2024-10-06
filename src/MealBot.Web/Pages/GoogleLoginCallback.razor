@@ -4,13 +4,14 @@
 @attribute [AllowAnonymous]
 
 @inject IHttpClientFactory HttpClientFactory
-@inject NavigationManager Navigation
+@inject NavigationManager _navigationManager
 
 @using Microsoft.AspNetCore.Authorization
 
 <p Text="Hang on, we're signing you in.."></p>
 <p>Code = @AuthorizationCode</p>
 <p>State = @State</p>
+<p>@AccessToken</p>
 
 @code
 {
@@ -21,4 +22,33 @@
     // Optional state included in the redirect URI
     [SupplyParameterFromQuery(Name = "state")]
     public string? State { get; set; }
+
+    public string AccessToken { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (!string.IsNullOrWhiteSpace(AuthorizationCode))
+        {
+            using var client = HttpClientFactory.CreateClient();
+
+            string authorizationCode = Uri.EscapeDataString($"{AuthorizationCode}");
+            string callBackUri = Uri.EscapeDataString($"{_navigationManager.BaseUri}google-callback");
+            var request = new HttpRequestMessage(HttpMethod.Get,
+            $"auth/tokens/google?authorizationCode={authorizationCode}&callBackUri={callBackUri}");
+
+            try
+            {
+                var response = await client.SendAsync(request);
+                if (response.IsSuccessStatusCode)
+                {
+                    AccessToken = await response.Content.ReadAsStringAsync();
+                    var accessToken = await response.Content.ReadFromJsonAsync<TokenResponse>();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.ToString());
+            }
+        }
+    }
 }

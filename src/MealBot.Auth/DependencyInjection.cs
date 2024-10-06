@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 namespace MealBot.Auth;
@@ -11,6 +12,8 @@ public static class DependencyInjection
         services.AddScoped<IAuthenticationService, AuthenticationService>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IUserService, UserService>();
+
+        services.AddDatabaseProvider(configuration);
 
         Assembly thisAssembly = typeof(DependencyInjection).Assembly;
 
@@ -28,6 +31,22 @@ public static class DependencyInjection
         app.MapAuthEndpoints();
 
         return app;
+    }
+
+    private static IServiceCollection AddDatabaseProvider(this IServiceCollection services, IConfigurationManager configuration)
+    {
+        // TODO: Convert to a robust database provider.
+        var folder = Environment.SpecialFolder.LocalApplicationData;
+        var path = Environment.GetFolderPath(folder);
+        string fileLocation = System.IO.Path.Join(path, "MealBot.Auth.db");
+
+        services.AddDbContext<AuthDbContext>(options => options.UseSqlite($"Data Source={fileLocation};"));
+
+        using var serviceScope = services.BuildServiceProvider().CreateScope();
+        var dbContext = serviceScope.ServiceProvider.GetRequiredService<AuthDbContext>();
+        dbContext.Database.EnsureCreated();
+
+        return services;
     }
 
     private static void MapAuthEndpoints(this WebApplication app)

@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace MealBot.Auth.Services;
 
 public interface IUserService
@@ -5,28 +7,49 @@ public interface IUserService
     Task<ErrorOr<User>> AddAsync(User user);
     Task<ErrorOr<User>> GetByEmailAddressAsync(string emailAddress);
     Task<ErrorOr<User>> UpdateAsync(User user);
-    Task<ErrorOr<Success>> DeleteAsync(Guid userId);
+    Task<ErrorOr<Success>> DeleteAsync(string emailAddress);
 }
 
-public sealed class UserService : IUserService
+public sealed class UserService(AuthDbContext dbContext) : IUserService
 {
-    public Task<ErrorOr<User>> AddAsync(User user)
+    private readonly AuthDbContext _dbContext = dbContext;
+
+    public async Task<ErrorOr<User>> AddAsync(User user)
     {
-        throw new NotImplementedException();
+        await _dbContext.Users.AddAsync(user);
+        await _dbContext.SaveChangesAsync();
+
+        return user;
     }
 
-    public Task<ErrorOr<Success>> DeleteAsync(Guid userId)
+    public async Task<ErrorOr<Success>> DeleteAsync(string emailAddress)
     {
-        throw new NotImplementedException();
+        var userResult = await GetByEmailAddressAsync(emailAddress);
+        if (userResult.IsError)
+        {
+            return userResult.Errors;
+        }
+
+        _dbContext.Users.Remove(userResult.Value);
+        await _dbContext.SaveChangesAsync();
+
+        return new Success();
     }
 
-    public Task<ErrorOr<User>> GetByEmailAddressAsync(string emailAddress)
+    public async Task<ErrorOr<User>> GetByEmailAddressAsync(string emailAddress)
     {
-        throw new NotImplementedException();
+        var user = await _dbContext.Users.FirstOrDefaultAsync(user => user.EmailAddress == emailAddress);
+
+        return user != null
+            ? user
+            : Errors.UserNotFoundError();
     }
 
-    public Task<ErrorOr<User>> UpdateAsync(User user)
+    public async Task<ErrorOr<User>> UpdateAsync(User user)
     {
-        throw new NotImplementedException();
+        _dbContext.Users.Update(user);
+        await _dbContext.SaveChangesAsync();
+
+        return user;
     }
 }
