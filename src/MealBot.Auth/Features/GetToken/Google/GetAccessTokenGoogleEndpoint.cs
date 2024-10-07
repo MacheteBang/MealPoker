@@ -23,20 +23,20 @@ internal sealed class GetAccessTokenEndpoint() : AuthEndpoint
                 return Results.Unauthorized();
             }
 
-            // var refreshTokenOptions = context.RequestServices.GetRequiredService<IOptions<RefreshTokenOptions>>();
+            var refreshTokenOptions = context.RequestServices.GetRequiredService<IOptions<RefreshTokenOptions>>();
 
-            // var refreshToken = result.Value.RefreshToken;
-            // context.Response.Cookies.Append(refreshTokenOptions.Value.CookieName, refreshToken.Value, new()
-            // {
-            //     Secure = true,
-            //     HttpOnly = true,
-            //     Path = "/api/token/refresh",
-            //     SameSite = SameSiteMode.None,
-            //     Expires = refreshToken.ExpiresAt
-            // });
+            var refreshToken = result.Value.RefreshToken;
+            context.Response.Cookies.Append(refreshTokenOptions.Value.CookieName, refreshToken.Value, new()
+            {
+                Secure = true,
+                HttpOnly = true,
+                Path = "/api/token/refresh",
+                SameSite = SameSiteMode.None,
+                Expires = refreshToken.ExpiresAt
+            });
 
-            TokenResponse tokenResponse = new(result.Value.Value);
-            return Results.Ok(tokenResponse);
+            AccessTokenResponse accessTokenResponse = new(result.Value.AccessToken.Value);
+            return Results.Ok(accessTokenResponse);
         });
     }
 }

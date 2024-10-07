@@ -4,14 +4,14 @@ internal sealed class GetAccessTokenGoogleHandler(
     IHttpClientFactory httpClientFactory,
     IOptions<AuthenticationOptions> authenticationOptions,
     IAuthenticationService authenticationService,
-    ITokenService tokenService) : IRequestHandler<GetAccessTokenGoogleQuery, ErrorOr<AccessToken>>
+    ITokenService tokenService) : IRequestHandler<GetAccessTokenGoogleQuery, ErrorOr<TokenBundle>>
 {
     private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
     private readonly IOptions<AuthenticationOptions> _authenticationOptions = authenticationOptions;
     private readonly IAuthenticationService _authenticationService = authenticationService;
     private readonly ITokenService _tokenService = tokenService;
 
-    public async Task<ErrorOr<AccessToken>> Handle(GetAccessTokenGoogleQuery request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<TokenBundle>> Handle(GetAccessTokenGoogleQuery request, CancellationToken cancellationToken)
     {
         GoogleOptions googleOptions = _authenticationOptions.Value.GoogleOptions;
 
@@ -69,6 +69,6 @@ internal sealed class GetAccessTokenGoogleHandler(
             return user.Errors;
         }
 
-        return await _tokenService.GenerateAccessToken(user.Value);
+        return await _tokenService.GenerateTokenBundle(user.Value);
     }
 }

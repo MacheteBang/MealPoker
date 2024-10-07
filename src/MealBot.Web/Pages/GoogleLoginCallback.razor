@@ -34,7 +34,7 @@ else
     [SupplyParameterFromQuery(Name = "state")]
     public string? State { get; set; }
 
-    private TokenResponse? _accessToken { get; set; }
+    private AccessTokenResponse? _accessToken { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -52,7 +52,7 @@ else
                 var response = await client.SendAsync(request);
                 if (response.IsSuccessStatusCode)
                 {
-                    _accessToken = await response.Content.ReadFromJsonAsync<TokenResponse>();
+                    _accessToken = await response.Content.ReadFromJsonAsync<AccessTokenResponse>();
                 }
             }
             catch (Exception e)

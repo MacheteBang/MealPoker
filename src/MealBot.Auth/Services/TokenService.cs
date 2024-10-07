@@ -2,14 +2,14 @@ namespace MealBot.Auth.Services;
 
 internal interface ITokenService
 {
-    Task<ErrorOr<AccessToken>> GenerateAccessToken(User user);
+    Task<ErrorOr<TokenBundle>> GenerateTokenBundle(User user);
 }
 
 internal sealed class TokenService(IOptions<AuthorizationOptions> authorizationOptions) : ITokenService
 {
     private readonly IOptions<AuthorizationOptions> _authorizationOptions = authorizationOptions;
 
-    public async Task<ErrorOr<AccessToken>> GenerateAccessToken(User user)
+    public async Task<ErrorOr<TokenBundle>> GenerateTokenBundle(User user)
     {
         JwtOptions jwtOptions = _authorizationOptions.Value.JwtOptions;
 
@@ -38,7 +38,13 @@ internal sealed class TokenService(IOptions<AuthorizationOptions> authorizationO
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var jwt = tokenHandler.WriteToken(token);
 
-            return new AccessToken(jwt);
+            return new TokenBundle(
+                AccessToken: new AccessToken(jwt),
+                RefreshToken: new RefreshToken(
+                    Value: Guid.NewGuid().ToString(),
+                    ExpiresAt: DateTime.UtcNow.AddMinutes(jwtOptions.TokenLifetimeInMinutes)
+                )
+            );
         }
         catch (Exception e)
         {
