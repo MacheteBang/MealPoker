@@ -1,7 +1,33 @@
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
-    "configurations": []
+    "configurations": [
+        {
+            "name": "Launch and Debug Web",
+            "type": "blazorwasm",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/src/MealBot.Web"
+        },
+        {
+            "name": "Launch and Debug API",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build-api",
+            "program": "${workspaceFolder}/src/MealBot.Api/bin/Debug/net8.0/MealBot.Api.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/src/MealBot.Api",
+            "stopAtEntry": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Launch and Debug Web and API",
+            "configurations": [
+                "Launch and Debug Web",
+                "Launch and Debug API"
+            ]
+        }
+    ]
 }

@@ -11,7 +11,11 @@ var builder = WebApplication.CreateBuilder(args);
     // Add services to the container.
     builder.Services.AddPresentation();
     builder.Services.AddMeals();
-    builder.Services.AddAuth();
+    builder.Services.AddAuth(builder.Configuration);
+    builder.Services.AddCors(options =>
+    {
+        options.AddDefaultPolicy(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+    });
 
     builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
     {
@@ -23,6 +27,7 @@ var app = builder.Build();
 {
     // Configure the HTTP request pipeline.
     app.UseSerilogRequestLogging();
+    app.UseCors();
     app.UseMeals();
     app.UseAuth();
 }
