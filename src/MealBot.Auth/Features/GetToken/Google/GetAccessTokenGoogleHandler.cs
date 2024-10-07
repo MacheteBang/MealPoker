@@ -1,17 +1,17 @@
 namespace MealBot.Auth.Features.GetToken.Google;
 
-internal sealed class GetTokenGoogleHandler(
+internal sealed class GetAccessTokenGoogleHandler(
     IHttpClientFactory httpClientFactory,
     IOptions<AuthenticationOptions> authenticationOptions,
     IAuthenticationService authenticationService,
-    ITokenService tokenService) : IRequestHandler<GetTokenGoogleQuery, ErrorOr<Token>>
+    ITokenService tokenService) : IRequestHandler<GetAccessTokenGoogleQuery, ErrorOr<AccessToken>>
 {
     private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
     private readonly IOptions<AuthenticationOptions> _authenticationOptions = authenticationOptions;
     private readonly IAuthenticationService _authenticationService = authenticationService;
     private readonly ITokenService _tokenService = tokenService;
 
-    public async Task<ErrorOr<Token>> Handle(GetTokenGoogleQuery request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<AccessToken>> Handle(GetAccessTokenGoogleQuery request, CancellationToken cancellationToken)
     {
         GoogleOptions googleOptions = _authenticationOptions.Value.GoogleOptions;
 
@@ -69,6 +69,6 @@ internal sealed class GetTokenGoogleHandler(
             return user.Errors;
         }
 
-        return await _tokenService.GenerateTokenAsync(user.Value);
+        return await _tokenService.GenerateAccessToken(user.Value);
     }
 }
