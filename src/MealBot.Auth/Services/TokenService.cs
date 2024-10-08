@@ -3,11 +3,15 @@ namespace MealBot.Auth.Services;
 internal interface ITokenService
 {
     Task<ErrorOr<TokenBundle>> GenerateTokenBundle(User user);
+    ErrorOr<string> GetEmailFromAccessToken(string accessToken);
 }
 
-internal sealed class TokenService(IOptions<AuthorizationOptions> authorizationOptions) : ITokenService
+internal sealed class TokenService(
+    IOptions<AuthorizationOptions> authorizationOptions,
+    IUserService userService) : ITokenService
 {
     private readonly IOptions<AuthorizationOptions> _authorizationOptions = authorizationOptions;
+    private readonly IUserService _userService = userService;
 
     public async Task<ErrorOr<TokenBundle>> GenerateTokenBundle(User user)
     {
@@ -38,17 +42,30 @@ internal sealed class TokenService(IOptions<AuthorizationOptions> authorizationO
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var jwt = tokenHandler.WriteToken(token);
 
-            return new TokenBundle(
+            TokenBundle tokenBundle = new TokenBundle(
                 AccessToken: new AccessToken(jwt),
                 RefreshToken: new RefreshToken(
                     Value: Guid.NewGuid().ToString(),
                     ExpiresAt: DateTime.UtcNow.AddMinutes(jwtOptions.TokenLifetimeInMinutes)
                 )
             );
+
+            user.RefreshToken = tokenBundle.RefreshToken.Value;
+            user.RefreshTokenExpiresAt = tokenBundle.RefreshToken.ExpiresAt;
+            var updateResult = await _userService.UpdateAsync(user);
+
+            return updateResult.IsError
+                ? Errors.JwtCreationFailed("Unable to update user with new refresh token")
+                : tokenBundle;
         }
         catch (Exception e)
         {
             return Errors.JwtCreationFailed(e.Message);
         }
+    }
+
+    public ErrorOr<string> GetEmailFromAccessToken(string accessToken)
+    {
+        throw new NotImplementedException();
     }
 }
