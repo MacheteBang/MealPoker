@@ -8,7 +8,9 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
     {
         var configuration = serviceProvider.GetRequiredService<IConfiguration>();
         httpClient.BaseAddress = new Uri(configuration["BaseApiUri"]!);
-    });
+    })
+    .AddHttpMessageHandler<CookieDelegatingHandler>()
+    .AddHttpMessageHandler<TokenRefreshDelegatingHandler>();
 }
 
 var app = builder.Build();
