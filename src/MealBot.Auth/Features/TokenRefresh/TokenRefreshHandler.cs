@@ -1,11 +1,11 @@
 namespace MealBot.Auth.Features.TokenRefresh;
 
-internal sealed class TokenRefreshHandler(ITokenService tokenService, IUserService userService) : IRequestHandler<TokenRefreshQuery, ErrorOr<AccessToken>>
+internal sealed class TokenRefreshHandler(ITokenService tokenService, IUserService userService) : IRequestHandler<TokenRefreshQuery, ErrorOr<TokenBundle>>
 {
     private readonly ITokenService _tokenService = tokenService;
     private readonly IUserService _userService = userService;
 
-    public async Task<ErrorOr<AccessToken>> Handle(TokenRefreshQuery query, CancellationToken cancellationToken)
+    public async Task<ErrorOr<TokenBundle>> Handle(TokenRefreshQuery query, CancellationToken cancellationToken)
     {
         var userIdResult = _tokenService.GetEmailFromAccessToken(query.OldAccessToken);
         if (userIdResult.IsError)
@@ -31,6 +31,6 @@ internal sealed class TokenRefreshHandler(ITokenService tokenService, IUserServi
             return Error.Failure();
         }
 
-        return accessTokenResult.Value.AccessToken;
+        return accessTokenResult.Value;
     }
 }

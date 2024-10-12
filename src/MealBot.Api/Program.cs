@@ -28,6 +28,8 @@ var app = builder.Build();
     // Configure the HTTP request pipeline.
     app.UseSerilogRequestLogging();
     app.UseCors();
+    app.UsePresentation();
+
     app.UseMeals();
     app.UseAuth();
 }

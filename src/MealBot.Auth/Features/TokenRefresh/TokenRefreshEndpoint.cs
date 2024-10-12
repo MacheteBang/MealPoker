@@ -4,7 +4,7 @@ internal sealed class TokenRefreshEndpoint : AuthEndpoint
 {
     public override void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGet(Globals.TokenRefreshRoute, async (
+        app.MapPost(Globals.TokenRefreshRoute, async (
             HttpContext context,
             ISender sender,
             IOptions<RefreshTokenOptions> refreshTokenOptions,
@@ -13,15 +13,30 @@ internal sealed class TokenRefreshEndpoint : AuthEndpoint
 
             if (!context.Request.Cookies.TryGetValue(refreshTokenOptions.Value.CookieName, out var refreshToken))
             {
-                return Results.BadRequest();
+                return Results.Unauthorized();
             }
 
             var query = new TokenRefreshQuery(request.AccessToken, refreshToken);
             var result = await sender.Send(query);
 
-            return result.Match(
-                accessToken => Results.Ok(new AccessTokenResponse(accessToken.Value)),
-                errors => Problem(errors));
+            if (result.IsError)
+            {
+                return Results.Unauthorized();
+            }
+
+            // TODO: Move this to a common service as it is shared with GetAccessTokenGoogleEndpoint
+            var newRefreshToken = result.Value.RefreshToken;
+            context.Response.Cookies.Append(refreshTokenOptions.Value.CookieName, newRefreshToken.Value, new()
+            {
+                Secure = true,
+                HttpOnly = true,
+                Path = "/auth/tokens/refresh",
+                SameSite = SameSiteMode.None,
+                Expires = newRefreshToken.ExpiresAt
+            });
+
+            AccessTokenResponse accessTokenResponse = new(result.Value.AccessToken.Value);
+            return Results.Ok(accessTokenResponse);
         });
     }
 }

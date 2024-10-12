@@ -1,0 +1,17 @@
+meta {
+  name: Token Refresh
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{mealbotApiUrl}}/auth/tokens/refresh
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImpvbmF0aGFuLmdyZWdvcnNreUBnbWFpbC5jb20iLCJnaXZlbl9uYW1lIjoiSm9uYXRoYW4iLCJmYW1pbHlfbmFtZSI6IkdyZWdvcnNreSIsInByb2ZpbGVwaWN0dXJlIjoiaHR0cHM6Ly9saDMuZ29vZ2xldXNlcmNvbnRlbnQuY29tL2EvQUNnOG9jTElJcm43WHZCZ3R4X3NVbGxBU0pVSFI4bFkyaDFOb2R1QjdOWnk1aENFam1ZUmx3TU8ydz1zOTYtYyIsIm5iZiI6MTcyODQ3Mzk5NywiZXhwIjoxNzI4NDc0Mjk3LCJpYXQiOjE3Mjg0NzM5OTcsImlzcyI6Ik1lYWxCb3QiLCJhdWQiOiJNZWFsQm90In0.k4Q9rSi5ZztX7WL-S8JGReHbiFXsqOOKA8yHr9xwIWI"
+  }
+}

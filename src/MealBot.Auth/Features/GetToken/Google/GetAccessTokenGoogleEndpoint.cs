@@ -6,9 +6,10 @@ internal sealed class GetAccessTokenEndpoint() : AuthEndpoint
     {
         app.MapGet(Globals.GetTokenGoogleRoute, async (
             HttpContext context,
+            ISender sender,
+            IOptions<RefreshTokenOptions> refreshTokenOptions,
             string authorizationCode,
-            string callBackUri,
-            ISender sender) =>
+            string callBackUri) =>
         {
             if (string.IsNullOrWhiteSpace(authorizationCode))
             {
@@ -23,14 +24,13 @@ internal sealed class GetAccessTokenEndpoint() : AuthEndpoint
                 return Results.Unauthorized();
             }
 
-            var refreshTokenOptions = context.RequestServices.GetRequiredService<IOptions<RefreshTokenOptions>>();
-
+            // TODO: Move this to a common service as it is shared with TokenRefreshEndpoint
             var refreshToken = result.Value.RefreshToken;
             context.Response.Cookies.Append(refreshTokenOptions.Value.CookieName, refreshToken.Value, new()
             {
                 Secure = true,
                 HttpOnly = true,
-                Path = "/api/token/refresh",
+                Path = "/auth/tokens/refresh",
                 SameSite = SameSiteMode.None,
                 Expires = refreshToken.ExpiresAt
             });
