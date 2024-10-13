@@ -5,7 +5,7 @@ namespace MealBot.Web.Services;
 public interface IBrowserStorageService
 {
     Task SaveAccessTokenAsync(string accessToken);
-    Task GetAccessTokenAsync();
+    Task<string> GetAccessTokenAsync();
     Task RemoveAccessTokenAsync();
 }
 
@@ -15,7 +15,7 @@ public class BrowserStorageService(IJSRuntime jsRuntime) : IBrowserStorageServic
 
     private const string AccessTokenName = "MealBot.AccessToken";
 
-    public async Task GetAccessTokenAsync()
+    public async Task<string> GetAccessTokenAsync()
         => await GetItemAsync(AccessTokenName);
 
     public Task RemoveAccessTokenAsync()

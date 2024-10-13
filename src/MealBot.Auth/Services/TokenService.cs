@@ -19,6 +19,7 @@ internal sealed class TokenService(
 
         List<Claim> claims =
         [
+            new(ClaimTypes.NameIdentifier, user.UserId),
             new(ClaimTypes.Email, user.EmailAddress),
             new(ClaimTypes.GivenName, user.FirstName),
             new(ClaimTypes.Surname, user.LastName),

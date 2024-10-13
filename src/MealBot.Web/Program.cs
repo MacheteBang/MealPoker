@@ -5,6 +5,9 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
 
     builder.Services.AddScoped<IdentityProviderService>();
     builder.Services.AddScoped<IBrowserStorageService, BrowserStorageService>();
+    builder.Services.AddScoped<ITokenService, TokenService>();
+    builder.Services.AddScoped<UserAuthenticationStateProvider>();
+    builder.Services.AddScoped<AuthenticationStateProvider>(sp => sp.GetRequiredService<UserAuthenticationStateProvider>());
     builder.Services.AddTransient<CookieDelegatingHandler>();
     ConfigureMealBotHttpClient(builder);
 }
