@@ -1,4 +1,4 @@
-namespace MealBot.Auth.Contracts;
+namespace MealBot.Auth.Contracts.Responses;
 
 public sealed record UserResponse(
     string EmailAddress,
