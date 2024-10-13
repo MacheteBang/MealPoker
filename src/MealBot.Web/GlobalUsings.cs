@@ -1,4 +1,5 @@
 global using MealBot.Web;
+global using MealBot.Web.Exceptions;
 global using MealBot.Web.Handlers;
 global using MealBot.Web.Services;
 
