@@ -17,17 +17,7 @@ internal sealed class GetUserEndpoint : AuthEndpoint
             var result = await sender.Send(query);
 
             return result.Match(
-                user =>
-                {
-                    UserResponse userResponse = new(
-                        user.EmailAddress,
-                        user.AuthProvider.ToString(),
-                        user.FirstName,
-                        user.LastName,
-                        user.PictureUri);
-
-                    return Results.Ok(userResponse);
-                },
+                user => Results.Ok(user.ToResponse()),
                 error => Problem(error));
         })
         .RequireAuthorization();

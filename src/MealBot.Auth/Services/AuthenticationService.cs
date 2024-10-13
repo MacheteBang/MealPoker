@@ -20,15 +20,13 @@ internal sealed class AuthenticationService(IUserService _userRepository) : IAut
 
         if (userResult.IsError && userResult.FirstError.Type == ErrorType.NotFound)
         {
-            var newUser = new User
-            {
-                EmailAddress = externalIdentity.EmailAddress,
-                AuthProvider = externalIdentity.AuthProvider,
-                ExternalId = externalIdentity.Id,
-                FirstName = externalIdentity.FirstName,
-                LastName = externalIdentity.LastName,
-                PictureUri = externalIdentity.ProfilePictureUri
-            };
+            var newUser = User.Create(
+                externalIdentity.EmailAddress,
+                externalIdentity.AuthProvider,
+                externalIdentity.Id,
+                externalIdentity.FirstName,
+                externalIdentity.LastName,
+                externalIdentity.ProfilePictureUri);
 
             var addUserResult = await userRepository.AddAsync(newUser);
 
