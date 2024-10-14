@@ -1,8 +1,8 @@
-namespace MealBot.Meals.ValueObjects;
+namespace MealBot.Meals.Contracts.ValueObjects;
 
-public class MealPart(MealPartCategory category, string name, string? description, string? url) : ValueObject
+public class MealPart(string category, string name, string? description, string? url) : ValueObject
 {
-    public MealPartCategory Category { get; init; } = category;
+    public string Category { get; init; } = category;
     public string Name { get; init; } = name;
     public string? Description { get; } = description;
     public string? Url { get; } = url;

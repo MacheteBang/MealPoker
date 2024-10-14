@@ -6,10 +6,12 @@ public sealed class CreateMealEndpoint : MealsEndpoint
     {
         app.MapPost(Globals.BaseRoute, async (CreateMealRequest request, ISender sender) =>
         {
-            var result = await sender.Send(request.ToCommand());
+            var result = await sender.Send(
+                new CreateMealCommand(request.Name, request.Description, request.MealParts)
+            );
 
             return result.Match(
-                meal => Results.Created($"{Globals.BaseRoute}/{meal.MealId}", meal),
+                meal => Results.Created($"{Globals.BaseRoute}/{meal.MealId}", meal.ToResponse()),
                 errors => Problem(errors));
         });
     }

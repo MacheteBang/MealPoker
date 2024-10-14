@@ -9,7 +9,7 @@ public sealed class UpdateMealEndpoint : MealsEndpoint
             var result = await sender.Send(request.ToCommand(mealId));
 
             return result.Match(
-                meal => Results.Ok(meal),
+                meal => Results.Ok(meal.ToResponse()),
                 errors => Problem(errors));
         });
     }

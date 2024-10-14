@@ -1,5 +1,3 @@
-using System.Text.Json.Serialization;
-
 namespace MealBot.Meals.Enums;
 
 [JsonConverter(typeof(MealPartCategoryConverter))]

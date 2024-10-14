@@ -10,7 +10,7 @@ public sealed class GetMealsEndpoint : MealsEndpoint
             var result = await sender.Send(new GetMealsQuery());
 
             return result.Match(
-                meals => Results.Ok(meals),
+                meals => Results.Ok(meals.Select(meal => meal.ToResponse())),
                 errors => Problem(errors));
         });
     }

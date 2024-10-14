@@ -11,5 +11,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MealBot.Common\MealBot.Common.csproj" />
+    <ProjectReference Include="..\MealBot.Meals.Contracts\MealBot.Meals.Contracts.csproj" />
   </ItemGroup>
 </Project>

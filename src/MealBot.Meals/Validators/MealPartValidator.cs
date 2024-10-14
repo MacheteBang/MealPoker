@@ -6,7 +6,7 @@ public class MealPartValidator : AbstractValidator<MealPart>
     {
         RuleFor(y => y.Category)
             .IsInEnum()
-            .NotEqual(MealPartCategory.Unknown);
+            .NotEqual(MealPartCategory.Unknown.ToString());
 
         RuleFor(x => x.Name)
             .NotEmpty();
