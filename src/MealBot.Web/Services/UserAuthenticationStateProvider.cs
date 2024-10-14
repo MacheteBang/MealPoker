@@ -14,9 +14,11 @@ public class UserAuthenticationStateProvider(
 
     public CurrentUser CurrentUser { get; private set; } = new();
 
-    public override Task<AuthenticationState> GetAuthenticationStateAsync()
+    public override async Task<AuthenticationState> GetAuthenticationStateAsync()
     {
-        throw new NotImplementedException();
+        var claimsPrincipal = await GetClaimsPrincipalAsync();
+        UpdateCurrentUser(claimsPrincipal);
+        return new AuthenticationState(claimsPrincipal);
     }
 
     private async Task<ClaimsPrincipal> GetClaimsPrincipalAsync()
@@ -66,11 +68,12 @@ public class UserAuthenticationStateProvider(
         {
             CurrentUser = new()
             {
-                UserId = claimsPrincipal.FindFirst(c => c.Type == ClaimTypes.NameIdentifier)?.Value,
+                // TODO: Convert these to use the ClaimTypes constants
+                UserId = claimsPrincipal.FindFirst("nameid")?.Value,
                 IsAuthenticated = true,
-                EmailAddress = claimsPrincipal.FindFirst(c => c.Type == ClaimTypes.Email)?.Value,
-                FirstName = claimsPrincipal.FindFirst(c => c.Type == ClaimTypes.GivenName)?.Value,
-                LastName = claimsPrincipal.FindFirst(c => c.Type == ClaimTypes.Surname)?.Value,
+                EmailAddress = claimsPrincipal.FindFirst("email")?.Value,
+                FirstName = claimsPrincipal.FindFirst("given_name")?.Value,
+                LastName = claimsPrincipal.FindFirst("family_name")?.Value,
                 PictureUri = claimsPrincipal.FindFirst(c => c.Type == "profilepicture")?.Value
             };
         }

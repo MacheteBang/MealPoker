@@ -5,24 +5,11 @@
 
 @inject IHttpClientFactory HttpClientFactory
 @inject NavigationManager _navigationManager
+@inject IBrowserStorageService _browserStorageService
+@inject ITokenService _tokenService
+@inject UserAuthenticationStateProvider _userAuthenticationStateProvider
 
-@using Microsoft.AspNetCore.Authorization
-@using System.Text.Json
-
-@if (_accessToken is null)
-{
-    <p Text="Hang on, we're signing you in.."></p>
-}
-else
-{
-    <p>
-        You have successfully signed in with Google. Here is your access token:
-    </p>
-    <p>
-        @JsonSerializer.Serialize(_accessToken, new JsonSerializerOptions { WriteIndented = true })
-    </p>
-}
-
+<p Text="Hang on, we're signing you in.."></p>
 
 @code
 {
@@ -44,7 +31,8 @@ else
 
             string authorizationCode = Uri.EscapeDataString($"{AuthorizationCode}");
             string callBackUri = Uri.EscapeDataString($"{_navigationManager.BaseUri}google-callback");
-            var request = new HttpRequestMessage(HttpMethod.Get,
+            var request = new HttpRequestMessage(
+            HttpMethod.Get,
             $"auth/tokens/google?authorizationCode={authorizationCode}&callBackUri={callBackUri}");
 
             try
@@ -53,6 +41,13 @@ else
                 if (response.IsSuccessStatusCode)
                 {
                     _accessToken = await response.Content.ReadFromJsonAsync<AccessTokenResponse>();
+                    if (_accessToken is null)
+                    {
+                        // TODO: Do something if the access token is null
+                    }
+
+                    await _browserStorageService.SaveAccessTokenAsync(_accessToken!.Value);
+                    await _userAuthenticationStateProvider.NotifyUserLoggedin();
                 }
             }
             catch (Exception e)
@@ -60,5 +55,7 @@ else
                 Console.WriteLine(e.ToString());
             }
         }
+
+        _navigationManager.NavigateTo(State ?? "", replace: true);
     }
 }

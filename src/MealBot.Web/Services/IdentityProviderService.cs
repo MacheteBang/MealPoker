@@ -5,10 +5,12 @@ namespace MealBot.Web.Services;
 
 public class IdentityProviderService(
     IHttpClientFactory httpClientFactory,
-    NavigationManager navigationManager)
+    NavigationManager navigationManager,
+    IBrowserStorageService browserStorageService)
 {
     private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
     private readonly NavigationManager _navigationManager = navigationManager;
+    private readonly IBrowserStorageService _browserStorageService = browserStorageService;
 
     public async Task AuthenticateWithGoogle()
     {
@@ -23,7 +25,7 @@ public class IdentityProviderService(
 
         if (httpResponseMessage.IsSuccessStatusCode)
         {
-            // TODO: Remove any token in storage
+            await _browserStorageService.RemoveAccessTokenAsync();
 
             // Navigate the user to the Google authentication page
             var authUrlResponse = await httpResponseMessage.Content.ReadFromJsonAsync<AuthUrlReponse>();

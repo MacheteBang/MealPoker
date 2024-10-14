@@ -1,0 +1,13 @@
+﻿@page "/signout"
+@inject UserAuthenticationStateProvider _userAuthenticationStateProvider
+@inject NavigationManager _navigationManager
+
+@code
+{
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await _userAuthenticationStateProvider.NotifyUserLoggedOut();
+        _navigationManager.NavigateTo("");
+    }
+}
