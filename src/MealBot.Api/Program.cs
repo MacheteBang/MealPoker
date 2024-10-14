@@ -14,7 +14,12 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddAuth(builder.Configuration);
     builder.Services.AddCors(options =>
     {
-        options.AddDefaultPolicy(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+        // TODO: Remove the hard-coded origins from CORS and replace with a configuration
+        options.AddDefaultPolicy(builder => builder
+            .WithOrigins("https://localhost:7188", "http://localhost:5103")
+            .AllowCredentials()
+            .AllowAnyMethod()
+            .AllowAnyHeader());
     });
 
     builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
