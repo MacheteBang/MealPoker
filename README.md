@@ -3,3 +3,8 @@ A .NET Core application designed to help families plan meals and track preferenc
 
 ## Tools
 - **Bruno**: Used for testing and debugging RESTful APIs by sending HTTP requests and inspecting responses. More information can be found at [usebruno.com](https://usebruno.com).
+
+## Inspiration
+
+This project was inspired by various patterns and practices from the community. If you find it useful, consider giving them a star on GitHub!
+- The BFFE pattern from the [BlazorOAuth](https://github.com/TDMR87/BlazorOAuth) repository helped me to understand how to use and external OIDC (specifically Google) with Blazor.
