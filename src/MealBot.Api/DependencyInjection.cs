@@ -1,8 +1,8 @@
 using MealBot.Api.Common.Errors;
 
-namespace MealBot.Api;
+namespace MealBot.Api.DependencyInjection;
 
-public static class DependencyInjection
+public static class GlobalDependencyInjection
 {
     public static IServiceCollection AddPresentation(this IServiceCollection services)
     {

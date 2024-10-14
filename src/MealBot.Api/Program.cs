@@ -1,5 +1,4 @@
 using MealBot.Auth;
-using MealBot.Meals;
 using Serilog.Core;
 
 Log.Logger = CreateLoggerConfiguration();
