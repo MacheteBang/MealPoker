@@ -1,4 +1,4 @@
-namespace MealBot.Auth.Contracts.Google
+namespace MealBot.Auth.Contracts.Responses.Google
 {
     public sealed class GoogleTokenResponse
     {

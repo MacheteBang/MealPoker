@@ -1,4 +1,4 @@
-namespace MealBot.Common;
+namespace MealBot.Sdk.ValueObjects;
 
 public abstract class ValueObject
 {

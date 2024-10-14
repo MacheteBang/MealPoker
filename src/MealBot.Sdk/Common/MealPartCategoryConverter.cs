@@ -1,6 +1,6 @@
-namespace MealBot.Meals.Common;
+namespace MealBot.Sdk.Common;
 
-public class MealPartCategoryConverter : JsonConverter<MealPartCategory>
+internal class MealPartCategoryConverter : JsonConverter<MealPartCategory>
 {
     public override MealPartCategory Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
     {

@@ -11,6 +11,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MealBot.Common\MealBot.Common.csproj" />
-    <ProjectReference Include="..\MealBot.Meals.Contracts\MealBot.Meals.Contracts.csproj" />
+    <ProjectReference Include="..\MealBot.Sdk\MealBot.Sdk.csproj" />
   </ItemGroup>
 </Project>

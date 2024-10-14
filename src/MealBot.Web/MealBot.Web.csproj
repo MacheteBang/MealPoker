@@ -13,5 +13,6 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MealBot.Auth.Contracts\MealBot.Auth.Contracts.csproj" />
+    <ProjectReference Include="..\MealBot.Sdk\MealBot.Sdk.csproj" />
   </ItemGroup>
 </Project>

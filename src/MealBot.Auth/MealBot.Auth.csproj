@@ -3,6 +3,7 @@
   <ItemGroup>
     <ProjectReference Include="..\MealBot.Common\MealBot.Common.csproj" />
     <ProjectReference Include="..\MealBot.Auth.Contracts\MealBot.Auth.Contracts.csproj" />
+    <ProjectReference Include="..\MealBot.Sdk\MealBot.Sdk.csproj" />
   </ItemGroup>
 
   <ItemGroup>

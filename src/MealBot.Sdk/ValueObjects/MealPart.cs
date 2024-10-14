@@ -1,4 +1,4 @@
-namespace MealBot.Meals.Contracts.ValueObjects;
+namespace MealBot.Sdk.ValueObjects;
 
 public class MealPart(string category, string name, string? description, string? url) : ValueObject
 {

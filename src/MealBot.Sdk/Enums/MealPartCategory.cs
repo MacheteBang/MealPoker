@@ -1,4 +1,4 @@
-namespace MealBot.Meals.Enums;
+namespace MealBot.Sdk.Enums;
 
 [JsonConverter(typeof(MealPartCategoryConverter))]
 public enum MealPartCategory

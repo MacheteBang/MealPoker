@@ -1,4 +1,4 @@
-﻿namespace MealBot.Meals.Contracts.Responses;
+﻿namespace MealBot.Sdk.Contracts.Responses;
 
 public class MealResponse
 {
