@@ -4,10 +4,14 @@ global using MealBot.Web.Exceptions;
 global using MealBot.Web.Handlers;
 global using MealBot.Web.Services;
 
-global using MealBot.Auth.Contracts;
+global using MealBot.Auth.Contracts.Responses;
 
+global using Microsoft.AspNetCore.Authorization;
 global using Microsoft.AspNetCore.Components;
 global using Microsoft.AspNetCore.Components.Authorization;
 global using Microsoft.AspNetCore.Components.Web;
 global using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 global using Microsoft.AspNetCore.Components.WebAssembly.Http;
+
+global using System.IdentityModel.Tokens.Jwt;
+global using System.Text.Json;
