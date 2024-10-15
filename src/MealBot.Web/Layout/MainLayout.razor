@@ -14,13 +14,7 @@
                     <GoogleLoginButton />
                 </NotAuthorized>
                 <Authorized>
-                    <NavLink class="nav-link" href="signout" style="color:black">
-                        <span class="bi bi-box-arrow-in-right-nested-nav-menu" aria-hidden="true"></span> Sign out
-                    </NavLink>
-                    <div class="profile-container" style="display:flex;align-items:center;padding-left:12px;">
-                        <img src="@AuthState.CurrentUser.PictureUri" style="border-radius:50%;height:30px;" />
-                        <span style="padding-left:15px;">@AuthState.CurrentUser.EmailAddress</span>
-                    </div>
+                    <ProfileButton />
                 </Authorized>
             </AuthorizeView>
         </div>
