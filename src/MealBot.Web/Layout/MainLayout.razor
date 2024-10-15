@@ -14,11 +14,7 @@
                     <GoogleLoginButton />
                 </NotAuthorized>
                 <Authorized>
-                    <NavLink class="nav-link" href="profile" style="color:black">
-                        <div class="profile-container" style="display:flex;align-items:center;padding-left:12px;">
-                            <img src="@AuthState.CurrentUser.PictureUri" style="border-radius:50%;height:30px;" />
-                        </div>
-                    </NavLink>
+                    <ProfileButton />
                 </Authorized>
             </AuthorizeView>
         </div>
