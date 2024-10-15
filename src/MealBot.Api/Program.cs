@@ -1,4 +1,4 @@
-using MealBot.Auth;
+using MealBot.Api.Auth;
 using Serilog.Core;
 
 Log.Logger = CreateLoggerConfiguration();
@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 
     // Add services to the container.
     builder.Services.AddPresentation();
+    builder.Services.AddDatabaseProvider(builder.Configuration);
     builder.Services.AddMeals();
     builder.Services.AddAuth(builder.Configuration);
     builder.Services.AddCors(options =>
@@ -33,9 +34,7 @@ var app = builder.Build();
     app.UseSerilogRequestLogging();
     app.UseCors();
     app.UsePresentation();
-
-    app.UseMeals();
-    app.UseAuth();
+    app.MapMealBotEndpoints();
 }
 
 app.Run();

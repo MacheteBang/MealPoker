@@ -1,11 +1,21 @@
 global using System.Diagnostics;
+global using System.IdentityModel.Tokens.Jwt;
+global using System.Security.Claims;
+global using System.Text;
+global using System.Text.Json;
+global using System.Text.Json.Serialization;
 
 global using MealBot.Api;
+global using MealBot.Api.Auth;
+global using MealBot.Api.Auth.Contracts.Responses.Google;
+global using MealBot.Api.Auth.Enums;
+global using MealBot.Api.Auth.Models;
+global using MealBot.Api.Auth.Options;
+global using MealBot.Api.Auth.Services;
 global using MealBot.Api.Common;
 global using MealBot.Api.Common.Http;
-global using MealBot.Api.DependencyInjection;
+global using MealBot.Api.Database;
 global using MealBot.Api.Meals;
-global using MealBot.Api.Meals.DomainErrors;
 global using MealBot.Api.Meals.Models;
 global using MealBot.Api.Meals.Repositories;
 global using MealBot.Api.Meals.Validators;
@@ -28,3 +38,4 @@ global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.AspNetCore.Mvc.Infrastructure;
 global using Microsoft.AspNetCore.Mvc.ModelBinding;
 global using Microsoft.Extensions.Options;
+global using Microsoft.IdentityModel.Tokens;

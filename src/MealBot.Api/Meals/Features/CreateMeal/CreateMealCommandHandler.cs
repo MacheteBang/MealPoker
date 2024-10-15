@@ -1,3 +1,5 @@
+using Errors = MealBot.Api.Meals.DomainErrors.Errors;
+
 namespace MealBot.Api.Meals.Features.CreateMeal;
 
 public sealed class CreateMealCommandHandler(IValidator<CreateMealCommand> validator, IMealRepository mealRepository) : IRequestHandler<CreateMealCommand, ErrorOr<Meal>>
