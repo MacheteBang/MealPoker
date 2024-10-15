@@ -1,0 +1,46 @@
+@page "/profile"
+@attribute [Authorize]
+@inject UserAuthenticationStateProvider _userAuthenticationStateProvider
+@inject IBrowserStorageService _browserStorageService
+
+<PageTitle>Profile</PageTitle>
+
+<style>
+    #gfg {
+        overflow-x: auto;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        font-size: 15px;
+    }
+
+    pre {
+        overflow-x: auto;
+    }
+</style>
+
+<div class="mx-auto" style="max-width: 512px;">
+    <div class="text-center">
+        <img src="@_userAuthenticationStateProvider.CurrentUser.PictureUri" style="border-radius:50%;height:128px;" />
+        <h1>
+            @_userAuthenticationStateProvider.CurrentUser.FirstName
+            @_userAuthenticationStateProvider.CurrentUser.LastName
+        </h1>
+    </div>
+    <h4>Current Token</h4>
+    <pre id="gfg">
+        @_accessToken
+    </pre>
+    <div class="text-center">
+        <a class="btn btn-primary" href="signout">Sign Out</a>
+    </div>
+</div>
+
+@code
+{
+    private string _accessToken = string.Empty;
+    protected override async Task OnInitializedAsync()
+    {
+        _accessToken = await _browserStorageService.GetAccessTokenAsync();
+        await _userAuthenticationStateProvider.GetAuthenticationStateAsync();
+    }
+}
