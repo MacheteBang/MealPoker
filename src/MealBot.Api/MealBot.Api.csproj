@@ -16,7 +16,6 @@
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.1.1" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MealBot.Common\MealBot.Common.csproj" />
     <ProjectReference Include="..\MealBot.Sdk\MealBot.Sdk.csproj" />
   </ItemGroup>
 </Project>

@@ -1,6 +1,4 @@
-using Microsoft.Extensions.Configuration;
-
-namespace MealBot.Common.Extensions;
+namespace MealBot.Api.Extensions;
 
 public static class ConfigurationManagerExtensions
 {
