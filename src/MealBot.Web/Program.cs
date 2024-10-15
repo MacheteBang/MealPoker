@@ -1,3 +1,5 @@
+// TODO: Configure logging for non-Development environments
+
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 {
     builder.RootComponents.Add<App>("#app");
