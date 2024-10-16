@@ -5,7 +5,7 @@ namespace MealBot.Api.Auth.Services;
 internal interface ITokenService
 {
     Task<ErrorOr<TokenBundle>> GenerateTokenBundle(User user);
-    ErrorOr<string> GetEmailFromAccessToken(string accessToken);
+    ErrorOr<Guid> GetUserIdFromAccessToken(string accessToken);
 }
 
 internal sealed class TokenService(
@@ -66,7 +66,7 @@ internal sealed class TokenService(
         }
     }
 
-    public ErrorOr<string> GetEmailFromAccessToken(string accessToken)
+    public ErrorOr<Guid> GetUserIdFromAccessToken(string accessToken)
     {
         throw new NotImplementedException();
     }

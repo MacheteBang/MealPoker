@@ -1,3 +1,3 @@
 namespace MealBot.Api.Auth.Features.GetUser;
 
-public sealed record GetUserQuery(string EmailAddress) : IRequest<ErrorOr<User>> { }
+public sealed record GetUserQuery(Guid UserId) : IRequest<ErrorOr<User>> { }

@@ -6,9 +6,10 @@ namespace MealBot.Api.Auth.Services;
 internal interface IUserService
 {
     Task<ErrorOr<User>> AddAsync(User user);
+    Task<ErrorOr<User>> GetByUserIdAsync(Guid userId);
     Task<ErrorOr<User>> GetByEmailAddressAsync(string emailAddress);
     Task<ErrorOr<User>> UpdateAsync(User user);
-    Task<ErrorOr<Success>> DeleteAsync(string emailAddress);
+    Task<ErrorOr<Success>> DeleteAsync(Guid userId);
 }
 
 internal sealed class UserService(AuthDbContext dbContext) : IUserService
@@ -23,9 +24,9 @@ internal sealed class UserService(AuthDbContext dbContext) : IUserService
         return user;
     }
 
-    public async Task<ErrorOr<Success>> DeleteAsync(string emailAddress)
+    public async Task<ErrorOr<Success>> DeleteAsync(Guid userId)
     {
-        var userResult = await GetByEmailAddressAsync(emailAddress);
+        var userResult = await GetByUserIdAsync(userId);
         if (userResult.IsError)
         {
             return userResult.Errors;
@@ -35,6 +36,15 @@ internal sealed class UserService(AuthDbContext dbContext) : IUserService
         await _dbContext.SaveChangesAsync();
 
         return new Success();
+    }
+
+    public async Task<ErrorOr<User>> GetByUserIdAsync(Guid userId)
+    {
+        var user = await _dbContext.Users.FirstOrDefaultAsync(user => user.UserId == userId);
+
+        return user != null
+            ? user
+            : Errors.UserNotFoundError();
     }
 
     public async Task<ErrorOr<User>> GetByEmailAddressAsync(string emailAddress)

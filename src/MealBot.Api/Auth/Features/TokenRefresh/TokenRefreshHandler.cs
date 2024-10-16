@@ -7,13 +7,13 @@ internal sealed class TokenRefreshHandler(ITokenService tokenService, IUserServi
 
     public async Task<ErrorOr<TokenBundle>> Handle(TokenRefreshQuery query, CancellationToken cancellationToken)
     {
-        var userIdResult = _tokenService.GetEmailFromAccessToken(query.OldAccessToken);
+        var userIdResult = _tokenService.GetUserIdFromAccessToken(query.OldAccessToken);
         if (userIdResult.IsError)
         {
             return Error.Failure();
         }
 
-        var userResult = await _userService.GetByEmailAddressAsync(userIdResult.Value);
+        var userResult = await _userService.GetByUserIdAsync(userIdResult.Value);
         if (userResult.IsError)
         {
             return Error.Failure();

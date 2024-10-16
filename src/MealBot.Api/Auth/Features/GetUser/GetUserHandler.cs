@@ -6,6 +6,6 @@ internal sealed class GetUserHandler(IUserService userService) : IRequestHandler
 
     public Task<ErrorOr<User>> Handle(GetUserQuery query, CancellationToken cancellationToken)
     {
-        return _userService.GetByEmailAddressAsync(query.EmailAddress);
+        return _userService.GetByUserIdAsync(query.UserId);
     }
 }
