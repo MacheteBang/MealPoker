@@ -30,7 +30,10 @@ internal sealed class AuthenticationService(
                 externalIdentity.FirstName,
                 externalIdentity.LastName);
 
-            await SaveProfileImage(newUser);
+            if (!string.IsNullOrEmpty(externalIdentity.ProfilePictureUri))
+            {
+                await SaveProfileImage(newUser.UserId, new Uri(externalIdentity.ProfilePictureUri));
+            }
 
             var addUserResult = await userRepository.AddAsync(newUser);
 
@@ -42,6 +45,11 @@ internal sealed class AuthenticationService(
             return newUser;
         }
 
+        if (!string.IsNullOrEmpty(externalIdentity.ProfilePictureUri))
+        {
+            await SaveProfileImage(userResult.Value.UserId, new Uri(externalIdentity.ProfilePictureUri));
+        }
+
         if (IsUserDifferent(userResult.Value, externalIdentity))
         {
             var foundUser = userResult.Value;
@@ -49,8 +57,6 @@ internal sealed class AuthenticationService(
             foundUser.ExternalId = externalIdentity.Id;
             foundUser.FirstName = externalIdentity.FirstName;
             foundUser.LastName = externalIdentity.LastName;
-
-            await SaveProfileImage(foundUser);
 
             var updateResult = await userRepository.UpdateAsync(foundUser);
 
@@ -63,20 +69,16 @@ internal sealed class AuthenticationService(
         return userResult.Value;
     }
 
-    private async Task SaveProfileImage(User newUser)
+    private async Task SaveProfileImage(Guid userId, Uri profileImageUri)
     {
-        return;
-        // if (!string.IsNullOrEmpty(newUser.PictureUri))
-        // {
-        //     var profileImageResult = await _profileImageStorageService.SaveImageAsync(
-        //         newUser.UserId,
-        //         new Uri(newUser.PictureUri));
+        var profileImageResult = await _profileImageStorageService.SaveImageAsync(
+            userId,
+            profileImageUri);
 
-        //     if (!profileImageResult.IsError)
-        //     {
-        //         newUser.PictureUri = profileImageResult.Value.ToString();
-        //     }
-        // }
+        if (!profileImageResult.IsError)
+        {
+            // TODO: Log this error when there is a problem saving the profile image.
+        }
     }
 
     private static bool IsUserDifferent(User user, ExternalIdentity externalIdentity) =>

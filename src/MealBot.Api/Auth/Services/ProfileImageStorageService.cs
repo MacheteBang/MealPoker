@@ -5,22 +5,22 @@ namespace MealBot.Api.Auth.Services;
 
 internal interface IProfileImageStorageService
 {
-    Task<ErrorOr<Success>> SaveImageAsync(string userId, Stream imageStream);
-    Task<ErrorOr<Success>> SaveImageAsync(string userId, Uri sourceUri);
-    Task<ErrorOr<Stream>> GetImageAsync(string userId);
-    Task<ErrorOr<Success>> DeleteImageAsync(string userId);
+    Task<ErrorOr<Success>> SaveImageAsync(Guid userId, Stream imageStream);
+    Task<ErrorOr<Success>> SaveImageAsync(Guid userId, Uri sourceUri);
+    Task<ErrorOr<Stream>> GetImageAsync(Guid userId);
+    Task<ErrorOr<Success>> DeleteImageAsync(Guid userId);
 }
 
 internal sealed class LocalProfileImageStorageService(IHttpClientFactory httpClientFactory) : IProfileImageStorageService
 {
     private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
 
-    public Task<ErrorOr<Success>> DeleteImageAsync(string userId)
+    public Task<ErrorOr<Success>> DeleteImageAsync(Guid userId)
     {
         throw new NotImplementedException();
     }
 
-    public Task<ErrorOr<Stream>> GetImageAsync(string userId)
+    public Task<ErrorOr<Stream>> GetImageAsync(Guid userId)
     {
         try
         {
@@ -35,7 +35,7 @@ internal sealed class LocalProfileImageStorageService(IHttpClientFactory httpCli
         }
     }
 
-    public async Task<ErrorOr<Success>> SaveImageAsync(string userId, Stream imageStream)
+    public async Task<ErrorOr<Success>> SaveImageAsync(Guid userId, Stream imageStream)
     {
         try
         {
@@ -56,7 +56,7 @@ internal sealed class LocalProfileImageStorageService(IHttpClientFactory httpCli
         }
     }
 
-    public async Task<ErrorOr<Success>> SaveImageAsync(string userId, Uri sourceUri)
+    public async Task<ErrorOr<Success>> SaveImageAsync(Guid userId, Uri sourceUri)
     {
         var client = _httpClientFactory.CreateClient();
         var responseMessage = await client.GetAsync(sourceUri);
@@ -72,23 +72,12 @@ internal sealed class LocalProfileImageStorageService(IHttpClientFactory httpCli
         }
     }
 
-    private static string HashUserId(string userId)
+    private static string GetFilePath(Guid userId)
     {
-        using (var sha256 = SHA256.Create())
-        {
-            byte[] hashBytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(userId));
-            return BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
-        }
-    }
-    private static string GetFilePath(string userId)
-    {
-        // Hash the userId
-        string hashedUserId = HashUserId(userId);
-
         // Define the path
         string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
         string directoryPath = Path.Combine(appDataPath, "MealBot", "ProfileImages");
-        string filePath = Path.Combine(directoryPath, $"{hashedUserId}.jpg");
+        string filePath = Path.Combine(directoryPath, $"{userId}.jpg");
 
         // Create directory if it doesn't exist
         if (!Directory.Exists(directoryPath))

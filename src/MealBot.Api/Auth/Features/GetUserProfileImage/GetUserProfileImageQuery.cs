@@ -1,3 +1,3 @@
 namespace MealBot.Api.Auth.Features.GetUserProfileImage;
 
-public record GetUserProfileImageQuery(string UserId) : IRequest<ErrorOr<Stream>>;
+public record GetUserProfileImageQuery(Guid UserId) : IRequest<ErrorOr<Stream>>;
