@@ -13,6 +13,7 @@ public static class DependencyInjection
         services.AddScoped<IAuthenticationService, AuthenticationService>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IProfileImageStorageService, LocalProfileImageStorageService>();
 
         services.AddJwtAuthentications(configuration);
 

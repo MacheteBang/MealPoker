@@ -5,9 +5,12 @@ internal interface IAuthenticationService
     Task<ErrorOr<User>> AddOrGetUserAsync(ExternalIdentity externalIdentity);
 }
 
-internal sealed class AuthenticationService(IUserService _userRepository) : IAuthenticationService
+internal sealed class AuthenticationService(
+    IUserService _userRepository,
+    IProfileImageStorageService profileImageStorageService) : IAuthenticationService
 {
     private readonly IUserService userRepository = _userRepository;
+    private readonly IProfileImageStorageService _profileImageStorageService = profileImageStorageService;
 
     public async Task<ErrorOr<User>> AddOrGetUserAsync(ExternalIdentity externalIdentity)
     {
@@ -28,12 +31,15 @@ internal sealed class AuthenticationService(IUserService _userRepository) : IAut
                 externalIdentity.LastName,
                 externalIdentity.ProfilePictureUri);
 
+            await SaveProfileImage(newUser);
+
             var addUserResult = await userRepository.AddAsync(newUser);
 
             if (addUserResult.IsError)
             {
                 return addUserResult;
             }
+
             return newUser;
         }
 
@@ -46,6 +52,8 @@ internal sealed class AuthenticationService(IUserService _userRepository) : IAut
             foundUser.LastName = externalIdentity.LastName;
             foundUser.PictureUri = externalIdentity.ProfilePictureUri;
 
+            await SaveProfileImage(foundUser);
+
             var updateResult = await userRepository.UpdateAsync(foundUser);
 
             return updateResult.Match<ErrorOr<User>>(
@@ -55,6 +63,21 @@ internal sealed class AuthenticationService(IUserService _userRepository) : IAut
         }
 
         return userResult.Value;
+    }
+
+    private async Task SaveProfileImage(User newUser)
+    {
+        if (!string.IsNullOrEmpty(newUser.PictureUri))
+        {
+            var profileImageResult = await _profileImageStorageService.SaveImageAsync(
+                newUser.UserId,
+                new Uri(newUser.PictureUri));
+
+            if (!profileImageResult.IsError)
+            {
+                newUser.PictureUri = profileImageResult.Value.ToString();
+            }
+        }
     }
 
     private static bool IsUserDifferent(User user, ExternalIdentity externalIdentity) =>
