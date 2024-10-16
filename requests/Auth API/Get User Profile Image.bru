@@ -5,11 +5,15 @@ meta {
 }
 
 get {
-  url: {{MealbotApiUrl}}/users/:userId/profile-images
+  url: {{mealbotApiUrl}}/auth/users/:userId/profile-image
   body: none
-  auth: none
+  auth: bearer
 }
 
 params:path {
-  userId: 
+  userId: 10b905e1-d3e0-42d3-b06f-67d46681bfca
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxMGI5MDVlMS1kM2UwLTQyZDMtYjA2Zi02N2Q0NjY4MWJmY2EiLCJlbWFpbCI6ImpvbmF0aGFuLmdyZWdvcnNreUBnbWFpbC5jb20iLCJnaXZlbl9uYW1lIjoiSm9uYXRoYW4iLCJmYW1pbHlfbmFtZSI6IkdyZWdvcnNreSIsIm5iZiI6MTcyOTA4NzQ5OSwiZXhwIjoxNzI5MDg3Nzk5LCJpYXQiOjE3MjkwODc0OTksImlzcyI6Ik1lYWxCb3QiLCJhdWQiOiJNZWFsQm90In0.y22HVIEGRW3ubtxHTDuMmp_atofExC4HGoSSgVK3Gyk
 }
