@@ -6,7 +6,7 @@ internal sealed class GetUserProfileImageEndpoint : MealBotEndpoint
 {
     public override void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGet($"{GlobalSettings.RoutePaths.Users}/{{userId:string}}/profile-image", async (string userId, ISender sender) =>
+        app.MapGet($"{GlobalSettings.RoutePaths.Users}/{{userId:Guid}}/profile-image", async (string userId, ISender sender) =>
         {
             // TODO: Complete the implementation to return a file.
             throw new NotImplementedException();

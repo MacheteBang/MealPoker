@@ -1,9 +1,8 @@
 namespace MealBot.Sdk.Contracts.Responses;
 
 public sealed record UserResponse(
-    string UserId,
+    Guid UserId,
     string EmailAddress,
     string AuthProvider,
     string FirstName,
-    string LastName,
-    string? PictureUri);
+    string LastName);

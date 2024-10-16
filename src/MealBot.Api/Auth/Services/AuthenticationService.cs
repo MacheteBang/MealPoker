@@ -28,8 +28,7 @@ internal sealed class AuthenticationService(
                 externalIdentity.AuthProvider,
                 externalIdentity.Id,
                 externalIdentity.FirstName,
-                externalIdentity.LastName,
-                externalIdentity.ProfilePictureUri);
+                externalIdentity.LastName);
 
             await SaveProfileImage(newUser);
 
@@ -50,7 +49,6 @@ internal sealed class AuthenticationService(
             foundUser.ExternalId = externalIdentity.Id;
             foundUser.FirstName = externalIdentity.FirstName;
             foundUser.LastName = externalIdentity.LastName;
-            foundUser.PictureUri = externalIdentity.ProfilePictureUri;
 
             await SaveProfileImage(foundUser);
 
@@ -67,23 +65,23 @@ internal sealed class AuthenticationService(
 
     private async Task SaveProfileImage(User newUser)
     {
-        if (!string.IsNullOrEmpty(newUser.PictureUri))
-        {
-            var profileImageResult = await _profileImageStorageService.SaveImageAsync(
-                newUser.UserId,
-                new Uri(newUser.PictureUri));
+        return;
+        // if (!string.IsNullOrEmpty(newUser.PictureUri))
+        // {
+        //     var profileImageResult = await _profileImageStorageService.SaveImageAsync(
+        //         newUser.UserId,
+        //         new Uri(newUser.PictureUri));
 
-            if (!profileImageResult.IsError)
-            {
-                newUser.PictureUri = profileImageResult.Value.ToString();
-            }
-        }
+        //     if (!profileImageResult.IsError)
+        //     {
+        //         newUser.PictureUri = profileImageResult.Value.ToString();
+        //     }
+        // }
     }
 
     private static bool IsUserDifferent(User user, ExternalIdentity externalIdentity) =>
         user.AuthProvider != externalIdentity.AuthProvider ||
         user.ExternalId != externalIdentity.Id ||
         user.FirstName != externalIdentity.FirstName ||
-        user.LastName != externalIdentity.LastName ||
-        user.PictureUri != externalIdentity.ProfilePictureUri;
+        user.LastName != externalIdentity.LastName;
 }

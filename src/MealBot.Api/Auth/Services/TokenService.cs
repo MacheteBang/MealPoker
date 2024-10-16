@@ -21,11 +21,10 @@ internal sealed class TokenService(
 
         List<Claim> claims =
         [
-            new(ClaimTypes.NameIdentifier, user.UserId),
+            new(ClaimTypes.NameIdentifier, user.UserId.ToString()),
             new(ClaimTypes.Email, user.EmailAddress),
             new(ClaimTypes.GivenName, user.FirstName),
-            new(ClaimTypes.Surname, user.LastName),
-            new("profilepicture", user.PictureUri ?? string.Empty)
+            new(ClaimTypes.Surname, user.LastName)
         ];
 
         var signingKey = Encoding.UTF8.GetBytes(jwtOptions.IssuerSigningKey);
