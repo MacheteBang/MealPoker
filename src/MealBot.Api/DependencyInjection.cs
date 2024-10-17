@@ -33,10 +33,10 @@ public static class GlobalDependencyInjection
             Directory.CreateDirectory(directoryPath);
         }
 
-        services.AddDbContext<AuthDbContext>(options => options.UseSqlite($"Data Source={fileLocation};"));
+        services.AddDbContext<MealBotDbContext>(options => options.UseSqlite($"Data Source={fileLocation};"));
 
         using var serviceScope = services.BuildServiceProvider().CreateScope();
-        var dbContext = serviceScope.ServiceProvider.GetRequiredService<AuthDbContext>();
+        var dbContext = serviceScope.ServiceProvider.GetRequiredService<MealBotDbContext>();
         dbContext.Database.EnsureCreated();
 
         return services;

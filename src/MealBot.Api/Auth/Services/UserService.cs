@@ -12,9 +12,9 @@ internal interface IUserService
     Task<ErrorOr<Success>> DeleteAsync(Guid userId);
 }
 
-internal sealed class UserService(AuthDbContext dbContext) : IUserService
+internal sealed class UserService(MealBotDbContext dbContext) : IUserService
 {
-    private readonly AuthDbContext _dbContext = dbContext;
+    private readonly MealBotDbContext _dbContext = dbContext;
 
     public async Task<ErrorOr<User>> AddAsync(User user)
     {
