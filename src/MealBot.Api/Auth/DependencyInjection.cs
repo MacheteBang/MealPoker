@@ -1,3 +1,4 @@
+using MealBot.Api.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
@@ -39,7 +40,7 @@ public static class DependencyInjection
 
     private static IServiceCollection AddJwtAuthentications(this IServiceCollection services, IConfiguration configuration)
     {
-        var jwtOptions = configuration.GetSection("Authorization:JwtOptions").Get<JwtOptions>();
+        JwtOptions jwtOptions = configuration.GetSection("Authorization:JwtOptions").GetRequired<JwtOptions>();
         services.AddAuthentication(options =>
         {
             options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
