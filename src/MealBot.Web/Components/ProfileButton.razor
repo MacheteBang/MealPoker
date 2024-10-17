@@ -1,13 +1,15 @@
-@inject UserAuthenticationStateProvider AuthState
+@inject UserAuthenticationStateProvider _userAuthenticationStateProvider
 
 <button class="gsi-material-button">
     <div class="gsi-material-button-state"></div>
     <div class="gsi-material-button-content-wrapper">
         <div class="gsi-material-button-icon">
-            <img src="@AuthState.CurrentUser.PictureUri" style="border-radius:50%;height:24px;border-style:solid" />
+            <img src="@_userAuthenticationStateProvider.CurrentUser.PictureUri"
+                style="border-radius:50%;height:24px;border-style:solid"
+                alt="@(_userAuthenticationStateProvider.CurrentUser.FirstName + ' ' + _userAuthenticationStateProvider.CurrentUser.LastName)" />
         </div>
-        <span class="gsi-material-button-contents">@AuthState.CurrentUser.FirstName</span>
-        <span style="display: none;">@AuthState.CurrentUser.FirstName</span>
+        <span class=" gsi-material-button-contents">@_userAuthenticationStateProvider.CurrentUser.FirstName</span>
+        <span style="display: none;">@_userAuthenticationStateProvider.CurrentUser.FirstName</span>
     </div>
 </button>
 

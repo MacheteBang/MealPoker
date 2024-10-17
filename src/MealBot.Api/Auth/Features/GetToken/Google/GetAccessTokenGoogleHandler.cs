@@ -63,7 +63,7 @@ internal sealed class GetAccessTokenGoogleHandler(
             validatedUser.Email,
             validatedUser.GivenName,
             validatedUser.FamilyName,
-            validatedUser.Picture
+            validatedUser.Picture.Replace("=s96", "=s1024") // Replace the default 96x96 image from google with a 1024x1024 image
         );
 
         var user = await _authenticationService.AddOrGetUserAsync(externalIdentity);

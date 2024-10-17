@@ -8,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Configuration.AddJsonFile("appsettings.Secrets.json", true);
 
     // Add services to the container.
+    builder.Services.AddHttpContextAccessor();
     builder.Services.AddPresentation();
     builder.Services.AddDatabaseProvider(builder.Configuration);
     builder.Services.AddMeals();

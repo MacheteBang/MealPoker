@@ -74,7 +74,7 @@ public class UserAuthenticationStateProvider(
                 EmailAddress = claimsPrincipal.FindFirst("email")?.Value,
                 FirstName = claimsPrincipal.FindFirst("given_name")?.Value,
                 LastName = claimsPrincipal.FindFirst("family_name")?.Value,
-                PictureUri = claimsPrincipal.FindFirst(c => c.Type == "profilepicture")?.Value
+                PictureUri = claimsPrincipal.FindFirst(c => c.Type == "profile_image")?.Value
             };
         }
         else

@@ -30,10 +30,7 @@ internal sealed class AuthenticationService(
                 externalIdentity.FirstName,
                 externalIdentity.LastName);
 
-            if (!string.IsNullOrEmpty(externalIdentity.ProfilePictureUri))
-            {
-                await SaveProfileImage(newUser.UserId, new Uri(externalIdentity.ProfilePictureUri));
-            }
+            await SaveProfileImageAsync(externalIdentity, newUser);
 
             var addUserResult = await userRepository.AddAsync(newUser);
 
@@ -45,14 +42,13 @@ internal sealed class AuthenticationService(
             return newUser;
         }
 
-        if (!string.IsNullOrEmpty(externalIdentity.ProfilePictureUri))
-        {
-            await SaveProfileImage(userResult.Value.UserId, new Uri(externalIdentity.ProfilePictureUri));
-        }
 
-        if (IsUserDifferent(userResult.Value, externalIdentity))
+        var foundUser = userResult.Value;
+
+        await SaveProfileImageAsync(externalIdentity, foundUser);
+
+        if (IsUserDifferent(foundUser, externalIdentity))
         {
-            var foundUser = userResult.Value;
             foundUser.AuthProvider = externalIdentity.AuthProvider;
             foundUser.ExternalId = externalIdentity.Id;
             foundUser.FirstName = externalIdentity.FirstName;
@@ -66,18 +62,21 @@ internal sealed class AuthenticationService(
             );
         }
 
-        return userResult.Value;
+        return foundUser;
     }
 
-    private async Task SaveProfileImage(Guid userId, Uri profileImageUri)
+    private async Task SaveProfileImageAsync(ExternalIdentity externalIdentity, User user)
     {
-        var profileImageResult = await _profileImageStorageService.SaveImageAsync(
-            userId,
-            profileImageUri);
-
-        if (!profileImageResult.IsError)
+        if (Uri.TryCreate(externalIdentity.ProfilePictureUri, UriKind.Absolute, out var profileImageUri))
         {
-            // TODO: Log this error when there is a problem saving the profile image.
+            var saveResult = await _profileImageStorageService.SaveImageAsync(
+                user.UserId,
+                profileImageUri);
+
+            if (!saveResult.IsError)
+            {
+                user.ProfileImageUrl = saveResult.Value.ToString();
+            }
         }
     }
 

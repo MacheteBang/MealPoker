@@ -22,6 +22,7 @@ internal sealed class User
     public required string ExternalId { get; set; }
     public required string FirstName { get; set; }
     public required string LastName { get; set; }
+    public string? ProfileImageUrl { get; set; }
     public string? RefreshToken { get; set; }
     public DateTime RefreshTokenExpiresAt { get; set; }
 
@@ -30,5 +31,6 @@ internal sealed class User
         EmailAddress,
         AuthProvider.ToString(),
         FirstName,
-        LastName);
+        LastName,
+        ProfileImageUrl);
 }

@@ -12,7 +12,6 @@ internal sealed class GetUserProfileImageEndpoint : MealBotEndpoint
             return result.Match(
                 stream => Results.File(stream, "image/jpeg"),
                 errors => Problem(errors));
-        })
-        .RequireAuthorization();
+        });
     }
 }

@@ -24,7 +24,8 @@ internal sealed class TokenService(
             new(ClaimTypes.NameIdentifier, user.UserId.ToString()),
             new(ClaimTypes.Email, user.EmailAddress),
             new(ClaimTypes.GivenName, user.FirstName),
-            new(ClaimTypes.Surname, user.LastName)
+            new(ClaimTypes.Surname, user.LastName),
+            new("profile_image", user.ProfileImageUrl ?? "")
         ];
 
         var signingKey = Encoding.UTF8.GetBytes(jwtOptions.IssuerSigningKey);

@@ -1,18 +1,19 @@
-using System.Security.Cryptography;
 using IHttpClientFactory = System.Net.Http.IHttpClientFactory;
 
 namespace MealBot.Api.Auth.Services;
 
 internal interface IProfileImageStorageService
 {
-    Task<ErrorOr<Success>> SaveImageAsync(Guid userId, Stream imageStream);
-    Task<ErrorOr<Success>> SaveImageAsync(Guid userId, Uri sourceUri);
+    Task<ErrorOr<Uri>> SaveImageAsync(Guid userId, Stream imageStream);
+    Task<ErrorOr<Uri>> SaveImageAsync(Guid userId, Uri sourceUri);
+    [Obsolete]
     Task<ErrorOr<Stream>> GetImageAsync(Guid userId);
     Task<ErrorOr<Success>> DeleteImageAsync(Guid userId);
 }
 
-internal sealed class LocalProfileImageStorageService(IHttpClientFactory httpClientFactory) : IProfileImageStorageService
+internal sealed class LocalProfileImageStorageService(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor) : IProfileImageStorageService
 {
+    private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
     private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
 
     public Task<ErrorOr<Success>> DeleteImageAsync(Guid userId)
@@ -35,7 +36,7 @@ internal sealed class LocalProfileImageStorageService(IHttpClientFactory httpCli
         }
     }
 
-    public async Task<ErrorOr<Success>> SaveImageAsync(Guid userId, Stream imageStream)
+    public async Task<ErrorOr<Uri>> SaveImageAsync(Guid userId, Stream imageStream)
     {
         try
         {
@@ -47,7 +48,17 @@ internal sealed class LocalProfileImageStorageService(IHttpClientFactory httpCli
                 await imageStream.CopyToAsync(fileStream);
             }
 
-            return new Success();
+
+            var request = _httpContextAccessor.HttpContext?.Request;
+            if (request is null)
+            {
+                // TODO: Convert this to a standard Error
+                return Error.Failure("Auth.SaveProfileImageFailed");
+            }
+
+            var baseUrl = $"{request.Scheme}://{request.Host}{request.PathBase}";
+
+            return new Uri($"{baseUrl}{GlobalSettings.RoutePaths.Users}/{userId}/profile-image");
         }
         catch (Exception ex)
         {
@@ -56,7 +67,7 @@ internal sealed class LocalProfileImageStorageService(IHttpClientFactory httpCli
         }
     }
 
-    public async Task<ErrorOr<Success>> SaveImageAsync(Guid userId, Uri sourceUri)
+    public async Task<ErrorOr<Uri>> SaveImageAsync(Guid userId, Uri sourceUri)
     {
         var client = _httpClientFactory.CreateClient();
         var responseMessage = await client.GetAsync(sourceUri);
@@ -76,7 +87,7 @@ internal sealed class LocalProfileImageStorageService(IHttpClientFactory httpCli
     {
         // Define the path
         string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-        string directoryPath = Path.Combine(appDataPath, "MealBot", "ProfileImages");
+        string directoryPath = Path.Combine(appDataPath, ".MealBot", "ProfileImages");
         string filePath = Path.Combine(directoryPath, $"{userId}.jpg");
 
         // Create directory if it doesn't exist

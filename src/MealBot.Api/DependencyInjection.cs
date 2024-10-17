@@ -24,8 +24,14 @@ public static class GlobalDependencyInjection
     {
         // TODO: Convert to a robust database provider.
         var folder = Environment.SpecialFolder.LocalApplicationData;
-        var path = Environment.GetFolderPath(folder);
-        string fileLocation = System.IO.Path.Join(path, "MealBot.Api.Auth.db");
+        var directoryPath = Path.Join(Environment.GetFolderPath(folder), ".MealBot");
+        string fileLocation = System.IO.Path.Join(directoryPath, "MealBot.Api.Auth.db");
+
+        // Create directory if it doesn't exist
+        if (!Directory.Exists(directoryPath))
+        {
+            Directory.CreateDirectory(directoryPath);
+        }
 
         services.AddDbContext<AuthDbContext>(options => options.UseSqlite($"Data Source={fileLocation};"));
 
