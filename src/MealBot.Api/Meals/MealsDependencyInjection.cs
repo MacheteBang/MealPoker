@@ -12,7 +12,7 @@ public static class MealsDependencyInjection
 
         services.AddValidatorsFromAssembly(thisAssembly);
 
-        services.AddSingleton<IMealRepository, MealRepository>();
+        services.AddScoped<IMealRepository, MealRepository>();
 
         return services;
     }

@@ -5,8 +5,7 @@ public class MealPartValidator : AbstractValidator<MealPart>
     public MealPartValidator()
     {
         RuleFor(y => y.Category)
-            .IsInEnum()
-            .NotEqual(MealPartCategory.Unknown.ToString());
+            .IsEnumName(typeof(MealPartCategory));
 
         RuleFor(x => x.Name)
             .NotEmpty();

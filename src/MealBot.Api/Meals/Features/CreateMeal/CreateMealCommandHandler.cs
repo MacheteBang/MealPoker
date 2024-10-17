@@ -24,7 +24,7 @@ public sealed class CreateMealCommandHandler(IValidator<CreateMealCommand> valid
             MealParts = request.MealParts
         };
 
-        await _mealRepository.AddMeal(meal);
+        await _mealRepository.AddMealAsync(meal);
 
         return meal;
     }
