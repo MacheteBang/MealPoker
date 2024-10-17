@@ -14,7 +14,7 @@ internal sealed class MealBotDbContext(DbContextOptions<MealBotDbContext> option
             .HasName("PK_Permissions_UserId_Subject");
 
         modelBuilder.Entity<User>()
-            .HasKey(u => u.EmailAddress)
-            .HasName("PK_Users_EmailAddress");
+            .HasKey(u => u.UserId)
+            .HasName("PK_Users_UserId");
     }
 }
