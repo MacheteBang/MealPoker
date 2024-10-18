@@ -18,6 +18,7 @@ internal sealed class TokenService(
     public async Task<ErrorOr<TokenBundle>> GenerateTokenBundle(User user)
     {
         JwtOptions jwtOptions = _authorizationOptions.Value.JwtOptions;
+        RefreshTokenOptions refreshTokenOptions = _authorizationOptions.Value.RefreshTokenOptions;
 
         List<Claim> claims =
         [
@@ -49,7 +50,7 @@ internal sealed class TokenService(
                 AccessToken: new AccessToken(jwt),
                 RefreshToken: new RefreshToken(
                     Value: Guid.NewGuid().ToString(),
-                    ExpiresAt: DateTime.UtcNow.AddMinutes(jwtOptions.TokenLifetimeInMinutes)
+                    ExpiresAt: DateTime.UtcNow.AddMinutes(refreshTokenOptions.TokenLifetimeInMinutes)
                 )
             );
 
@@ -69,6 +70,26 @@ internal sealed class TokenService(
 
     public ErrorOr<Guid> GetUserIdFromAccessToken(string accessToken)
     {
-        throw new NotImplementedException();
+        var tokenHandler = new JwtSecurityTokenHandler();
+        try
+        {
+            var token = tokenHandler.ReadJwtToken(accessToken);
+            var userIdClaim = token.Claims.FirstOrDefault(c => c.Type == "nameid");
+            if (userIdClaim is null)
+            {
+                return Error.Failure("No user ID claim found in token");
+            }
+
+            if (!Guid.TryParse(userIdClaim.Value, out Guid userId))
+            {
+                return Error.Failure("User ID claim is not a valid GUID");
+            }
+
+            return userId;
+        }
+        catch (Exception e)
+        {
+            return Error.Failure(e.Message);
+        }
     }
 }

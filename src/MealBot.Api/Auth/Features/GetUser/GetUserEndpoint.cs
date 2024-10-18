@@ -9,7 +9,7 @@ internal sealed class GetUserEndpoint : MealBotEndpoint
             ISender sender,
             Guid userId) =>
         {
-            if (!Guid.TryParse(httpContext.User.FindFirstValue(ClaimTypes.NameIdentifier), out var claimUserId))
+            if (!Guid.TryParse(httpContext.User.FindFirstValue("nameid"), out var claimUserId))
             {
                 return Results.Unauthorized();
             }
