@@ -1,0 +1,64 @@
+@page "/meals"
+@attribute [Authorize]
+@inject IMealService _mealService
+
+<PageTitle>Meals</PageTitle>
+
+<h1>Meals</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Parts</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var meal in meals)
+        {
+            <tr>
+                <td>@meal.Name</td>
+                <td>@meal.Description</td>
+                <td>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Name</th>
+                                <th>Description</th>
+                                <th>Link</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var part in meal.MealParts ?? [])
+                            {
+                                <tr>
+                                    <td>@part.Category</td>
+                                    <td>@part.Name</td>
+                                    <td>@part.Description</td>
+                                    <td>
+                                        @if (!string.IsNullOrWhiteSpace(part.Url))
+                                        {
+                                            <a href="@part.Url" target="_blank">Link</a>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@code {
+    private List<MealResponse> meals = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        meals = await _mealService.GetMealsAsync(CancellationToken.None);
+    }
+}

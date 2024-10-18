@@ -15,3 +15,4 @@ global using Microsoft.AspNetCore.Components.WebAssembly.Http;
 
 global using System.IdentityModel.Tokens.Jwt;
 global using System.Text.Json;
+global using System.Net.Http.Json;
