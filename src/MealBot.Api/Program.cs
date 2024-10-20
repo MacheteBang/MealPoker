@@ -1,4 +1,5 @@
 using MealBot.Api.Auth;
+using MealBot.Api.Extensions;
 using Serilog.Core;
 
 Log.Logger = CreateLoggerConfiguration();
@@ -15,9 +16,12 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddAuth(builder.Configuration);
     builder.Services.AddCors(options =>
     {
-        // TODO: Remove the hard-coded origins from CORS and replace with a configuration
+        string[] corsOrigins = builder.Configuration
+            .GetSection("CorsOrigins")
+            .GetRequired<string[]>();
+
         options.AddDefaultPolicy(builder => builder
-            .WithOrigins("https://localhost:7188", "http://localhost:5103")
+            .WithOrigins(corsOrigins)
             .AllowCredentials()
             .AllowAnyMethod()
             .AllowAnyHeader());
