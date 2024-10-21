@@ -26,15 +26,24 @@ public abstract class MealBotEndpoint : IMealBotEndpoint
 
     protected static IResult Problem(Error error)
     {
+        if (error.Type == ErrorType.Validation)
+        {
+            return ValidationProblem([error]);
+        }
+
         var statusCode = error.Type switch
         {
+            ErrorType.Unauthorized => StatusCodes.Status401Unauthorized,
             ErrorType.Conflict => StatusCodes.Status409Conflict,
-            ErrorType.Validation => StatusCodes.Status400BadRequest,
             ErrorType.NotFound => StatusCodes.Status404NotFound,
             _ => StatusCodes.Status500InternalServerError,
         };
 
-        return Results.Problem(statusCode: statusCode, title: error.Description);
+        return Results.Problem(
+            type: error.Code,
+            title: error.Description,
+            detail: error.Description,
+            statusCode: statusCode);
     }
 
     private static IResult ValidationProblem(List<Error> errors)

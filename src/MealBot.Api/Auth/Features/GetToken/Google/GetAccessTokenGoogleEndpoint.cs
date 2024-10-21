@@ -1,3 +1,5 @@
+using MealBot.Api.Auth.DomainErrors;
+
 namespace MealBot.Api.Auth.Features.GetToken.Google;
 
 internal sealed class GetAccessTokenEndpoint() : MealBotEndpoint
@@ -13,7 +15,7 @@ internal sealed class GetAccessTokenEndpoint() : MealBotEndpoint
         {
             if (string.IsNullOrWhiteSpace(authorizationCode))
             {
-                return Results.Unauthorized();
+                return Problem(Errors.GoogleAuthorizationCodeMissing());
             }
 
             var query = new GetAccessTokenGoogleQuery(authorizationCode, callBackUri);
@@ -21,7 +23,7 @@ internal sealed class GetAccessTokenEndpoint() : MealBotEndpoint
 
             if (result.IsError)
             {
-                return Results.Unauthorized();
+                return Problem(result.Errors);
             }
 
             // TODO: Move this to a common service as it is shared with TokenRefreshEndpoint

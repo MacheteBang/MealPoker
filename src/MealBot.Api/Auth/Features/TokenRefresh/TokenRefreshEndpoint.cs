@@ -1,3 +1,5 @@
+using MealBot.Api.Auth.DomainErrors;
+
 namespace MealBot.Api.Auth.Features.TokenRefresh;
 
 internal sealed class TokenRefreshEndpoint : MealBotEndpoint
@@ -13,7 +15,7 @@ internal sealed class TokenRefreshEndpoint : MealBotEndpoint
 
             if (!context.Request.Cookies.TryGetValue(refreshTokenOptions.Value.CookieName, out var refreshToken))
             {
-                return Results.Unauthorized();
+                return Problem(Errors.CookieMissingFromRequest(refreshTokenOptions.Value.CookieName));
             }
 
             var query = new TokenRefreshQuery(request.AccessToken, refreshToken);
@@ -21,7 +23,7 @@ internal sealed class TokenRefreshEndpoint : MealBotEndpoint
 
             if (result.IsError)
             {
-                return Results.Unauthorized();
+                return Problem(result.Errors);
             }
 
             // TODO: Move this to a common service as it is shared with GetAccessTokenGoogleEndpoint

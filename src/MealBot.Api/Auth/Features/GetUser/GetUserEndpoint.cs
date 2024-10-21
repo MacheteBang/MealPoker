@@ -1,3 +1,5 @@
+using MealBot.Api.Auth.DomainErrors;
+
 namespace MealBot.Api.Auth.Features.GetUser;
 
 internal sealed class GetUserEndpoint : MealBotEndpoint
@@ -11,12 +13,12 @@ internal sealed class GetUserEndpoint : MealBotEndpoint
         {
             if (!Guid.TryParse(httpContext.User.FindFirstValue("nameid"), out var claimUserId))
             {
-                return Results.Unauthorized();
+                return Problem(Errors.NameIdMissingFromToken());
             }
 
             if (claimUserId != userId)
             {
-                return Results.Unauthorized();
+                return Problem(Errors.UnauthorizedResource("User", userId.ToString()));
             }
 
             var query = new GetUserQuery(userId);
