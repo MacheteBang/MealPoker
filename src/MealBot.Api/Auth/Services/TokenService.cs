@@ -1,5 +1,3 @@
-using Errors = MealBot.Api.Auth.DomainErrors.Errors;
-
 namespace MealBot.Api.Auth.Services;
 
 internal interface ITokenService

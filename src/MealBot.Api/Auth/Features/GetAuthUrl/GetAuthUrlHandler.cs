@@ -4,16 +4,13 @@ internal sealed class GetAuthUrlHandler(IOptions<AuthenticationOptions> authenti
 {
     private readonly IOptions<AuthenticationOptions> _authenticationOptions = authenticationOptions;
 
-    public async Task<ErrorOr<string>> Handle(GetAuthUrlQuery request, CancellationToken cancellationToken)
+    public Task<ErrorOr<string>> Handle(GetAuthUrlQuery request, CancellationToken cancellationToken)
     {
-        // FIXME: Remove async keyword from method signature if no async operations are performed
-        await Task.CompletedTask;
-
-        return request.Provider switch
+        return Task.FromResult<ErrorOr<string>>(request.Provider switch
         {
             AuthProvider.Google => HandleGoogle(_authenticationOptions.Value.GoogleOptions!, request.State, request.CallbackUri),
             _ => Errors.ProviderNotSupported()
-        };
+        });
     }
 
     private static string HandleGoogle(GoogleOptions options, string state, string callbackUri)

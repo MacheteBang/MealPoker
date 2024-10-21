@@ -1,5 +1,3 @@
-using MealBot.Api.Auth.DomainErrors;
-
 namespace MealBot.Api.Auth.Features.TokenRefresh;
 
 internal sealed class TokenRefreshEndpoint : MealBotEndpoint

@@ -1,5 +1,4 @@
 using Google.Apis.Auth;
-using Errors = MealBot.Api.Auth.DomainErrors.Errors;
 
 namespace MealBot.Api.Auth.Features.GetToken.Google;
 

@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Errors = MealBot.Api.Auth.DomainErrors.Errors;
 
 namespace MealBot.Api.Auth.Services;
 
