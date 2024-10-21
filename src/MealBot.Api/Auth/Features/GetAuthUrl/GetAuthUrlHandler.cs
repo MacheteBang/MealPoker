@@ -1,5 +1,3 @@
-using Errors = MealBot.Api.Auth.DomainErrors.Errors;
-
 namespace MealBot.Api.Auth.Features.GetAuthUrl;
 
 internal sealed class GetAuthUrlHandler(IOptions<AuthenticationOptions> authenticationOptions) : IRequestHandler<GetAuthUrlQuery, ErrorOr<string>>
