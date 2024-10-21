@@ -26,19 +26,23 @@ internal sealed class TokenRefreshEndpoint : MealBotEndpoint
                 return Problem(result.Errors);
             }
 
-            // TODO: Move this to a common service as it is shared with GetAccessTokenGoogleEndpoint
             var newRefreshToken = result.Value.RefreshToken;
-            context.Response.Cookies.Append(refreshTokenOptions.Value.CookieName, newRefreshToken.Value, new()
-            {
-                Secure = true,
-                HttpOnly = true,
-                Path = "/auth/tokens/refresh",
-                SameSite = SameSiteMode.None,
-                Expires = newRefreshToken.ExpiresAt
-            });
+            context.Response.Cookies.Append(
+                refreshTokenOptions.Value.CookieName,
+                newRefreshToken.Value,
+                GetCookieOptions(newRefreshToken.ExpiresAt));
 
             AccessTokenResponse accessTokenResponse = new(result.Value.AccessToken.Value);
             return Results.Ok(accessTokenResponse);
         });
     }
+
+    public static CookieOptions GetCookieOptions(DateTime expirationDate) => new()
+    {
+        Secure = true,
+        HttpOnly = true,
+        Path = "/auth/tokens/refresh",
+        SameSite = SameSiteMode.None,
+        Expires = expirationDate
+    };
 }

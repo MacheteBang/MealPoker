@@ -8,6 +8,7 @@ global using System.Text.Json.Serialization;
 global using MealBot.Api;
 global using MealBot.Api.Auth;
 global using MealBot.Api.Auth.Contracts.Responses.Google;
+global using MealBot.Api.Auth.DomainErrors;
 global using MealBot.Api.Auth.Enums;
 global using MealBot.Api.Auth.Models;
 global using MealBot.Api.Auth.Options;
