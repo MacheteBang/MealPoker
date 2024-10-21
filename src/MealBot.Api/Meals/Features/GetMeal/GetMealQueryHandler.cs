@@ -1,5 +1,3 @@
-using Errors = MealBot.Api.Meals.DomainErrors.Errors;
-
 namespace MealBot.Api.Meals.Features.GetMeal;
 
 public sealed class GetMealQueryHandler(IMealRepository mealRepository) : IRequestHandler<GetMealQuery, ErrorOr<Meal>>

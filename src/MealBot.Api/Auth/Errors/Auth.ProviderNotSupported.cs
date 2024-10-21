@@ -1,4 +1,4 @@
-namespace MealBot.Api.Auth.DomainErrors;
+namespace MealBot.Api.Auth;
 
 internal static partial class Errors
 {

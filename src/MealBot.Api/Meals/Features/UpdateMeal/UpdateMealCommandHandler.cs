@@ -1,5 +1,3 @@
-using Errors = MealBot.Api.Meals.DomainErrors.Errors;
-
 namespace MealBot.Api.Meals.Features.UpdateMeal;
 
 public sealed class UpdateMealCommandHandler(IMealRepository mealRepository) : IRequestHandler<UpdateMealCommand, ErrorOr<Meal>>

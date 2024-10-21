@@ -1,5 +1,4 @@
-namespace MealBot.Api.Meals.DomainErrors;
-
+namespace MealBot.Api.Meals;
 
 public static partial class Errors
 {

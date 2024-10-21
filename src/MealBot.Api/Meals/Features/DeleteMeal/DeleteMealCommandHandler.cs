@@ -1,5 +1,3 @@
-using Errors = MealBot.Api.Meals.DomainErrors.Errors;
-
 namespace MealBot.Api.Meals.Features.DeleteMeal;
 
 public sealed class DeleteMealCommandHandler(IMealRepository mealRepository) : IRequestHandler<DeleteMealCommand, ErrorOr<Success>>

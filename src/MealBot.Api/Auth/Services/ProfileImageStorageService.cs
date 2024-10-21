@@ -11,7 +11,9 @@ internal interface IProfileImageStorageService
     Task<ErrorOr<Success>> DeleteImageAsync(Guid userId);
 }
 
-internal sealed class LocalProfileImageStorageService(IHttpClientFactory httpClientFactory, IHttpContextAccessor httpContextAccessor) : IProfileImageStorageService
+internal sealed class LocalProfileImageStorageService(
+    IHttpClientFactory httpClientFactory,
+    IHttpContextAccessor httpContextAccessor) : IProfileImageStorageService
 {
     private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
     private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
@@ -29,10 +31,9 @@ internal sealed class LocalProfileImageStorageService(IHttpClientFactory httpCli
             Stream imageStream = File.OpenRead(filePath);
             return Task.FromResult<ErrorOr<Stream>>(imageStream);
         }
-        catch (Exception ex)
+        catch
         {
-            // TODO: Convert this to a standard Error
-            return Task.FromResult<ErrorOr<Stream>>(Error.Failure("Auth.GetProfileImageFailed", ex.Message));
+            return Task.FromResult<ErrorOr<Stream>>(Errors.GetProfileImageFailed());
         }
     }
 
@@ -48,22 +49,19 @@ internal sealed class LocalProfileImageStorageService(IHttpClientFactory httpCli
                 await imageStream.CopyToAsync(fileStream);
             }
 
-
             var request = _httpContextAccessor.HttpContext?.Request;
             if (request is null)
             {
-                // TODO: Convert this to a standard Error
-                return Error.Failure("Auth.SaveProfileImageFailed");
+                return Errors.SaveProfileImageFailed();
             }
 
             var baseUrl = $"{request.Scheme}://{request.Host}{request.PathBase}";
 
             return new Uri($"{baseUrl}{GlobalSettings.RoutePaths.Users}/{userId}/profile-image");
         }
-        catch (Exception ex)
+        catch
         {
-            // TODO: Convert this to a standard Error
-            return Error.Failure("Auth.SaveProfileImageFailed", ex.Message);
+            return Errors.SaveProfileImageFailed();
         }
     }
 
@@ -73,8 +71,7 @@ internal sealed class LocalProfileImageStorageService(IHttpClientFactory httpCli
         var responseMessage = await client.GetAsync(sourceUri);
         if (!responseMessage.IsSuccessStatusCode)
         {
-            // TODO: Convert this to a standard Error
-            return Error.Failure("Auth.SaveProfileImageFailed", "Failed to download the image from the source URI.");
+            return Errors.SaveProfileImageFailed();
         }
 
         using (var imageStream = await responseMessage.Content.ReadAsStreamAsync())
