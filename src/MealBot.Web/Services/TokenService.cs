@@ -16,15 +16,17 @@ public class TokenService(IHttpClientFactory httpClientFactory) : ITokenService
         using var client = _httpClientFactory.CreateClient();
 
         var tokenRefreshResponse = await client.PostAsJsonAsync("auth/tokens/refresh", new TokenRefreshRequest(oldToken), cancellationToken);
-        if (tokenRefreshResponse.IsSuccessStatusCode)
-        {
-            var newAccessToken = await tokenRefreshResponse.Content.ReadFromJsonAsync<AccessTokenResponse>(cancellationToken);
-            // TODO: Handle API Errors and un-deserializedable responses
-            return newAccessToken?.Value;
-        }
-        else
+        if (!tokenRefreshResponse.IsSuccessStatusCode)
         {
             return null;
         }
+
+        var newAccessToken = await tokenRefreshResponse.Content.ReadFromJsonAsync<AccessTokenResponse>(cancellationToken);
+        if (newAccessToken == null)
+        {
+            return null;
+        }
+
+        return newAccessToken.Value;
     }
 }
