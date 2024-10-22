@@ -15,11 +15,10 @@ internal sealed class MealService(IHttpClientFactory httpClientFactory) : IMealS
         var response = await client.GetAsync("meals", cancellationToken);
         if (!response.IsSuccessStatusCode)
         {
-            // TODO: Handle API Errors more gracefully
-            throw new Exception($"`GET meals` failed with status code {response.StatusCode}");
+            return [];
         }
 
         return await response.Content.ReadFromJsonAsync<List<MealResponse>>(cancellationToken)
-            ?? throw new NullReferenceException($"`GET meals` returned null");
+            ?? [];
     }
 }
