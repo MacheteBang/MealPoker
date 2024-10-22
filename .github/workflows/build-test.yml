@@ -2,26 +2,27 @@ name: Build & Test 🚀
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
+    name: 🏗️ Build and Test
 
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v4
-    - name: 🗂️ Checkout Code
-      uses: actions/checkout@v4
-    - name: 🛠️ Setup .NET
-      uses: actions/setup-dotnet@v4
-      with:
-        dotnet-version: 8.0.x
-    - name: 📦 Restore Dependencies
-      run: dotnet restore
-    - name: 🔧 Build
-      run: dotnet build --no-restore
-    - name: 🧪 Run Tests
-      run: dotnet test --no-build --verbosity normal
+      - uses: actions/checkout@v4
+      - name: 🗂️ Checkout Code
+        uses: actions/checkout@v4
+      - name: 🛠️ Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - name: 📦 Restore Dependencies
+        run: dotnet restore
+      - name: 🔧 Build
+        run: dotnet build --no-restore
+      - name: 🧪 Run Tests
+        run: dotnet test --no-build --verbosity normal
