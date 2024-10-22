@@ -29,13 +29,10 @@ public class IdentityProviderService(
 
             // Navigate the user to the Google authentication page
             var authUrlResponse = await httpResponseMessage.Content.ReadFromJsonAsync<AuthUrlReponse>();
-            if (authUrlResponse is null)
+            if (authUrlResponse is not null)
             {
-                // TODO: Handle the error of not being able to deserialize the AuthUrlResponse
-                return;
+                _navigationManager.NavigateTo(authUrlResponse.Url);
             }
-
-            _navigationManager.NavigateTo(authUrlResponse.Url);
         }
     }
 }

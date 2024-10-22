@@ -68,12 +68,11 @@ public class UserAuthenticationStateProvider(
         {
             CurrentUser = new()
             {
-                // TODO: Convert these to use the ClaimTypes constants
-                UserId = claimsPrincipal.FindFirst("nameid")?.Value,
+                UserId = claimsPrincipal.FindFirst(JwtRegisteredClaimNames.Sub)?.Value,
                 IsAuthenticated = true,
-                EmailAddress = claimsPrincipal.FindFirst("email")?.Value,
-                FirstName = claimsPrincipal.FindFirst("given_name")?.Value,
-                LastName = claimsPrincipal.FindFirst("family_name")?.Value,
+                EmailAddress = claimsPrincipal.FindFirst(JwtRegisteredClaimNames.Email)?.Value,
+                FirstName = claimsPrincipal.FindFirst(JwtRegisteredClaimNames.GivenName)?.Value,
+                LastName = claimsPrincipal.FindFirst(JwtRegisteredClaimNames.FamilyName)?.Value,
                 PictureUri = claimsPrincipal.FindFirst(c => c.Type == "profile_image")?.Value
             };
         }
