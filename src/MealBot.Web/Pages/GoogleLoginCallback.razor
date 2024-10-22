@@ -41,7 +41,6 @@
                 if (response.IsSuccessStatusCode)
                 {
                     _accessToken = await response.Content.ReadFromJsonAsync<AccessTokenResponse>();
-                    _accessToken = null;
                     if (_accessToken is null)
                     {
                         return;
