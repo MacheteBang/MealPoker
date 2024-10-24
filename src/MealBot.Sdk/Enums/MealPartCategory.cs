@@ -5,7 +5,7 @@ public enum MealPartCategory
 {
     Unknown,
     MainCourse,
-    Veggie,
+    Vegetable,
     SideDish,
     Dessert,
     Drink,

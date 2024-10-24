@@ -1,0 +1,33 @@
+@page "/meals"
+@attribute [Authorize]
+@inject IMealService _mealService
+
+<PageTitle>Meals</PageTitle>
+
+<h1>Meals</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Parts</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var meal in meals)
+        {
+            <MealRow Meal="meal" />
+        }
+    </tbody>
+</table>
+
+
+@code {
+    private List<MealResponse> meals = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        meals = await _mealService.GetMealsAsync(CancellationToken.None);
+    }
+}

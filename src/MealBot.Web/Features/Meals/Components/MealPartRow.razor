@@ -1,0 +1,26 @@
+@inject IMealService _mealService
+
+<div class="d-flex">
+    <div>
+        <h3>
+            @(_mealService.GetEmojiForCategory(MealPart.Category) ?? "")
+            @MealPart.Name
+        </h3>
+    </div>
+    @if (!string.IsNullOrEmpty(MealPart.Url))
+    {
+        <div class="ms-auto">
+            <a href="@MealPart.Url" target="_blank">link</a>
+        </div>
+    }
+</div>
+<div class="ms-auto">
+    <p>@MealPart.Description</p>
+</div>
+
+@code
+{
+    [Parameter]
+    public required MealPart MealPart { get; set; }
+
+}
