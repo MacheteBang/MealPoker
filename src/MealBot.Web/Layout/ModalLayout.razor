@@ -1,0 +1,15 @@
+@inherits LayoutComponentBase
+@inject UserAuthenticationStateProvider AuthState
+
+<AuthorizeView>
+    <NotAuthorized>
+        <RedirectHome />
+    </NotAuthorized>
+    <Authorized>
+        <div class="bg-dark vh-100 p-4">
+            <div class="container py-2 border rounded-3 bg-light">
+                @Body
+            </div>
+        </div>
+    </Authorized>
+</AuthorizeView>

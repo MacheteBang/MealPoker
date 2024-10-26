@@ -1,4 +1,5 @@
 @page "/meals/add"
+@layout ModalLayout
 @attribute [Authorize]
 @inject IMealService _mealService
 @inject NavigationManager NavigationManager
@@ -33,7 +34,7 @@
                 <h4>Dishes</h4>
             </div>
             <div class="col-auto">
-                <button type="button" class="btn btn-sm btn-primary" @onclick="AddPart">Add Dish</button>
+                <button type="button" class="btn btn-sm btn-success" @onclick="AddPart">+</button>
             </div>
         </div>
     </div>
@@ -69,7 +70,7 @@
             </div>
             <div class="row mb-3">
                 <div class="col-auto">
-                    <label for="dishCategory{Model.Parts.IndexOf(part)}Input" class="form-label">Category</label>
+                    <label for="@($"dishCategory{Model.Parts.IndexOf(part)}Input")" class="form-label">Category</label>
                     <InputSelect @bind-Value="@part.Category" id="@($"dishCategory{Model.Parts.IndexOf(part)}Input")"
                         class="form-select" aria-label="Dish Category" required>
                         @foreach (var category in MealPartCategories)
@@ -82,22 +83,22 @@
                     </InputSelect>
                 </div>
                 <div class="col">
-                    <label for="dishName{Model.Parts.IndexOf(part)}Input" class="form-label"
+                    <label for="@($"dishName{Model.Parts.IndexOf(part)}Input")" class="form-label"
                         aria-label="Dish Name">Name</label>
                     <InputText @bind-Value="@part.Name" id="@($"dishName{Model.Parts.IndexOf(part)}Input")"
                         class="form-control" required />
                 </div>
             </div>
             <div class="mb-3">
-                <label for="dishDescription{Model.Parts.IndexOf(part)}Input" class="form-label">
+                <label for="@($"dishDescription{Model.Parts.IndexOf(part)}Input")" class="form-label">
                     Description
                     <span class="text-muted">(optional)</span>
                 </label>
-                <InputTextArea @bind-Value="@part.Description" id="dishDescription{Model.Parts.IndexOf(part)}Input"
+                <InputTextArea @bind-Value="@part.Description" id="@($"dishDescription{Model.Parts.IndexOf(part)}Input")"
                     class="form-control" />
             </div>
             <div class="mb-3">
-                <label for="dishUrl{Model.Parts.IndexOf(part)}Input" class="form-label" aria-label="Dish Name">
+                <label for="@($"dishUrl{Model.Parts.IndexOf(part)}Input")" class="form-label" aria-label="Dish Name">
                     Url
                     <span class="text-muted">(optional)</span>
                 </label>
@@ -111,7 +112,7 @@
 @code
 {
     [SupplyParameterFromForm]
-    private MealFormModel? Model { get; set; }
+    public required MealFormModel Model { get; set; }
 
     private IEnumerable<MealPartCategory> MealPartCategories => Enum
     .GetValues<MealPartCategory>()

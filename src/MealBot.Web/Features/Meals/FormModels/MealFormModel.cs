@@ -11,7 +11,7 @@ public class MealFormModel
     public class MealPartFormModel
     {
         public MealPartCategory Category { get; set; }
-        public string? Name { get; set; }
+        public string Name { get; set; } = "";
         public string? Description { get; set; }
         public string? Url { get; set; }
     }
