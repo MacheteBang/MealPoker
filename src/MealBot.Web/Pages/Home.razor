@@ -5,33 +5,11 @@
 
 <PageTitle>Home</PageTitle>
 
-<div class="p-1">
-    <MealRow Meal='new MealResponse
-    {
-        Name = "Spaghetti and Meatballs",
-        Description = "Spaghetti and meatballs is a classic Italian-American dish featuring tender, juicy meatballs simmered in a rich tomato sauce. The savory sauce coats al dente spaghetti, creating a comforting and hearty meal. Often garnished with fresh herbs and a sprinkle of Parmesan cheese, it’s a favorite for both casual dinners and family gatherings.",
-        MealParts = [
-            new MealPart("MainCourse", "Spaghetti", "Al dente spaghetti noodles.", "https://google.com"),
-            new MealPart("SideDish", "Meatballs", "Juicy meatballs simmered in a rich tomato sauce.", ""),
-            new MealPart("Vegetable", "Salad", "Fresh mixed greens with a tangy vinaigrette.", ""),
-        ]
-    }' />
-</div>
-<div class="p-1">
-    <MealRow Meal='new MealResponse
-    {
-        Name = "Meatloaf",
-        Description = "Enjoy a hearty, homestyle meal featuring a savory, perfectly seasoned meatloaf, paired with creamy, rich mac & cheese. Served alongside tender green beans, lightly sautéed for a fresh, balanced touch.",
-        MealParts = [
-            new MealPart("MainCourse", "Meatloaf", "A savory, tender meatloaf packed with rich flavors and a hint of seasoning.", "https://google.com"),
-            new MealPart("SideDish", "Mac & Cheese", "Creamy, cheesy, and irresistibly rich, this mac & cheese is pure comfort.", ""),
-            new MealPart("Vegetable", "Salad", "Fresh, tender green beans with a light, flavorful sauté.", ""),
-            new MealPart("Dessert", "Vanilla Pudding", "Smooth and creamy, this vanilla pudding is a sweet, classic treat.", ""),
-        ]
-    }' />
-</div>
 <AuthorizeView>
     <Authorized>
         <p>Welcome @_userAuthenticationStateProvider.CurrentUser.FirstName</p>
     </Authorized>
+    <NotAuthorized>
+        <p>Welcome Guest</p>
+    </NotAuthorized>
 </AuthorizeView>

@@ -4,22 +4,20 @@
 
 <PageTitle>Meals</PageTitle>
 
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <h1>Meals</h1>
-        </div>
-        <div class="col-auto ms-auto">
-            <NavLink class="btn btn-primary" href="/meals/add">Add Meal</NavLink>
-        </div </div>
+<div class="row">
+    <div class="col">
+        <h1>Meals</h1>
     </div>
-    @foreach (var meal in meals)
+    <div class="col-auto ms-auto">
+        <NavLink class="btn btn-primary" href="/meals/add">Add Meal</NavLink>
+    </div>
+</div>
+@foreach (var meal in meals)
 {
-        <div class="pb-2">
-            <MealRow Meal="@meal" OnDelete="HandleDelete" />
-        </div>
+    <div class="pb-2">
+        <MealRow Meal="@meal" OnDelete="HandleDelete" />
+    </div>
 }
-
 
 @code {
     private List<MealResponse> meals = [];
