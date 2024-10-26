@@ -1,5 +1,12 @@
 <div class="border rounded-2 w-100 p-2">
-    <h4>@Meal.Name</h4>
+    <div class="row">
+        <div class="col">
+            <h4>@Meal.Name</h4>
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-sm btn-danger" @onclick="Delete">X</button>
+        </div>
+    </div>
     <p>@Meal.Description</p>
     <div class="container">
         <div class="row">
@@ -17,4 +24,11 @@
 {
     [Parameter]
     public required MealResponse Meal { get; set; }
+    [Parameter]
+    public EventCallback<MealResponse> OnDelete { get; set; }
+
+    private async Task Delete()
+    {
+        await OnDelete.InvokeAsync(Meal);
+    }
 }

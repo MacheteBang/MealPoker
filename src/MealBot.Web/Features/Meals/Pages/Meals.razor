@@ -16,7 +16,7 @@
     @foreach (var meal in meals)
 {
         <div class="pb-2">
-            <MealRow Meal="@meal" />
+            <MealRow Meal="@meal" OnDelete="HandleDelete" />
         </div>
 }
 
@@ -27,5 +27,11 @@
     protected override async Task OnInitializedAsync()
     {
         meals = await _mealService.GetMealsAsync(CancellationToken.None);
+    }
+
+    private void HandleDelete(MealResponse meal)
+    {
+        meals.Remove(meal);
+        _mealService.DeleteMealAsync(meal.MealId, CancellationToken.None);
     }
 }

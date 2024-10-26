@@ -6,6 +6,7 @@ internal interface IMealService
 {
     Task<List<MealResponse>> GetMealsAsync(CancellationToken cancellationToken);
     Task AddMealAsync(CreateMealRequest request, CancellationToken cancellationToken);
+    Task DeleteMealAsync(Guid id, CancellationToken cancellationToken);
     string? GetEmojiForCategory(string category);
     string? GetEmojiForCategory(MealPartCategory category);
 }
@@ -42,6 +43,20 @@ internal sealed class MealService(IHttpClientFactory httpClientFactory) : IMealS
         }
     }
 
+
+    public async Task DeleteMealAsync(Guid id, CancellationToken cancellationToken)
+    {
+        using var client = _httpClientFactory.CreateClient();
+        var response = await client.DeleteAsync(
+            $"meals/{id}",
+            cancellationToken);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            return;
+            // FIXME: On failure in adding meal, report back to the consumer
+        }
+    }
     public string? GetEmojiForCategory(string category)
     {
         Dictionary<string, string> dictionary = new()
