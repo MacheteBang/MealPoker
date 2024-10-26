@@ -1,13 +1,25 @@
 @page "/meals/add"
+@attribute [Authorize]
+@inject IMealService _mealService
+@inject NavigationManager NavigationManager
 
 <PageTitle>Add Meal</PageTitle>
-<h1>Add Meal</h1>
 <form method="post" @onsubmit="Submit">
-    <div class="mb-3">
-        <label for="nameInput" class="form-label">Meal Name</label>
-        <InputText @bind-Value="@Model.Name" class="form-control" id="nameInput" />
+
+    <div class='row'>
+        <div class='col'>
+            <h1>Add Meal</h1>
+        </div>
+        <div class='col-auto'>
+            <button type='submit' class='btn btn-primary ms-auto'>Save Meal</button>
+        </div>
     </div>
+
     <div class="mb-3">
+        <label for="nameInput" class="form-label">Name</label>
+        <InputText @bind-Value="@Model.Name" class="form-control" id="nameInput" required />
+    </div>
+    <div class=" mb-3">
         <label for="descriptionInput" class="form-label">
             Description
             <span class="text-muted">(optional)</span>
@@ -36,40 +48,64 @@
     @foreach (var part in Model.Parts)
     {
         <div class="border rounded mb-2 p-2">
-            <div class="mb-3">
-                <label for="dishCategory{Model.Parts.IndexOf(part)}Input" class="form-label">Category</label>
-                <InputSelect @bind-Value="@part.Category" id="@($"dishCategory{Model.Parts.IndexOf(part)}Input")"
-                    class="form-select" aria-label="Dish Category">
-                    @foreach (var category in Enum.GetValues(typeof(MealPartCategory)))
-                    {
-                        <option value="@category">@category.ToString()</option>
-                    }
-                </InputSelect>
+            <div class='row'>
+                <div class='col'>
+                    <h5>
+                        @if (string.IsNullOrEmpty(part.Name))
+                        {
+                            <span class='text-muted'>New Dish</span>
+                        }
+                        else
+                        {
+                            <span>@part.Name</span>
+                        }
+                    </h5>
+                </div>
+                <div class='col-auto'>
+                    <button type='button' class='btn btn-sm btn-danger' @onclick='() => RemovePart(part)'>
+                        X
+                    </button>
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="dishName{Model.Parts.IndexOf(part)}Input" class="form-label" aria-label="Dish Name">Name</label>
-                <InputText @bind-Value="@part.Name" id="@($"dishName{Model.Parts.IndexOf(part)}Input")"
-                    class="form-control" />
+            <div class='row mb-3'>
+                <div class="col-auto">
+                    <label for="dishCategory{Model.Parts.IndexOf(part)}Input" class="form-label">Category</label>
+                    <InputSelect @bind-Value="@part.Category" id="@($"dishCategory{Model.Parts.IndexOf(part)}Input")"
+                        class="form-select" aria-label="Dish Category" required>
+                        @foreach (var category in MealPartCategories)
+                        {
+                            <option value="@category">
+                                @_mealService.GetEmojiForCategory(category)
+                                @category.ToString()
+                            </option>
+                        }
+                    </InputSelect>
+                </div>
+                <div class="col">
+                    <label for="dishName{Model.Parts.IndexOf(part)}Input" class="form-label"
+                        aria-label="Dish Name">Name</label>
+                    <InputText @bind-Value="@part.Name" id="@($"dishName{Model.Parts.IndexOf(part)}Input")"
+                        class="form-control" required />
+                </div>
             </div>
             <div class="mb-3">
                 <label for="dishDescription{Model.Parts.IndexOf(part)}Input" class="form-label">
                     Description
                     <span class="text-muted">(optional)</span>
                 </label>
-                <InputTextArea @bind-Value="@Model.Description" id="dishDescription{Model.Parts.IndexOf(part)}Input"
+                <InputTextArea @bind-Value="@part.Description" id="dishDescription{Model.Parts.IndexOf(part)}Input"
                     class="form-control" />
             </div>
             <div class="mb-3">
-                <label for="dishUrl{Model.Parts.IndexOf(part)}Input" class="form-label" aria-label="Dish Name">Url</label>
+                <label for="dishUrl{Model.Parts.IndexOf(part)}Input" class="form-label" aria-label="Dish Name">
+                    Url
+                    <span class="text-muted">(optional)</span>
+                </label>
                 <InputText @bind-Value="@part.Url" id="@($"dishUrl{Model.Parts.IndexOf(part)}Input")"
                     class="form-control" />
             </div>
         </div>
     }
-
-    <div class="my-2 text-center">
-        <button type="submit" class="btn btn-primary">Save Meal</button>
-    </div>
 </form>
 
 @code
@@ -77,12 +113,31 @@
     [SupplyParameterFromForm]
     private MealFormModel? Model { get; set; }
 
-    protected override void OnInitialized() => Model ??= new MealFormModel { Name = "" };
-    private void AddPart()
-    {
-        var part = new MealFormModel.MealPartFormModel();
-        Model!.Parts.Add(part);
-    }
+    private IEnumerable<MealPartCategory> MealPartCategories => Enum
+    .GetValues<MealPartCategory>()
+    .Cast<MealPartCategory>()
+    .Where(c => c != MealPartCategory.Unknown);
 
-    private void Submit() => Console.WriteLine("Submit");
+    protected override void OnInitialized() => Model ??= new MealFormModel { Name = "" };
+    private void AddPart() => Model!.Parts.Add(new MealFormModel.MealPartFormModel());
+    private void RemovePart(MealFormModel.MealPartFormModel part) => Model!.Parts.Remove(part);
+
+    private async Task Submit()
+    {
+        var mealRequest = new CreateMealRequest(
+        Model.Name,
+        Model.Description,
+        Model.Parts.Select(p => new MealPart
+            {
+                Category = p.Category.ToString(),
+                Name = p.Name,
+                Description = p.Description,
+                Url = p.Url
+            }).ToList()
+        );
+
+        await _mealService.AddMealAsync(mealRequest, CancellationToken.None);
+
+        NavigationManager.NavigateTo("/meals");
+    }
 }

@@ -1,9 +1,13 @@
+using System.Text;
+
 namespace MealBot.Web.Features.Meals.Services;
 
 internal interface IMealService
 {
     Task<List<MealResponse>> GetMealsAsync(CancellationToken cancellationToken);
+    Task AddMealAsync(CreateMealRequest request, CancellationToken cancellationToken);
     string? GetEmojiForCategory(string category);
+    string? GetEmojiForCategory(MealPartCategory category);
 }
 
 internal sealed class MealService(IHttpClientFactory httpClientFactory) : IMealService
@@ -23,6 +27,21 @@ internal sealed class MealService(IHttpClientFactory httpClientFactory) : IMealS
             ?? [];
     }
 
+    public async Task AddMealAsync(CreateMealRequest request, CancellationToken cancellationToken)
+    {
+        using var client = _httpClientFactory.CreateClient();
+        var response = await client.PostAsync(
+            "meals",
+            new StringContent(JsonSerializer.Serialize(request), Encoding.UTF8, "application/json"),
+            cancellationToken);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            return;
+            // FIXME: On failure in adding meal, report back to the consumer
+        }
+    }
+
     public string? GetEmojiForCategory(string category)
     {
         Dictionary<string, string> dictionary = new()
@@ -39,5 +58,5 @@ internal sealed class MealService(IHttpClientFactory httpClientFactory) : IMealS
             ? emoji
             : null;
     }
-
+    public string? GetEmojiForCategory(MealPartCategory category) => GetEmojiForCategory(category.ToString());
 }

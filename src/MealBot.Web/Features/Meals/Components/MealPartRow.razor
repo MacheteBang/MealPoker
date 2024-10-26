@@ -2,10 +2,10 @@
 
 <div class="d-flex">
     <div>
-        <h3>
+        <h5>
             @(_mealService.GetEmojiForCategory(MealPart.Category) ?? "")
             @MealPart.Name
-        </h3>
+        </h5>
     </div>
     @if (!string.IsNullOrEmpty(MealPart.Url))
     {
