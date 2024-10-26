@@ -6,12 +6,12 @@
 <PageTitle>Add Meal</PageTitle>
 <form method="post" @onsubmit="Submit">
 
-    <div class='row'>
-        <div class='col'>
+    <div class="row">
+        <div class="col">
             <h1>Add Meal</h1>
         </div>
-        <div class='col-auto'>
-            <button type='submit' class='btn btn-primary ms-auto'>Save Meal</button>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary ms-auto">Save Meal</button>
         </div>
     </div>
 
@@ -27,13 +27,13 @@
         <InputTextArea @bind-Value="@Model.Description" class="form-control" id="descriptionInput" />
     </div>
 
-    <div class='contaier'>
-        <div class='row'>
-            <div class='col'>
+    <div class="contaier">
+        <div class="row">
+            <div class="col">
                 <h4>Dishes</h4>
             </div>
-            <div class='col-auto'>
-                <button type='button' class='btn btn-sm btn-primary' @onclick='AddPart'>Add Dish</button>
+            <div class="col-auto">
+                <button type="button" class="btn btn-sm btn-primary" @onclick="AddPart">Add Dish</button>
             </div>
         </div>
     </div>
@@ -48,12 +48,12 @@
     @foreach (var part in Model.Parts)
     {
         <div class="border rounded mb-2 p-2">
-            <div class='row'>
-                <div class='col'>
+            <div class="row">
+                <div class="col">
                     <h5>
                         @if (string.IsNullOrEmpty(part.Name))
                         {
-                            <span class='text-muted'>New Dish</span>
+                            <span class="text-muted">New Dish</span>
                         }
                         else
                         {
@@ -61,13 +61,13 @@
                         }
                     </h5>
                 </div>
-                <div class='col-auto'>
-                    <button type='button' class='btn btn-sm btn-danger' @onclick='() => RemovePart(part)'>
+                <div class="col-auto">
+                    <button type="button" class="btn btn-sm btn-danger" @onclick="() => RemovePart(part)">
                         X
                     </button>
                 </div>
             </div>
-            <div class='row mb-3'>
+            <div class="row mb-3">
                 <div class="col-auto">
                     <label for="dishCategory{Model.Parts.IndexOf(part)}Input" class="form-label">Category</label>
                     <InputSelect @bind-Value="@part.Category" id="@($"dishCategory{Model.Parts.IndexOf(part)}Input")"
