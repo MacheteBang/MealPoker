@@ -4,13 +4,28 @@ public sealed class UpdateMealEndpoint : MealBotEndpoint
 {
     public override void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapPut($"{GlobalSettings.RoutePaths.Meals}/{{mealId}}", async (Guid mealId, UpdateMealRequest request, ISender sender) =>
+        app.MapPut($"{GlobalSettings.RoutePaths.Meals}/{{mealId}}", async (
+            HttpContext context,
+            Guid mealId,
+            UpdateMealRequest request,
+            ISender sender) =>
         {
-            var result = await sender.Send(request.ToCommand(mealId));
+            if (!Guid.TryParse(context.User.FindFirstValue(JwtRegisteredClaimNames.Sub), out Guid userId))
+            {
+                return Problem(Auth.Errors.SubMissingFromToken());
+            }
+
+            var result = await sender.Send(new UpdateMealCommand(
+                userId,
+                mealId,
+                request.Name,
+                request.Description,
+                request.MealParts));
 
             return result.Match(
                 meal => Results.Ok(meal.ToResponse()),
                 errors => Problem(errors));
-        });
+        })
+        .RequireAuthorization();
     }
 }

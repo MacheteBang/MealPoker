@@ -5,9 +5,9 @@ public sealed class CreateMealCommandHandler(IValidator<CreateMealCommand> valid
     private readonly IValidator<CreateMealCommand> _validator = validator;
     private readonly IMealRepository _mealRepository = mealRepository;
 
-    public async Task<ErrorOr<Meal>> Handle(CreateMealCommand request, CancellationToken cancellationToken)
+    public async Task<ErrorOr<Meal>> Handle(CreateMealCommand command, CancellationToken cancellationToken)
     {
-        ValidationResult validationResult = _validator.Validate(request);
+        ValidationResult validationResult = _validator.Validate(command);
         if (!validationResult.IsValid)
         {
             return validationResult.Errors
@@ -17,9 +17,10 @@ public sealed class CreateMealCommandHandler(IValidator<CreateMealCommand> valid
 
         var meal = new Meal
         {
-            Name = request.Name,
-            Description = request.Description,
-            MealParts = request.MealParts
+            OwnerUserId = command.OwnerUserId,
+            Name = command.Name,
+            Description = command.Description,
+            MealParts = command.MealParts
         };
 
         await _mealRepository.AddMealAsync(meal);

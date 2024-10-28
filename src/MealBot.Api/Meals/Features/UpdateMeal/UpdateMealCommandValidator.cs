@@ -1,8 +1,8 @@
-namespace MealBot.Api.Meals.Features.CreateMeal;
+namespace MealBot.Api.Meals.Features.UpdateMeal;
 
-public class CreateMealCommandValidator : AbstractValidator<CreateMealCommand>
+public class UpdateMealCommandValidator : AbstractValidator<UpdateMealCommand>
 {
-    public CreateMealCommandValidator()
+    public UpdateMealCommandValidator()
     {
         RuleFor(x => x.OwnerUserId)
             .NotEmpty();

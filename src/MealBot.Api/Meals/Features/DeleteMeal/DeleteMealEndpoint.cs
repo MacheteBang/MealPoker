@@ -4,13 +4,22 @@ public sealed class DeleteMealEndpoint : MealBotEndpoint
 {
     public override void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapDelete(GlobalSettings.RoutePaths.Meals + "/{mealId}", async (Guid mealId, ISender sender) =>
+        app.MapDelete(GlobalSettings.RoutePaths.Meals + "/{mealId}", async (
+            HttpContext context,
+            Guid mealId,
+            ISender sender) =>
         {
-            var result = await sender.Send(new DeleteMealCommand(mealId));
+            if (!Guid.TryParse(context.User.FindFirstValue(JwtRegisteredClaimNames.Sub), out Guid userId))
+            {
+                return Problem(Auth.Errors.SubMissingFromToken());
+            }
+
+            var result = await sender.Send(new DeleteMealCommand(userId, mealId));
 
             return result.Match(
                 success => Results.NoContent(),
                 errors => Problem(errors));
-        });
+        })
+        .RequireAuthorization();
     }
 }

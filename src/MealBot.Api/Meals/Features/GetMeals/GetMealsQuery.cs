@@ -1,3 +1,5 @@
 namespace MealBot.Api.Meals.Features.GetMeals;
 
-public record GetMealsQuery : IRequest<ErrorOr<List<Meal>>>;
+public record GetMealsQuery(
+    Guid OwnerUserId
+) : IRequest<ErrorOr<List<Meal>>>;

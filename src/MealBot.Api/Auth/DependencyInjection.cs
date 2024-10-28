@@ -1,6 +1,6 @@
 using MealBot.Api.Extensions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.JsonWebTokens;
 using System.Reflection;
 
 namespace MealBot.Api.Auth;
@@ -9,6 +9,8 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddAuth(this IServiceCollection services, IConfigurationManager configuration)
     {
+        JsonWebTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
         services.AddHttpClient();
 
         services.AddScoped<IAuthenticationService, AuthenticationService>();

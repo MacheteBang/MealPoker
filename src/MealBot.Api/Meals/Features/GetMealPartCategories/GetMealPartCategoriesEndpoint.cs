@@ -11,6 +11,7 @@ public sealed class GetMealPartCategoriesEndpoint : MealBotEndpoint
             return result.Match(
                 categories => Results.Ok(categories),
                 errors => Problem(errors));
-        });
+        })
+        .RequireAuthorization();
     }
 }

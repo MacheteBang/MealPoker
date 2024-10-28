@@ -1,12 +1,14 @@
+using Microsoft.EntityFrameworkCore;
+
 namespace MealBot.Api.Meals.Repositories;
 
 public interface IMealRepository
 {
     Task AddMealAsync(Meal meal);
-    Task<List<Meal>> GetMealsAsync();
-    Task<Meal?> GetMealAsync(Guid mealId);
-    Task<Meal?> UpdateMeal(Meal meal);
-    Task<bool> DeleteMeal(Guid mealId);
+    Task<List<Meal>> GetMealsByUserIdAsync(Guid ownerUserId);
+    Task<Meal?> GetMealByUserIdAsync(Guid ownerUserId, Guid mealId);
+    Task<Meal?> UpdateMealAsync(Meal meal);
+    Task<bool> DeleteMealByUserIdAsync(Guid ownerUserId, Guid mealId);
 }
 
 internal sealed class MealRepository(MealBotDbContext mealBotDbContext) : IMealRepository
@@ -19,19 +21,25 @@ internal sealed class MealRepository(MealBotDbContext mealBotDbContext) : IMealR
         await _mealBotDbContext.SaveChangesAsync();
     }
 
-    public Task<List<Meal>> GetMealsAsync()
+    public async Task<List<Meal>> GetMealsByUserIdAsync(Guid ownerUserId)
     {
-        return Task.FromResult<List<Meal>>([.. _mealBotDbContext.Meals]);
+        return await _mealBotDbContext.Meals
+            .Where(m => m.OwnerUserId == ownerUserId)
+            .ToListAsync();
     }
 
-    public Task<Meal?> GetMealAsync(Guid mealId)
+    public async Task<Meal?> GetMealByUserIdAsync(Guid ownerUserId, Guid mealId)
     {
-        return Task.FromResult(_mealBotDbContext.Meals.FirstOrDefault(m => m.MealId == mealId));
+        return await _mealBotDbContext.Meals
+            .FirstOrDefaultAsync(m =>
+                m.OwnerUserId == ownerUserId
+                && m.MealId == mealId);
     }
 
-    public async Task<Meal?> UpdateMeal(Meal meal)
+    public async Task<Meal?> UpdateMealAsync(Meal meal)
     {
-        var existingMeal = _mealBotDbContext.Meals.FirstOrDefault(m => m.MealId == meal.MealId);
+        var existingMeal = await GetMealByUserIdAsync(meal.OwnerUserId, meal.MealId);
+
         if (existingMeal is null)
         {
             return null;
@@ -44,9 +52,9 @@ internal sealed class MealRepository(MealBotDbContext mealBotDbContext) : IMealR
         return meal;
     }
 
-    public async Task<bool> DeleteMeal(Guid mealId)
+    public async Task<bool> DeleteMealByUserIdAsync(Guid ownerUserId, Guid mealId)
     {
-        var existingMeal = _mealBotDbContext.Meals.FirstOrDefault(m => m.MealId == mealId);
+        var existingMeal = await GetMealByUserIdAsync(ownerUserId, mealId);
         if (existingMeal is null)
         {
             return false;
