@@ -1,6 +1,4 @@
-using MealBot.Api.Families.Models;
-
-namespace MealBot.Api.Database;
+namespace MealBot.Api.Common.Database;
 
 public static class ModelConfigurationExtensions
 {

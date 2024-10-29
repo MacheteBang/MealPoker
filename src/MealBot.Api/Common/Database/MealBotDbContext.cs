@@ -1,4 +1,4 @@
-namespace MealBot.Api.Database;
+namespace MealBot.Api.Common.Database;
 
 internal sealed class MealBotDbContext(DbContextOptions<MealBotDbContext> options) : DbContext(options)
 {
