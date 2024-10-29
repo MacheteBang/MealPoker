@@ -1,8 +1,8 @@
-namespace MealBot.Api.Families;
+namespace MealBot.Api;
 
-public static class GlobalSettings
+public partial class GlobalSettings
 {
-    public static class RoutePaths
+    public partial class RoutePaths
     {
         public const string Families = "/families";
     }

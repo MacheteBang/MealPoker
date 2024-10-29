@@ -12,7 +12,7 @@ public sealed class UpdateMealEndpoint : MealBotEndpoint
         {
             if (!Guid.TryParse(context.User.FindFirstValue(JwtRegisteredClaimNames.Sub), out Guid userId))
             {
-                return Problem(Auth.Errors.SubMissingFromToken());
+                return Problem(Identity.Errors.SubMissingFromToken());
             }
 
             var result = await sender.Send(new UpdateMealCommand(

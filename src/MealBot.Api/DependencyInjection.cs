@@ -1,6 +1,4 @@
 using MealBot.Api.Common.Errors;
-using MealBot.Api.Extensions;
-using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
 namespace MealBot.Api;

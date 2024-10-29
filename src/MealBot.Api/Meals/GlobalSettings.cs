@@ -1,8 +1,8 @@
 namespace MealBot.Api.Meals;
 
-public static class GlobalSettings
+public partial class GlobalSettings
 {
-    public static class RoutePaths
+    public partial class RoutePaths
     {
         public const string Meals = "/meals";
         public const string MealPartCategories = "/meal-part-categories";
