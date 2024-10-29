@@ -4,6 +4,8 @@ A .NET Core application designed to help families plan meals and track preferenc
 ## Tools
 - **Bruno**: Used for testing and debugging RESTful APIs by sending HTTP requests and inspecting responses. More information can be found at [usebruno.com](https://usebruno.com).
 
+- **SDK-Style Database Projects**: The database structure is managed in source control using a "database-first" approach and [SDK-Style Database Projects](https://learn.microsoft.com/en-us/azure-data-studio/extensions/sql-database-project-extension-sdk-style-projects)
+
 ## Inspiration
 
 This project was inspired by various patterns and practices from the community. If you find it useful, consider giving them a star on GitHub!

@@ -11,7 +11,7 @@
             "name": "API",
             "type": "coreclr",
             "request": "launch",
-            "preLaunchTask": "build-api",
+            "preLaunchTask": "build-be",
             "program": "${workspaceFolder}/src/MealBot.Api/bin/Debug/net8.0/MealBot.Api.dll",
             "args": [],
             "cwd": "${workspaceFolder}/src/MealBot.Api",

@@ -1,4 +1,5 @@
 using MealBot.Api.Common.Errors;
+using MealBot.Api.Extensions;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;
 
@@ -22,22 +23,8 @@ public static class GlobalDependencyInjection
 
     public static IServiceCollection AddDatabaseProvider(this IServiceCollection services, IConfigurationManager configuration)
     {
-        // TODO: Convert to a robust database provider.
-        var folder = Environment.SpecialFolder.LocalApplicationData;
-        var directoryPath = Path.Join(Environment.GetFolderPath(folder), ".MealBot");
-        string fileLocation = System.IO.Path.Join(directoryPath, "MealBot.Api.Auth.db");
-
-        // Create directory if it doesn't exist
-        if (!Directory.Exists(directoryPath))
-        {
-            Directory.CreateDirectory(directoryPath);
-        }
-
-        services.AddDbContext<MealBotDbContext>(options => options.UseSqlite($"Data Source={fileLocation};"));
-
-        using var serviceScope = services.BuildServiceProvider().CreateScope();
-        var dbContext = serviceScope.ServiceProvider.GetRequiredService<MealBotDbContext>();
-        dbContext.Database.EnsureCreated();
+        string connectionString = configuration.GetRequiredValue<string>("ConnectionStrings:Database");
+        services.AddDbContext<MealBotDbContext>(options => options.UseSqlServer(connectionString));
 
         return services;
     }
