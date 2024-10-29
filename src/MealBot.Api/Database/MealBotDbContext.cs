@@ -11,17 +11,17 @@ internal sealed class MealBotDbContext(DbContextOptions<MealBotDbContext> option
     {
         modelBuilder.Entity<User>()
             .HasKey(u => u.UserId)
-            .HasName("PK_Users_UserId");
+            .HasName("PK_Users");
 
         modelBuilder.Entity<Meal>()
             .HasKey(m => m.MealId)
-            .HasName("PK_Meals_MealId");
+            .HasName("PK_Meals");
         modelBuilder.Entity<Meal>()
             .OwnsMany(m => m.MealParts, a =>
             {
                 a.WithOwner().HasForeignKey("MealId");
-                a.Property<int>("Id");
-                a.HasKey("Id");
+                a.Property<int>("MealPartId");
+                a.HasKey("MealPartId");
             });
     }
 }

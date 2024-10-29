@@ -1,0 +1,9 @@
+CREATE TABLE [dbo].[Meals]
+(
+   [MealId] UNIQUEIDENTIFIER NOT NULL,
+   [OwnerUserId] UNIQUEIDENTIFIER NOT NULL,
+   [Name] NVARCHAR(128) NOT NULL,
+   [Description] NVARCHAR(512) NULL,
+
+   CONSTRAINT [PK_Meals] PRIMARY KEY ([MealId])
+)   
