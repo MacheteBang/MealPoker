@@ -16,6 +16,8 @@ global using MealBot.Api.Common;
 global using MealBot.Api.Common.Http;
 global using MealBot.Api.Database;
 global using MealBot.Api.Exceptions;
+global using MealBot.Api.Families;
+global using MealBot.Api.Families.Models;
 global using MealBot.Api.Meals;
 global using MealBot.Api.Meals.Models;
 global using MealBot.Api.Meals.Repositories;
