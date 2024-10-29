@@ -7,8 +7,12 @@ public static class GlobalDependencyInjection
 {
     public static IServiceCollection AddPresentation(this IServiceCollection services)
     {
+        Assembly thisAssembly = typeof(GlobalDependencyInjection).Assembly;
+
         services.AddSerilog();
         services.AddSingleton<ProblemDetailsFactory, MealBotProblemDetailsFactory>();
+        services.AddMediatR(mediatROptions => mediatROptions.RegisterServicesFromAssembly(thisAssembly));
+        services.AddValidatorsFromAssembly(thisAssembly);
         return services;
     }
 

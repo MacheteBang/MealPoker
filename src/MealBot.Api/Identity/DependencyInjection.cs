@@ -1,12 +1,11 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.JsonWebTokens;
-using System.Reflection;
 
 namespace MealBot.Api.Identity;
 
 public static class DependencyInjection
 {
-    public static IServiceCollection AddAuth(this IServiceCollection services, IConfigurationManager configuration)
+    public static IServiceCollection AddIdentity(this IServiceCollection services, IConfigurationManager configuration)
     {
         JsonWebTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
@@ -19,10 +18,6 @@ public static class DependencyInjection
 
         services.AddJwtAuthentications(configuration);
 
-        Assembly thisAssembly = typeof(DependencyInjection).Assembly;
-
-        services.AddMediatR(mediatROptions => mediatROptions.RegisterServicesFromAssembly(thisAssembly));
-
         services.Configure<AuthenticationOptions>(configuration.GetSection("Authentication"));
         services.Configure<AuthorizationOptions>(configuration.GetSection("Authorization"));
         services.Configure<RefreshTokenOptions>(configuration.GetSection("Authorization:RefreshTokenOptions"));
@@ -31,7 +26,7 @@ public static class DependencyInjection
         return services;
     }
 
-    public static WebApplication UseAuth(this WebApplication app)
+    public static WebApplication UseIdentity(this WebApplication app)
     {
         app.UseAuthentication();
         app.UseAuthorization();

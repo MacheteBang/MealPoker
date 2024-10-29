@@ -1,6 +1,5 @@
 using CrypticWizard.RandomWordGenerator;
 using MealBot.Api.Families.Services;
-using System.Reflection;
 
 namespace MealBot.Api.Families;
 
@@ -10,11 +9,6 @@ public static class DependencyInjection
     {
         services.AddSingleton(new WordGenerator(seed: 123456));
         services.AddScoped<IFamilyService, FamilyService>();
-
-        Assembly thisAssembly = typeof(DependencyInjection).Assembly;
-
-        services.AddMediatR(mediatROptions => mediatROptions.RegisterServicesFromAssembly(thisAssembly));
-
 
         return services;
     }

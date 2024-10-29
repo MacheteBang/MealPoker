@@ -10,8 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.AddHttpContextAccessor();
     builder.Services.AddPresentation();
     builder.Services.AddDatabaseProvider(builder.Configuration);
+    builder.Services.AddIdentity(builder.Configuration);
+    builder.Services.AddUsers(builder.Configuration);
     builder.Services.AddMeals();
-    builder.Services.AddAuth(builder.Configuration);
     builder.Services.AddFamilies(builder.Configuration);
     builder.Services.AddCors(options =>
     {
@@ -28,7 +29,7 @@ var builder = WebApplication.CreateBuilder(args);
 
     builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
     {
-        options.SerializerOptions.DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull;
+        options.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
     });
 }
 
