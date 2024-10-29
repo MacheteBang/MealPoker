@@ -2,10 +2,10 @@ namespace MealBot.Api.Meals.Features.UpdateMeal;
 
 public sealed class UpdateMealCommandHandler(
     IValidator<UpdateMealCommand> validator,
-    IMealRepository mealRepository) : IRequestHandler<UpdateMealCommand, ErrorOr<Meal>>
+    IMealsService MealsService) : IRequestHandler<UpdateMealCommand, ErrorOr<Meal>>
 {
     private readonly IValidator<UpdateMealCommand> _validator = validator;
-    private readonly IMealRepository _mealRepository = mealRepository;
+    private readonly IMealsService _MealsService = MealsService;
 
     public async Task<ErrorOr<Meal>> Handle(UpdateMealCommand command, CancellationToken cancellationToken)
     {
@@ -26,7 +26,7 @@ public sealed class UpdateMealCommandHandler(
             MealParts = command.MealParts
         };
 
-        var updatedMeal = await _mealRepository.UpdateMealAsync(meal);
+        var updatedMeal = await _MealsService.UpdateMealAsync(meal);
 
         return updatedMeal switch
         {

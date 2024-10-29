@@ -2,10 +2,10 @@ namespace MealBot.Api.Meals.Features.GetMeal;
 
 public sealed class GetMealQueryHandler(
     IValidator<GetMealQuery> validator,
-    IMealRepository mealRepository) : IRequestHandler<GetMealQuery, ErrorOr<Meal>>
+    IMealsService MealsService) : IRequestHandler<GetMealQuery, ErrorOr<Meal>>
 {
     private readonly IValidator<GetMealQuery> _validator = validator;
-    private readonly IMealRepository _mealRepository = mealRepository;
+    private readonly IMealsService _MealsService = MealsService;
 
     public async Task<ErrorOr<Meal>> Handle(GetMealQuery query, CancellationToken cancellationToken)
     {
@@ -17,7 +17,7 @@ public sealed class GetMealQueryHandler(
                 .ToList();
         }
 
-        var meal = await _mealRepository.GetMealByUserIdAsync(query.OwnerUserId, query.MealId);
+        var meal = await _MealsService.GetMealByUserIdAsync(query.OwnerUserId, query.MealId);
 
         return meal switch
         {

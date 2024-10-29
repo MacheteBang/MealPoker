@@ -28,7 +28,7 @@ internal sealed class GetAuthUrlEndpoint : MealBotEndpoint
             var result = await sender.Send(query);
 
             return result.Match(
-                url => Results.Ok(new AuthUrlReponse(provider.ToString(), url)),
+                url => Results.Ok(new AuthUrlResponse(provider.ToString(), url)),
                 error => Problem(error));
         });
     }

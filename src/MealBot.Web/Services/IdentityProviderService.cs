@@ -21,14 +21,14 @@ public class IdentityProviderService(
         // to the same page after successful authentication
         string state = Uri.EscapeDataString(_navigationManager.Uri);
         string callBackUri = Uri.EscapeDataString($"{_navigationManager.BaseUri}google-callback");
-        var httpResponseMessage = await httpClient.GetAsync($"auth/urls?provider=Google&state={state}&callbackUri={callBackUri}");
+        var httpResponseMessage = await httpClient.GetAsync($"identity/urls?provider=Google&state={state}&callbackUri={callBackUri}");
 
         if (httpResponseMessage.IsSuccessStatusCode)
         {
             await _browserStorageService.RemoveAccessTokenAsync();
 
             // Navigate the user to the Google authentication page
-            var authUrlResponse = await httpResponseMessage.Content.ReadFromJsonAsync<AuthUrlReponse>();
+            var authUrlResponse = await httpResponseMessage.Content.ReadFromJsonAsync<AuthUrlResponse>();
             if (authUrlResponse is not null)
             {
                 _navigationManager.NavigateTo(authUrlResponse.Url);

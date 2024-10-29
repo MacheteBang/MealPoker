@@ -33,7 +33,7 @@
             string callBackUri = Uri.EscapeDataString($"{_navigationManager.BaseUri}google-callback");
             var request = new HttpRequestMessage(
             HttpMethod.Get,
-            $"auth/tokens/google?authorizationCode={authorizationCode}&callBackUri={callBackUri}");
+            $"identity/tokens/google?authorizationCode={authorizationCode}&callBackUri={callBackUri}");
 
             try
             {

@@ -1,8 +1,6 @@
-using Microsoft.EntityFrameworkCore;
+namespace MealBot.Api.Meals.Services;
 
-namespace MealBot.Api.Meals.Repositories;
-
-public interface IMealRepository
+public interface IMealsService
 {
     Task AddMealAsync(Meal meal);
     Task<List<Meal>> GetMealsByUserIdAsync(Guid ownerUserId);
@@ -11,7 +9,7 @@ public interface IMealRepository
     Task<bool> DeleteMealByUserIdAsync(Guid ownerUserId, Guid mealId);
 }
 
-internal sealed class MealRepository(MealBotDbContext mealBotDbContext) : IMealRepository
+internal sealed class MealsService(MealBotDbContext mealBotDbContext) : IMealsService
 {
     private readonly MealBotDbContext _mealBotDbContext = mealBotDbContext;
 

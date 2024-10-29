@@ -1,9 +1,9 @@
 namespace MealBot.Api.Meals.Features.CreateMeal;
 
-public sealed class CreateMealCommandHandler(IValidator<CreateMealCommand> validator, IMealRepository mealRepository) : IRequestHandler<CreateMealCommand, ErrorOr<Meal>>
+public sealed class CreateMealCommandHandler(IValidator<CreateMealCommand> validator, IMealsService MealsService) : IRequestHandler<CreateMealCommand, ErrorOr<Meal>>
 {
     private readonly IValidator<CreateMealCommand> _validator = validator;
-    private readonly IMealRepository _mealRepository = mealRepository;
+    private readonly IMealsService _MealsService = MealsService;
 
     public async Task<ErrorOr<Meal>> Handle(CreateMealCommand command, CancellationToken cancellationToken)
     {
@@ -23,7 +23,7 @@ public sealed class CreateMealCommandHandler(IValidator<CreateMealCommand> valid
             MealParts = command.MealParts
         };
 
-        await _mealRepository.AddMealAsync(meal);
+        await _MealsService.AddMealAsync(meal);
 
         return meal;
     }

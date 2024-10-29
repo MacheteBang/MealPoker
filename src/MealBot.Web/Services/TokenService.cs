@@ -15,7 +15,7 @@ public class TokenService(IHttpClientFactory httpClientFactory) : ITokenService
     {
         using var client = _httpClientFactory.CreateClient();
 
-        var tokenRefreshResponse = await client.PostAsJsonAsync("auth/tokens/refresh", new TokenRefreshRequest(oldToken), cancellationToken);
+        var tokenRefreshResponse = await client.PostAsJsonAsync("identity/tokens/refresh", new TokenRefreshRequest(oldToken), cancellationToken);
         if (!tokenRefreshResponse.IsSuccessStatusCode)
         {
             return null;

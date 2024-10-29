@@ -39,7 +39,7 @@ internal sealed class TokenRefreshEndpoint : MealBotEndpoint
     {
         Secure = true,
         HttpOnly = true,
-        Path = "/auth/tokens/refresh",
+        Path = "/identity/tokens/refresh",
         SameSite = SameSiteMode.None,
         Expires = expirationDate
     };

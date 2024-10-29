@@ -6,7 +6,7 @@ public static class MealsDependencyInjection
 {
     public static IServiceCollection AddMeals(this IServiceCollection services)
     {
-        services.AddScoped<IMealRepository, MealRepository>();
+        services.AddScoped<IMealsService, MealsService>();
 
         return services;
     }

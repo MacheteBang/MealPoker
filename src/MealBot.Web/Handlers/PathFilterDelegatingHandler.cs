@@ -7,9 +7,9 @@ public abstract class PathFilterDelegatingHandler : DelegatingHandler
     /// </summary>
     private static readonly List<string> IgnoredPaths =
     [
-        "auth/urls",
-        "auth/tokens/google",
-        "auth/tokens/refresh"
+        "identity/urls",
+        "identity/tokens/google",
+        "identity/tokens/refresh"
     ];
 
     /// <summary>

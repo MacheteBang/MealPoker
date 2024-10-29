@@ -6,15 +6,15 @@ internal interface IAuthenticationService
 }
 
 internal sealed class AuthenticationService(
-    IUserService _userRepository,
+    IUserService _userService,
     IProfileImageStorageService profileImageStorageService) : IAuthenticationService
 {
-    private readonly IUserService userRepository = _userRepository;
+    private readonly IUserService _userService = _userService;
     private readonly IProfileImageStorageService _profileImageStorageService = profileImageStorageService;
 
     public async Task<ErrorOr<User>> AddOrGetUserAsync(ExternalIdentity externalIdentity)
     {
-        var userResult = await userRepository.GetByEmailAddressAsync(externalIdentity.EmailAddress);
+        var userResult = await _userService.GetByEmailAddressAsync(externalIdentity.EmailAddress);
 
         if (userResult.IsError && userResult.FirstError.Type != ErrorType.NotFound)
         {
@@ -32,7 +32,7 @@ internal sealed class AuthenticationService(
 
             await SaveProfileImageAsync(externalIdentity, newUser);
 
-            var addUserResult = await userRepository.AddAsync(newUser);
+            var addUserResult = await _userService.AddAsync(newUser);
 
             if (addUserResult.IsError)
             {
@@ -54,7 +54,7 @@ internal sealed class AuthenticationService(
             foundUser.FirstName = externalIdentity.FirstName;
             foundUser.LastName = externalIdentity.LastName;
 
-            var updateResult = await userRepository.UpdateAsync(foundUser);
+            var updateResult = await _userService.UpdateAsync(foundUser);
 
             return updateResult.Match<ErrorOr<User>>(
                 user => user,
