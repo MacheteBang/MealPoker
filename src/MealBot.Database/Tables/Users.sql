@@ -7,8 +7,8 @@ CREATE TABLE [dbo].[Users]
    [FirstName] VARCHAR(128) NOT NULL,
    [LastName] VARCHAR(128) NOT NULL,
    [ProfileImageUrl] VARCHAR(4094) NULL,
-   [RefreshToken] VARCHAR(32) NULL,
-   [RefreshTokenExpiresAt] DATETIME NOT NULL,
+   [RefreshToken] VARCHAR(128) NULL,
+   [RefreshTokenExpiresAt] DATETIME2 NOT NULL,
 
    CONSTRAINT [PK_Users] PRIMARY KEY ([UserId])
 )

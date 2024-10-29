@@ -1,6 +1,6 @@
 CREATE TABLE [dbo].[MealParts]
 (
-   [MealPartId] INT NOT NULL,
+   [MealPartId] INT IDENTITY(1, 1),
    [MealId] UNIQUEIDENTIFIER NOT NULL,
    [Category] VARCHAR(16) NOT NULL,
    [Name] NVARCHAR(128) NOT NULL,

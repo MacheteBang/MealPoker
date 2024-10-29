@@ -12,6 +12,11 @@ internal sealed class MealBotDbContext(DbContextOptions<MealBotDbContext> option
         modelBuilder.Entity<User>()
             .HasKey(u => u.UserId)
             .HasName("PK_Users");
+        modelBuilder.Entity<User>()
+            .Property(u => u.AuthProvider)
+            .HasConversion(
+                v => v.ToString(),
+                v => (AuthProvider)Enum.Parse(typeof(AuthProvider), v));
 
         modelBuilder.Entity<Meal>()
             .HasKey(m => m.MealId)
@@ -19,6 +24,7 @@ internal sealed class MealBotDbContext(DbContextOptions<MealBotDbContext> option
         modelBuilder.Entity<Meal>()
             .OwnsMany(m => m.MealParts, a =>
             {
+                a.ToTable("MealParts");
                 a.WithOwner().HasForeignKey("MealId");
                 a.Property<int>("MealPartId");
                 a.HasKey("MealPartId");
