@@ -4,6 +4,7 @@ internal interface IFamilyService
 {
     Task<FamilyResponse?> GetFamilyAsync(Guid familyId, CancellationToken cancellationToken);
     Task<FamilyResponse?> CreateFamilyAsync(string name, string? description, CancellationToken cancellationToken);
+    Task LeaveFamilyAsync(Guid familyId, CancellationToken cancellationToken);
 }
 
 internal sealed class FamilyService(
@@ -54,5 +55,25 @@ internal sealed class FamilyService(
 
         return await httpResponse.Content.ReadFromJsonAsync<FamilyResponse>(cancellationToken)
             ?? null;
+    }
+
+    public async Task LeaveFamilyAsync(Guid familyId, CancellationToken cancellationToken)
+    {
+        if (!_authenticationStateProvider.CurrentUser.IsAuthenticated)
+        {
+            return;
+        }
+
+        string userId = _authenticationStateProvider.CurrentUser.UserId!;
+
+        using var client = _httpClientFactory.CreateClient();
+        var httpResponse = await client.DeleteAsync($"users/{userId}/families/{familyId}", cancellationToken);
+        if (!httpResponse.IsSuccessStatusCode)
+        {
+            // FIXME: Do something when the request fails
+            return;
+        }
+
+        return;
     }
 }

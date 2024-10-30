@@ -31,7 +31,8 @@
     </div>
     <div class="mb-3">
         <AddEditFamily FamilyId="@_userResponse?.FamilyId"
-            OnCreateFamily="async () => await LoadUser(CancellationToken.None)" />
+            OnCreateFamily="async () => await LoadUser(CancellationToken.None)"
+            OnLeaveFamily="async () => await LoadUser(CancellationToken.None)" />
     </div>
 
     <div class="mb-3">

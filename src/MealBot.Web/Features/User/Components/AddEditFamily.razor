@@ -64,6 +64,7 @@ else
 
     [Parameter] public Guid? FamilyId { get; set; }
     [Parameter] public EventCallback<FamilyResponse> OnCreateFamily { get; set; }
+    [Parameter] public EventCallback OnLeaveFamily { get; set; }
 
     private bool _isBusy = true;
     private bool _isCreatingFamily = false;
@@ -97,13 +98,20 @@ else
         _isBusy = true;
         _familyResponse = await _familyService.CreateFamilyAsync(Model.Name, Model.Description, CancellationToken.None);
         await OnCreateFamily.InvokeAsync(_familyResponse);
+        Model = new();
         _isCreatingFamily = false;
         _isBusy = false;
     }
     private async Task LeaveFamily()
     {
+        if (FamilyId is null)
+        {
+            return;
+        }
+
         _isBusy = true;
-        Console.WriteLine("TODO: Leave Family");
+        await _familyService.LeaveFamilyAsync((Guid)FamilyId, CancellationToken.None);
+        await OnLeaveFamily.InvokeAsync();
         _isBusy = false;
     }
 }
