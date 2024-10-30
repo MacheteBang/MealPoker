@@ -1,0 +1,109 @@
+@using MealBot.Web.Features.User.FormModels
+@inject IFamilyService _familyService
+
+<h4>Family</h4>
+@if (_isBusy)
+{
+    <p>Loading...</p>
+}
+else if (FamilyId is not null && _familyResponse is not null)
+{
+    <h6>@_familyResponse.Name</h6>
+    <p>@_familyResponse.Description</p>
+    <p>
+        Family Code: <code>@_familyResponse.Code</code>
+    </p>
+    <div class="text-end">
+        <button class="btn btn-sm btn-danger" type="button" @onclick="LeaveFamily">
+            Leave Family
+        </button>
+    </div>
+}
+else
+{
+    <div class="row">
+        @if (_isCreatingFamily)
+        {
+            <form @onsubmit="CreateFamily">
+                <div class="row mb-3">
+                    <label for="familyNameInput" class="col-sm-2 col-form-label">Name</label>
+                    <div class="col-sm-10">
+                        <InputText @bind-Value="Model.Name" class="form-control" id="familyNameInput" />
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="familyDescriptionInput" class="col-sm-2 col-form-label">Description</label>
+                    <div class="col-sm-10">
+                        <InputTextArea @bind-Value="Model.Description" class="form-control" id="familyDescriptionInput" />
+                    </div>
+                </div>
+                <div class="text-end">
+                    <button class="btn btn-primary">Create</button>
+                </div>
+            </form>
+        }
+        else
+        {
+            <div class="col p-4 text-center">
+                <button class="mx-auto btn btn-primary" type="button" @onclick="JoinFamily">
+                    Join Family
+                </button>
+            </div>
+            <div class="col p-4 text-center">
+                <button class="mx-auto btn btn-primary" type="button" @onclick="() => _isCreatingFamily = true">
+                    Create Family
+                </button>
+            </div>
+        }
+    </div>
+}
+@code
+{
+    [SupplyParameterFromForm]
+    private CreateFamilyFormModel? Model { get; set; } = new();
+
+    [Parameter] public Guid? FamilyId { get; set; }
+    [Parameter] public EventCallback<FamilyResponse> OnCreateFamily { get; set; }
+
+    private bool _isBusy = true;
+    private bool _isCreatingFamily = false;
+
+    private FamilyResponse? _familyResponse;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await LoadFamily(CancellationToken.None);
+    }
+}
+
+@functions {
+    private async Task LoadFamily(CancellationToken cancellationToken)
+    {
+        _isBusy = true;
+        if (FamilyId is not null)
+        {
+            _familyResponse = await _familyService.GetFamilyAsync((Guid)FamilyId, cancellationToken);
+        }
+        _isBusy = false;
+    }
+    private async Task JoinFamily()
+    {
+        _isBusy = true;
+        Console.WriteLine("TODO: Join Family");
+        _isBusy = false;
+    }
+    private async Task CreateFamily()
+    {
+        _isBusy = true;
+        _familyResponse = await _familyService.CreateFamilyAsync(Model.Name, Model.Description, CancellationToken.None);
+        await OnCreateFamily.InvokeAsync(_familyResponse);
+        _isCreatingFamily = false;
+        _isBusy = false;
+    }
+    private async Task LeaveFamily()
+    {
+        _isBusy = true;
+        Console.WriteLine("TODO: Leave Family");
+        _isBusy = false;
+    }
+}
