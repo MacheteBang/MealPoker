@@ -1,26 +1,20 @@
 meta {
-  name: Create Family
+  name: Get Family
   type: http
-  seq: 1
+  seq: 2
 }
 
-post {
-  url: {{mealbotApiUrl}}/users/:userId/families
-  body: json
+get {
+  url: {{mealbotApiUrl}}/users/:userId/families/:familyId
+  body: none
   auth: bearer
 }
 
 params:path {
+  familyId: cedbea49-7ddb-4352-9b02-f9086dfa616a
   userId: 6d13b7f0-2dba-45c1-bfa0-0e7e3fb55011
 }
 
 auth:bearer {
   token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2ZDEzYjdmMC0yZGJhLTQ1YzEtYmZhMC0wZTdlM2ZiNTUwMTEiLCJlbWFpbCI6ImpvbmF0aGFuLmdyZWdvcnNreUBnbWFpbC5jb20iLCJnaXZlbl9uYW1lIjoiSm9uYXRoYW4iLCJmYW1pbHlfbmFtZSI6IkdyZWdvcnNreSIsInByb2ZpbGVfaW1hZ2UiOiJodHRwOi8vbG9jYWxob3N0OjQyMDY5L3VzZXJzLzZkMTNiN2YwLTJkYmEtNDVjMS1iZmEwLTBlN2UzZmI1NTAxMS9wcm9maWxlLWltYWdlcyIsIm5iZiI6MTczMDI4ODIyMiwiZXhwIjoxNzMwMjg5MTIyLCJpYXQiOjE3MzAyODgyMjIsImlzcyI6Ik1lYWxCb3QiLCJhdWQiOiJNZWFsQm90In0.1TinAR9pGxoiqQjxIusPRmaXvs_fsGca3r5U8pDQ7BM
-}
-
-body:json {
-  {
-    "name": "Gregorsky",
-    "description": "This is the description"
-  }
 }

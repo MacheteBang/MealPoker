@@ -24,6 +24,10 @@ public static class ModelConfigurationExtensions
         modelBuilder.Entity<Family>()
             .HasKey(f => f.FamilyId)
             .HasName("PK_Families");
+
+        modelBuilder.Entity<Family>()
+            .HasOne(f => f.User);
+
         return modelBuilder;
     }
     public static ModelBuilder ConfigureMeal(this ModelBuilder modelBuilder)

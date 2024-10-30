@@ -41,7 +41,7 @@ internal sealed class UserService(MealBotDbContext dbContext) : IUserService
 
         return user != null
             ? user
-            : Errors.UserNotFoundError();
+            : Errors.UserNotFound();
     }
 
     public async Task<ErrorOr<User>> GetByEmailAddressAsync(string emailAddress)
@@ -50,7 +50,7 @@ internal sealed class UserService(MealBotDbContext dbContext) : IUserService
 
         return user != null
             ? user
-            : Errors.UserNotFoundError();
+            : Errors.UserNotFound();
     }
 
     public async Task<ErrorOr<User>> UpdateAsync(User user)

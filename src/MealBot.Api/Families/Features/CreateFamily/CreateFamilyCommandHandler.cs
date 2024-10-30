@@ -1,16 +1,18 @@
 using CrypticWizard.RandomWordGenerator;
-using MealBot.Api.Families.Services;
+using MealBot.Api.Users.Features.GetUser;
 using static CrypticWizard.RandomWordGenerator.WordGenerator; //for brevity, not required
 
 namespace MealBot.Api.Families.Features.CreateFamily;
 
 internal sealed class CreateFamilyCommandHandler(
     IValidator<CreateFamilyCommand> validator,
-    IFamilyService familyService,
+    MealBotDbContext dbContext,
+    ISender sender,
     WordGenerator wordGenerator) : IRequestHandler<CreateFamilyCommand, ErrorOr<Family>>
 {
     private readonly IValidator<CreateFamilyCommand> _validator = validator;
-    private readonly IFamilyService _familyService = familyService;
+    private readonly MealBotDbContext _dbContext = dbContext;
+    private readonly ISender _sender = sender;
     private readonly WordGenerator _wordGenerator = wordGenerator;
 
     public async Task<ErrorOr<Family>> Handle(CreateFamilyCommand command, CancellationToken cancellationToken)
@@ -23,6 +25,19 @@ internal sealed class CreateFamilyCommandHandler(
                 .ToList();
         }
 
+        var userResult = await _sender.Send(new GetUserQuery(command.UserId), cancellationToken);
+        if (userResult.IsError)
+        {
+            return userResult.Errors;
+        }
+
+        var user = userResult.Value;
+
+        if (user.FamilyId.HasValue)
+        {
+            return Errors.UserAlreadyHasFamily();
+        }
+
         var family = new Family
         {
             Code = GenerateFamilyCode(),
@@ -30,7 +45,11 @@ internal sealed class CreateFamilyCommandHandler(
             Description = command.Description
         };
 
-        await _familyService.AddFamilyAsync(family);
+        user.FamilyId = family.FamilyId;
+
+        await _dbContext.Families.AddAsync(family, cancellationToken);
+        _dbContext.Users.Update(user);
+        await _dbContext.SaveChangesAsync(cancellationToken);
 
         return family;
     }

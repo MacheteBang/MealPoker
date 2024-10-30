@@ -1,6 +1,7 @@
 global using MealBot.Web;
 global using MealBot.Web.Common;
 global using MealBot.Web.Exceptions;
+global using MealBot.Web.Features.User.Services;
 global using MealBot.Web.Features.Meals.Services;
 global using MealBot.Web.Handlers;
 global using MealBot.Web.Services;

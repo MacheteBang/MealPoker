@@ -36,5 +36,6 @@ internal sealed class User
         EmailAddress,
         AuthProvider.ToString(),
         FirstName,
-        LastName);
+        LastName,
+        FamilyId);
 }

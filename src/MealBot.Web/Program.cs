@@ -1,3 +1,5 @@
+using MealBot.Web.Features.User.Services;
+
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 {
     builder.RootComponents.Add<App>("#app");
@@ -7,6 +9,8 @@ var builder = WebAssemblyHostBuilder.CreateDefault(args);
     builder.Services.AddScoped<IBrowserStorageService, BrowserStorageService>();
     builder.Services.AddScoped<ITokenService, TokenService>();
     builder.Services.AddScoped<UserAuthenticationStateProvider>();
+    builder.Services.AddScoped<IUserService, UserService>();
+    builder.Services.AddScoped<IFamilyService, FamilyService>();
     builder.Services.AddScoped<IMealService, MealService>();
     builder.Services.AddScoped<AuthenticationStateProvider>(sp => sp.GetRequiredService<UserAuthenticationStateProvider>());
     builder.Services.AddCascadingAuthenticationState();
