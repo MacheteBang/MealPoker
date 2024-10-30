@@ -30,6 +30,7 @@ public class CreateFamilyEndpoint : MealBotEndpoint
                         $"{GlobalSettings.RoutePaths.Users}/{userId}{GlobalSettings.RoutePaths.Families}/{family.FamilyId}",
                         family.ToResponse()),
                     errors => Problem(errors));
-            });
+            })
+            .RequireAuthorization();
     }
 }

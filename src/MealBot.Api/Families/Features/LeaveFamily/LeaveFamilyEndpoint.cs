@@ -1,10 +1,10 @@
-namespace MealBot.Api.Families.Features.GetFamily;
+namespace MealBot.Api.Families.Features.LeaveFamily;
 
-internal sealed class GetFamilyEndpoint : MealBotEndpoint
+internal sealed class LeaveFamilyEndpoint : MealBotEndpoint
 {
     public override void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGet(
+        app.MapDelete(
             $"{GlobalSettings.RoutePaths.Users}/{{userId:Guid}}{GlobalSettings.RoutePaths.Families}/{{familyId:Guid}}",
             async (HttpContext context, Guid userId, Guid familyId, ISender sender) =>
             {
@@ -18,11 +18,11 @@ internal sealed class GetFamilyEndpoint : MealBotEndpoint
                     return Problem(Error.Unauthorized());
                 }
 
-                var query = new GetFamilyQuery(userId, familyId);
-                var result = await sender.Send(query);
+                var command = new LeaveFamilyCommand(userId, familyId);
+                var result = await sender.Send(command);
 
                 return result.Match(
-                    family => Results.Ok(family.ToResponse()),
+                    _ => Results.NoContent(),
                     errors => Problem(errors));
             })
             .RequireAuthorization();
