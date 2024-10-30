@@ -1,4 +1,4 @@
-namespace MealBot.Api.Identity.Features.GetUser;
+namespace MealBot.Api.Users.Features.GetUser;
 
 internal sealed class GetUserHandler(IUserService userService) : IRequestHandler<GetUserQuery, ErrorOr<User>>
 {

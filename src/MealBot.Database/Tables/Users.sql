@@ -7,7 +7,6 @@ CREATE TABLE [dbo].[Users]
    [FirstName] VARCHAR(128) NOT NULL,
    [LastName] VARCHAR(128) NOT NULL,
    [FamilyId] UNIQUEIDENTIFIER NULL,
-   [ProfileImageUrl] VARCHAR(4094) NULL,
    [RefreshToken] VARCHAR(128) NULL,
    [RefreshTokenExpiresAt] DATETIME2 NOT NULL,
 

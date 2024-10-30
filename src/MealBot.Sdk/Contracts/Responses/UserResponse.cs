@@ -5,5 +5,4 @@ public sealed record UserResponse(
     string EmailAddress,
     string AuthProvider,
     string FirstName,
-    string LastName,
-    string? ProfileImageUrl);
+    string LastName);

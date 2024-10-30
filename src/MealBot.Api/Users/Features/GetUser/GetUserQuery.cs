@@ -1,3 +1,3 @@
-namespace MealBot.Api.Identity.Features.GetUser;
+namespace MealBot.Api.Users.Features.GetUser;
 
 public sealed record GetUserQuery(Guid UserId) : IRequest<ErrorOr<User>> { }

@@ -8,15 +8,21 @@ internal interface ITokenService
 
 internal sealed class TokenService(
     IOptions<AuthorizationOptions> authorizationOptions,
-    IUserService userService) : ITokenService
+    IUserService userService,
+    IHttpContextAccessor httpContextAccessor) : ITokenService
 {
     private readonly IOptions<AuthorizationOptions> _authorizationOptions = authorizationOptions;
     private readonly IUserService _userService = userService;
+    private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
 
     public async Task<ErrorOr<TokenBundle>> GenerateTokenBundle(User user)
     {
         JwtOptions jwtOptions = _authorizationOptions.Value.JwtOptions;
         RefreshTokenOptions refreshTokenOptions = _authorizationOptions.Value.RefreshTokenOptions;
+
+        string profileImageUrl = $"{_httpContextAccessor.HttpContext?.Request.Scheme}://"
+         + $"{_httpContextAccessor.HttpContext?.Request.Host}"
+         + $"{GlobalSettings.RoutePaths.Users}/{user.UserId}{GlobalSettings.RoutePaths.ProfileImages}";
 
         List<Claim> claims =
         [
@@ -24,7 +30,7 @@ internal sealed class TokenService(
             new(JwtRegisteredClaimNames.Email, user.EmailAddress),
             new(JwtRegisteredClaimNames.GivenName, user.FirstName),
             new(JwtRegisteredClaimNames.FamilyName, user.LastName),
-            new("profile_image", user.ProfileImageUrl ?? "")
+            new("profile_image", profileImageUrl)
         ];
 
         var signingKey = Encoding.UTF8.GetBytes(jwtOptions.IssuerSigningKey);

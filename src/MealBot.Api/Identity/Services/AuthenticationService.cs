@@ -73,9 +73,9 @@ internal sealed class AuthenticationService(
                 user.UserId,
                 profileImageUri);
 
-            if (!saveResult.IsError)
+            if (saveResult.IsError)
             {
-                user.ProfileImageUrl = saveResult.Value.ToString();
+                throw new Exception("Failed to save profile image");
             }
         }
     }

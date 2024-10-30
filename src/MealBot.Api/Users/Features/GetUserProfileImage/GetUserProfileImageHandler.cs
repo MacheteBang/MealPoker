@@ -1,5 +1,4 @@
-
-namespace MealBot.Api.Identity.Features.GetUserProfileImage;
+namespace MealBot.Api.Users.Features.GetUserProfileImage;
 
 internal class GetUserProfileImageHandler(IProfileImageStorageService _profileImageStorageService) : IRequestHandler<GetUserProfileImageQuery, ErrorOr<Stream>>
 {
