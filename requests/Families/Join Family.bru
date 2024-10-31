@@ -1,0 +1,24 @@
+meta {
+  name: Join Family
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{mealbotApiUrl}}/users/:userId/families/:familyId?familyCode=BroadlyRoastedMagician
+  body: none
+  auth: bearer
+}
+
+params:query {
+  familyCode: BroadlyRoastedMagician
+}
+
+params:path {
+  familyId: 6ad322be-965a-4c1e-958b-c71047ec7923
+  userId: 6d13b7f0-2dba-45c1-bfa0-0e7e3fb55011
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2ZDEzYjdmMC0yZGJhLTQ1YzEtYmZhMC0wZTdlM2ZiNTUwMTEiLCJlbWFpbCI6ImpvbmF0aGFuLmdyZWdvcnNreUBnbWFpbC5jb20iLCJnaXZlbl9uYW1lIjoiSm9uYXRoYW4iLCJmYW1pbHlfbmFtZSI6IkdyZWdvcnNreSIsInByb2ZpbGVfaW1hZ2UiOiJodHRwOi8vbG9jYWxob3N0OjQyMDY5L3VzZXJzLzZkMTNiN2YwLTJkYmEtNDVjMS1iZmEwLTBlN2UzZmI1NTAxMS9wcm9maWxlLWltYWdlcyIsIm5iZiI6MTczMDMzMzUxNiwiZXhwIjoxNzMwMzM0NDE2LCJpYXQiOjE3MzAzMzM1MTYsImlzcyI6Ik1lYWxCb3QiLCJhdWQiOiJNZWFsQm90In0.oYTpcfv_GNjwDEdG7Q0FJ2dHIifIXKtmFQe8opIyhI8
+}
