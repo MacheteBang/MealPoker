@@ -1,5 +1,6 @@
 @using MealBot.Web.Features.User.FormModels
 @inject IFamilyService _familyService
+@inject IHttpClientFactory _httpClientFactory
 
 <h4>Family</h4>
 @if (_isBusy)
@@ -8,11 +9,23 @@
 }
 else if (FamilyId is not null && _familyResponse is not null)
 {
-    <h6>@_familyResponse.Name</h6>
+    <p class="fw-bold">@_familyResponse.Name</p>
     <p>@_familyResponse.Description</p>
     <p>
         Family Code: <code>@_familyResponse.Code</code>
     </p>
+    @foreach (var member in _familyResponse?.Members ?? [])
+    {
+        <div class="row ms-2">
+            <div class="col-1">
+                <img src='@($"{_profileImageUrl}users/{member.UserId}/profile-images")' alt="@member.FirstName @member.LastName"
+                    height="32" class="rounded-circle" />
+            </div>
+            <div class="col-11">
+                <p>@member.FirstName @member.LastName</p>
+            </div>
+        </div>
+    }
     <div class="text-end">
         <button class="btn btn-sm btn-danger" type="button" @onclick="LeaveFamily">
             Leave Family
@@ -89,10 +102,17 @@ else
     private bool _isJoiningFamily = false;
 
     private FamilyResponse? _familyResponse;
+    private string _profileImageUrl = "";
 
     protected override async Task OnParametersSetAsync()
     {
         await LoadFamily(CancellationToken.None);
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        var httpClient = _httpClientFactory.CreateClient();
+        _profileImageUrl = $"{httpClient.BaseAddress}";
     }
 }
 
