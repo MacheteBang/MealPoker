@@ -43,7 +43,7 @@ else
                 </div>
             </form>
         }
-        else if (_isJJoiningFamily)
+        else if (_isJoiningFamily)
         {
             <form @onsubmit="JoinFamily">
                 <div class="row mb-3">
@@ -60,7 +60,7 @@ else
         else
         {
             <div class="col p-4 text-center">
-                <button class="mx-auto btn btn-primary" type="button" @onclick="() => _isJJoiningFamily = true">
+                <button class="mx-auto btn btn-primary" type="button" @onclick="() => _isJoiningFamily = true">
                     Join Family
                 </button>
             </div>
@@ -86,7 +86,7 @@ else
 
     private bool _isBusy = true;
     private bool _isCreatingFamily = false;
-    private bool _isJJoiningFamily = false;
+    private bool _isJoiningFamily = false;
 
     private FamilyResponse? _familyResponse;
 
