@@ -1,3 +1,4 @@
+-- TODO: Configure unique constraint on Family.Code
 CREATE TABLE [dbo].[Families]
 (
    [FamilyId] UNIQUEIDENTIFIER NOT NULL,
@@ -6,4 +7,4 @@ CREATE TABLE [dbo].[Families]
    [Code] VARCHAR(32) NOT NULL
 
    CONSTRAINT [PK_Families] PRIMARY KEY ([FamilyId])
-)   
+)

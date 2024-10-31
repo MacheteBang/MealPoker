@@ -18,6 +18,7 @@ public static class ModelConfigurationExtensions
     }
     public static ModelBuilder ConfigureFamily(this ModelBuilder modelBuilder)
     {
+        // TODO: Configure unique constraint on Family.Code
         modelBuilder.Entity<Family>()
             .ToTable("Families");
 

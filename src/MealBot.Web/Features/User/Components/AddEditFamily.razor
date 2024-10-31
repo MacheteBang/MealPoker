@@ -28,13 +28,14 @@ else
                 <div class="row mb-3">
                     <label for="familyNameInput" class="col-sm-2 col-form-label">Name</label>
                     <div class="col-sm-10">
-                        <InputText @bind-Value="Model.Name" class="form-control" id="familyNameInput" />
+                        <InputText @bind-Value="CreateFamilyModel.Name" class="form-control" id="familyNameInput" />
                     </div>
                 </div>
                 <div class="row mb-3">
                     <label for="familyDescriptionInput" class="col-sm-2 col-form-label">Description</label>
                     <div class="col-sm-10">
-                        <InputTextArea @bind-Value="Model.Description" class="form-control" id="familyDescriptionInput" />
+                        <InputTextArea @bind-Value="CreateFamilyModel.Description" class="form-control"
+                            id="familyDescriptionInput" />
                     </div>
                 </div>
                 <div class="text-end">
@@ -42,10 +43,24 @@ else
                 </div>
             </form>
         }
+        else if (_isJJoiningFamily)
+        {
+            <form @onsubmit="JoinFamily">
+                <div class="row mb-3">
+                    <label for="familyCodeInput" class="col-sm-3 col-form-label">Family Code</label>
+                    <div class="col-sm-9">
+                        <InputText @bind-Value="JoinFamilyModel.FamilyCode" class="form-control" id="familyCodeInput" />
+                    </div>
+                </div>
+                <div class="text-end">
+                    <button class="btn btn-primary">Join</button>
+                </div>
+            </form>
+        }
         else
         {
             <div class="col p-4 text-center">
-                <button class="mx-auto btn btn-primary" type="button" @onclick="JoinFamily">
+                <button class="mx-auto btn btn-primary" type="button" @onclick="() => _isJJoiningFamily = true">
                     Join Family
                 </button>
             </div>
@@ -60,14 +75,18 @@ else
 @code
 {
     [SupplyParameterFromForm]
-    private CreateFamilyFormModel? Model { get; set; } = new();
+    private CreateFamilyFormModel? CreateFamilyModel { get; set; } = new();
+    [SupplyParameterFromForm]
+    private JoinFamilyFormModel? JoinFamilyModel { get; set; } = new();
 
     [Parameter] public Guid? FamilyId { get; set; }
     [Parameter] public EventCallback<FamilyResponse> OnCreateFamily { get; set; }
     [Parameter] public EventCallback OnLeaveFamily { get; set; }
+    [Parameter] public EventCallback OnJoinFamily { get; set; }
 
     private bool _isBusy = true;
     private bool _isCreatingFamily = false;
+    private bool _isJJoiningFamily = false;
 
     private FamilyResponse? _familyResponse;
 
@@ -89,16 +108,25 @@ else
     }
     private async Task JoinFamily()
     {
+        Console.WriteLine("Joining Family");
+        if (FamilyId is not null)
+        {
+            Console.WriteLine("FamilyId is null");
+            return;
+        }
+
         _isBusy = true;
-        Console.WriteLine("TODO: Join Family");
+        await _familyService.JoinFamilyAsync(JoinFamilyModel.FamilyCode, CancellationToken.None);
+        await OnJoinFamily.InvokeAsync();
         _isBusy = false;
     }
     private async Task CreateFamily()
     {
         _isBusy = true;
-        _familyResponse = await _familyService.CreateFamilyAsync(Model.Name, Model.Description, CancellationToken.None);
+        _familyResponse = await _familyService.CreateFamilyAsync(CreateFamilyModel.Name, CreateFamilyModel.Description,
+        CancellationToken.None);
         await OnCreateFamily.InvokeAsync(_familyResponse);
-        Model = new();
+        CreateFamilyModel = new();
         _isCreatingFamily = false;
         _isBusy = false;
     }
