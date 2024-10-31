@@ -26,7 +26,7 @@ public static class ModelConfigurationExtensions
             .HasName("PK_Families");
 
         modelBuilder.Entity<Family>()
-            .HasOne(f => f.User);
+            .HasMany(f => f.User);
 
         modelBuilder.Entity<Family>()
             .HasIndex(f => f.Code)

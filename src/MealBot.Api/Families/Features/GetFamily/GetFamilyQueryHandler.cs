@@ -20,7 +20,7 @@ internal sealed class GetFamilyQueryHandler(IValidator<GetFamilyQuery> validator
             .SingleOrDefaultAsync(x =>
                 x.FamilyId == query.FamilyId
                 && x.User != null
-                && x.User.UserId == query.UserId, cancellationToken);
+                && x.User.Select(u => u.UserId).Contains(query.UserId), cancellationToken);
 
         if (family is null)
         {
