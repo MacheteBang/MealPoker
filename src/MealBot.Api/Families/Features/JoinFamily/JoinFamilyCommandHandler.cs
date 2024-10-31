@@ -17,10 +17,7 @@ internal sealed class JoinFamilyCommandHandler(
                 .ToList();
         }
 
-        var family = await _mealBotDbContext.Families
-            .SingleOrDefaultAsync(x =>
-                x.FamilyId == command.FamilyId
-                && x.Code == command.Code, cancellationToken);
+        var family = await _mealBotDbContext.Families.SingleOrDefaultAsync(x => x.Code == command.Code, cancellationToken);
 
         if (family is null)
         {

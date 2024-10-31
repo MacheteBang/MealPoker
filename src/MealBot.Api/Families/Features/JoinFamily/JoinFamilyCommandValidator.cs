@@ -5,7 +5,6 @@ public class JoinFamilyCommandValidator : AbstractValidator<JoinFamilyCommand>
     public JoinFamilyCommandValidator()
     {
         RuleFor(x => x.UserId).NotEmpty();
-        RuleFor(x => x.FamilyId).NotEmpty();
         RuleFor(x => x.Code).NotEmpty();
     }
 }

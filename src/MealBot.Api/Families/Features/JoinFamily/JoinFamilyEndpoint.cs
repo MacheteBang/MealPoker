@@ -6,8 +6,8 @@ internal sealed class JoinFamilyEndpoint : MealBotEndpoint
     public override void AddRoutes(IEndpointRouteBuilder app)
     {
         app.MapPatch(
-            $"{GlobalSettings.RoutePaths.Users}/{{userId:Guid}}{GlobalSettings.RoutePaths.Families}/{{familyId:Guid}}",
-            async (HttpContext context, Guid userId, Guid familyId, [FromQuery] string familyCode, ISender sender) =>
+            $"{GlobalSettings.RoutePaths.Users}/{{userId:Guid}}{GlobalSettings.RoutePaths.Families}/join/{{familyCode}}",
+            async (HttpContext context, Guid userId, string familyCode, ISender sender) =>
             {
                 if (!Guid.TryParse(context.User.FindFirstValue(JwtRegisteredClaimNames.Sub), out Guid tokenUserId))
                 {
@@ -21,7 +21,6 @@ internal sealed class JoinFamilyEndpoint : MealBotEndpoint
 
                 var result = await sender.Send(new JoinFamilyCommand(
                     userId,
-                    familyId,
                     familyCode));
 
                 return result.Match(
