@@ -1,4 +1,8 @@
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp.Formats.Png;
 using IHttpClientFactory = System.Net.Http.IHttpClientFactory;
+using SixLabors.ImageSharp.Formats.Jpeg;
 
 namespace MealBot.Api.Users.Services;
 
@@ -7,7 +11,7 @@ internal interface IProfileImageStorageService
     Task<ErrorOr<Uri>> SaveImageAsync(Guid userId, Stream imageStream);
     Task<ErrorOr<Uri>> SaveImageAsync(Guid userId, Uri sourceUri);
     [Obsolete]
-    Task<ErrorOr<Stream>> GetImageAsync(Guid userId);
+    Task<ErrorOr<Stream>> GetImageAsync(Guid userId, int width);
     Task<ErrorOr<Success>> DeleteImageAsync(Guid userId);
 }
 
@@ -23,13 +27,32 @@ internal sealed class LocalProfileImageStorageService(
         throw new NotImplementedException();
     }
 
-    public Task<ErrorOr<Stream>> GetImageAsync(Guid userId)
+    public Task<ErrorOr<Stream>> GetImageAsync(Guid userId, int width)
     {
         try
         {
             string filePath = GetFilePath(userId);
-            Stream imageStream = File.OpenRead(filePath);
-            return Task.FromResult<ErrorOr<Stream>>(imageStream);
+            using var image = Image.Load(filePath);
+            int originalWidth = image.Width;
+            int originalHeight = image.Height;
+
+            if (width > 0 && width < image.Width)
+            {
+                int height = (int)(originalHeight * ((float)width / originalWidth));
+                var resizeOptions = new ResizeOptions
+                {
+                    Size = new Size(width, height),
+                    Sampler = KnownResamplers.Lanczos3,
+                    Mode = ResizeMode.Max
+                };
+                image.Mutate(x => x.Resize(resizeOptions));
+            }
+
+            var resizedStream = new MemoryStream();
+            image.Save(resizedStream, new PngEncoder());
+            resizedStream.Position = 0;
+
+            return Task.FromResult<ErrorOr<Stream>>(resizedStream);
         }
         catch
         {

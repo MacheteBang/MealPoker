@@ -28,8 +28,8 @@ else if (FamilyId is not null)
         {
             <div class="row ms-2">
                 <div class="col-1">
-                    <img src='@($"{_profileImageUrl}users/{member.UserId}/profile-images")' alt="@member.FirstName @member.LastName"
-                        height="32" class="rounded-circle" />
+                    <img src='@($"{_profileImageUrl}users/{member.UserId}/profile-images?width=32")'
+                        alt="@member.FirstName @member.LastName" class="rounded-circle" />
                 </div>
                 <div class="col-11">
                     <p>@member.FirstName @member.LastName</p>
@@ -62,8 +62,13 @@ else
                             id="familyDescriptionInput" />
                     </div>
                 </div>
-                <div class="text-end">
-                    <button class="btn btn-primary">Create</button>
+                <div class="row">
+                    <div class="col text-end">
+                        <button class="btn btn-sm btn-secondary" @onclick="() => _isCreatingFamily = false">Cancel</button>
+                    </div>
+                    <div class="col-auto text-end">
+                        <button class="btn btn-sm btn-primary">Create</button>
+                    </div>
                 </div>
             </form>
         }
@@ -76,8 +81,13 @@ else
                         <InputText @bind-Value="JoinFamilyModel.FamilyCode" class="form-control" id="familyCodeInput" />
                     </div>
                 </div>
-                <div class="text-end">
-                    <button class="btn btn-primary">Join</button>
+                <div class="row">
+                    <div class="col text-end">
+                        <button class="btn btn-sm btn-secondary" @onclick="() => _isJoiningFamily = false">Cancel</button>
+                    </div>
+                    <div class="col-auto text-end">
+                        <button class="btn btn-sm btn-primary">Join</button>
+                    </div>
                 </div>
             </form>
         }
@@ -139,10 +149,8 @@ else
     }
     private async Task JoinFamily()
     {
-        Console.WriteLine("Joining Family");
         if (FamilyId is not null)
         {
-            Console.WriteLine("FamilyId is null");
             return;
         }
 
@@ -171,6 +179,8 @@ else
         _isBusy = true;
         await _familyService.LeaveFamilyAsync((Guid)FamilyId, CancellationToken.None);
         await OnLeaveFamily.InvokeAsync();
+        _isCreatingFamily = false;
+        _isJoiningFamily = false;
         _isBusy = false;
     }
 }

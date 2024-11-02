@@ -22,7 +22,9 @@
 
 <div class="mx-auto" style="max-width: 512px;">
     <div class="text-center">
-        <img src="@_userAuthenticationStateProvider.CurrentUser.PictureUri" style="border-radius:50%;height:128px;"
+
+        <img src='@($"{_userAuthenticationStateProvider.CurrentUser.PictureUri}?width=128")'
+            style="border-radius:50%;height:128px;"
             alt="@(_userAuthenticationStateProvider.CurrentUser.FirstName + ' ' + _userAuthenticationStateProvider.CurrentUser.LastName)" />
         <h1>
             @_userAuthenticationStateProvider.CurrentUser.FirstName

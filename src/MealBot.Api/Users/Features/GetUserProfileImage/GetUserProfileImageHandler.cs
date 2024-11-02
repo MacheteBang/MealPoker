@@ -6,7 +6,7 @@ internal class GetUserProfileImageHandler(IProfileImageStorageService _profileIm
 
     public async Task<ErrorOr<Stream>> Handle(GetUserProfileImageQuery query, CancellationToken cancellationToken)
     {
-        var result = await _profileImageStorageService.GetImageAsync(query.UserId);
+        var result = await _profileImageStorageService.GetImageAsync(query.UserId, query.Width);
 
         return result.Match<ErrorOr<Stream>>(
             success => success,

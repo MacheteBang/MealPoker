@@ -10,9 +10,6 @@ internal sealed class GetAuthUrlEndpoint : MealBotEndpoint
             string callbackUri,
             ISender sender) =>
         {
-            // TODO: Implement global error handling on the API for QSPs that are missing / empty
-            // TODO: Implement global error handling on the API for invalid enum values
-
             if (provider == AuthProvider.Unknown)
             {
                 return Problem(Errors.ProviderNotSupported());

@@ -4,14 +4,16 @@ internal sealed class GetUserProfileImageEndpoint : MealBotEndpoint
 {
     public override void AddRoutes(IEndpointRouteBuilder app)
     {
-        // TODO: Allow resizing of profile image at server to reduce bandwidth to the client
-        app.MapGet($"{GlobalSettings.RoutePaths.Users}/{{userId:Guid}}{GlobalSettings.RoutePaths.ProfileImages}", async (Guid userId, ISender sender) =>
+        app.MapGet($"{GlobalSettings.RoutePaths.Users}/{{userId:Guid}}{GlobalSettings.RoutePaths.ProfileImages}", async (
+            Guid userId,
+            ISender sender,
+            [FromQuery] ushort width = 32) =>
         {
-            var query = new GetUserProfileImageQuery(userId);
+            var query = new GetUserProfileImageQuery(userId, width);
             var result = await sender.Send(query);
 
             return result.Match(
-                stream => Results.File(stream, "image/jpeg"),
+                stream => Results.File(stream, "image/png"),
                 errors => Problem(errors));
         });
     }
