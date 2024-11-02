@@ -30,10 +30,24 @@
         </h1>
     </div>
     <div class="mb-3">
-        <AddEditFamily FamilyId="@_userResponse?.FamilyId"
-            OnCreateFamily="async () => await LoadUser(CancellationToken.None)"
-            OnLeaveFamily="async () => await LoadUser(CancellationToken.None)"
-            OnJoinFamily="async () => await LoadUser(CancellationToken.None)" />
+        @if (_userResponse.IsProcessing)
+        {
+            <p>Loading User Profile...</p>
+        }
+        else
+        {
+            if (_userResponse.IsError)
+            {
+                <p class="text-center text-danger">There was an error retrieving the user profile.</p>
+            }
+            else
+            {
+                <AddEditFamily FamilyId="@_userResponse.Value.FamilyId"
+                    OnCreateFamily="async () => await LoadUser(CancellationToken.None)"
+                    OnLeaveFamily="async () => await LoadUser(CancellationToken.None)"
+                    OnJoinFamily="async () => await LoadUser(CancellationToken.None)" />
+            }
+        }
     </div>
 
     <div class="mb-3">
@@ -53,7 +67,7 @@
     private bool _isBusy_User = true;
 
     private string _accessToken = string.Empty;
-    private UserResponse? _userResponse;
+    private ApiResult<UserResponse> _userResponse = new();
     private FamilyResponse? _familyResponse;
 
     protected override async Task OnInitializedAsync()
@@ -65,10 +79,7 @@
 
     private async Task LoadUser(CancellationToken cancellationToken)
     {
-        _isBusy_User = true;
         _userResponse = await _userService.GetUserAsync(cancellationToken);
-        Console.WriteLine(_userResponse.FamilyId);
-        _isBusy_User = false;
         StateHasChanged();
     }
 }

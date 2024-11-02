@@ -4,9 +4,9 @@ namespace MealBot.Web.Features.Meals.Services;
 
 internal interface IMealService
 {
-    Task<List<MealResponse>> GetMealsAsync(CancellationToken cancellationToken);
-    Task AddMealAsync(CreateMealRequest request, CancellationToken cancellationToken);
-    Task DeleteMealAsync(Guid id, CancellationToken cancellationToken);
+    Task<ApiResult<List<MealResponse>>> GetMealsAsync(CancellationToken cancellationToken);
+    Task<ApiResult<bool>> AddMealAsync(CreateMealRequest request, CancellationToken cancellationToken);
+    Task<ApiResult<bool>> DeleteMealAsync(Guid id, CancellationToken cancellationToken);
     string? GetEmojiForCategory(string category);
     string? GetEmojiForCategory(MealPartCategory category);
 }
@@ -15,20 +15,22 @@ internal sealed class MealService(IHttpClientFactory httpClientFactory) : IMealS
 {
     private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
 
-    public async Task<List<MealResponse>> GetMealsAsync(CancellationToken cancellationToken)
+    public async Task<ApiResult<List<MealResponse>>> GetMealsAsync(CancellationToken cancellationToken)
     {
         using var client = _httpClientFactory.CreateClient();
         var response = await client.GetAsync("meals", cancellationToken);
         if (!response.IsSuccessStatusCode)
         {
-            return [];
+            return response.StatusCode.ToApiResultError();
         }
 
-        return await response.Content.ReadFromJsonAsync<List<MealResponse>>(cancellationToken)
-            ?? [];
+        var value = await response.Content.ReadFromJsonAsync<List<MealResponse>>(cancellationToken);
+        if (value is null) return new ServerErrorApiResultError();
+
+        return value;
     }
 
-    public async Task AddMealAsync(CreateMealRequest request, CancellationToken cancellationToken)
+    public async Task<ApiResult<bool>> AddMealAsync(CreateMealRequest request, CancellationToken cancellationToken)
     {
         using var client = _httpClientFactory.CreateClient();
         var response = await client.PostAsync(
@@ -38,13 +40,14 @@ internal sealed class MealService(IHttpClientFactory httpClientFactory) : IMealS
 
         if (!response.IsSuccessStatusCode)
         {
-            return;
-            // FIXME: On failure in adding meal, report back to the consumer
+            return response.StatusCode.ToApiResultError();
         }
+
+        return true;
     }
 
 
-    public async Task DeleteMealAsync(Guid id, CancellationToken cancellationToken)
+    public async Task<ApiResult<bool>> DeleteMealAsync(Guid id, CancellationToken cancellationToken)
     {
         using var client = _httpClientFactory.CreateClient();
         var response = await client.DeleteAsync(
@@ -53,9 +56,10 @@ internal sealed class MealService(IHttpClientFactory httpClientFactory) : IMealS
 
         if (!response.IsSuccessStatusCode)
         {
-            return;
-            // FIXME: On failure in adding meal, report back to the consumer
+            return response.StatusCode.ToApiResultError();
         }
+
+        return true;
     }
     public string? GetEmojiForCategory(string category)
     {

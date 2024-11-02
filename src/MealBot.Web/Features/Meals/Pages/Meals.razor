@@ -12,24 +12,40 @@
         <NavLink class="btn btn-primary" href="/meals/add">Add Meal</NavLink>
     </div>
 </div>
-@foreach (var meal in meals)
+@if (_mealsResponse.IsProcessing)
 {
-    <div class="pb-2">
-        <MealRow Meal="@meal" OnDelete="HandleDelete" />
-    </div>
+    <p>Loading Meals...</p>
+}
+else if (_mealsResponse.IsError)
+{
+    <p class="text-center text-danger">Error loading meals...</p>
+}
+else
+{
+    foreach (var meal in _mealsResponse.Value)
+    {
+        <div class="pb-2">
+            <MealRow Meal="@meal" OnDelete="HandleDelete" />
+        </div>
+    }
 }
 
+
 @code {
-    private List<MealResponse> meals = [];
+    private ApiResult<List<MealResponse>> _mealsResponse = new();
+    private ApiResult<bool> _deleteMealResponse = new();
 
     protected override async Task OnInitializedAsync()
     {
-        meals = await _mealService.GetMealsAsync(CancellationToken.None);
+        _mealsResponse = await _mealService.GetMealsAsync(CancellationToken.None);
     }
 
-    private void HandleDelete(MealResponse meal)
+    private async Task HandleDelete(MealResponse meal)
     {
-        meals.Remove(meal);
-        _mealService.DeleteMealAsync(meal.MealId, CancellationToken.None);
+        if (_mealsResponse.HasValue)
+        {
+            _mealsResponse.Value.Remove(meal);
+            _deleteMealResponse = await _mealService.DeleteMealAsync(meal.MealId, CancellationToken.None);
+        }
     }
 }

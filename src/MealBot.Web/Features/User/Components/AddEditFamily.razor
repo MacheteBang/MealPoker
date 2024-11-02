@@ -7,30 +7,41 @@
 {
     <p>Loading...</p>
 }
-else if (FamilyId is not null && _familyResponse is not null)
+else if (FamilyId is not null)
 {
-    <p class="fw-bold">@_familyResponse.Name</p>
-    <p>@_familyResponse.Description</p>
-    <p>
-        Family Code: <code>@_familyResponse.Code</code>
-    </p>
-    @foreach (var member in _familyResponse?.Members ?? [])
+    if (_familyResponse.IsProcessing)
     {
-        <div class="row ms-2">
-            <div class="col-1">
-                <img src='@($"{_profileImageUrl}users/{member.UserId}/profile-images")' alt="@member.FirstName @member.LastName"
-                    height="32" class="rounded-circle" />
+        <p>Loading...</p>
+    }
+    else if (_familyResponse.IsError)
+    {
+        <p class="text-center text-danger">There was an error loading the family.</p>
+    }
+    else
+    {
+        <p class="fw-bold">@_familyResponse.Value.Name</p>
+        <p>@_familyResponse.Value.Description</p>
+        <p>
+            Family Code: <code>@_familyResponse.Value.Code</code>
+        </p>
+        @foreach (var member in _familyResponse.Value.Members ?? [])
+        {
+            <div class="row ms-2">
+                <div class="col-1">
+                    <img src='@($"{_profileImageUrl}users/{member.UserId}/profile-images")' alt="@member.FirstName @member.LastName"
+                        height="32" class="rounded-circle" />
+                </div>
+                <div class="col-11">
+                    <p>@member.FirstName @member.LastName</p>
+                </div>
             </div>
-            <div class="col-11">
-                <p>@member.FirstName @member.LastName</p>
-            </div>
+        }
+        <div class="text-end">
+            <button class="btn btn-sm btn-danger" type="button" @onclick="LeaveFamily">
+                Leave Family
+            </button>
         </div>
     }
-    <div class="text-end">
-        <button class="btn btn-sm btn-danger" type="button" @onclick="LeaveFamily">
-            Leave Family
-        </button>
-    </div>
 }
 else
 {
@@ -101,7 +112,7 @@ else
     private bool _isCreatingFamily = false;
     private bool _isJoiningFamily = false;
 
-    private FamilyResponse? _familyResponse;
+    private ApiResult<FamilyResponse> _familyResponse = new();
     private string _profileImageUrl = "";
 
     protected override async Task OnParametersSetAsync()
@@ -145,7 +156,7 @@ else
         _isBusy = true;
         _familyResponse = await _familyService.CreateFamilyAsync(CreateFamilyModel.Name, CreateFamilyModel.Description,
         CancellationToken.None);
-        await OnCreateFamily.InvokeAsync(_familyResponse);
+        await OnCreateFamily.InvokeAsync(_familyResponse.Value);
         CreateFamilyModel = new();
         _isCreatingFamily = false;
         _isBusy = false;

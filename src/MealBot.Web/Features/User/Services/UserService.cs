@@ -2,7 +2,7 @@ namespace MealBot.Web.Features.User.Services;
 
 internal interface IUserService
 {
-    Task<UserResponse?> GetUserAsync(CancellationToken cancellationToken);
+    Task<ApiResult<UserResponse>> GetUserAsync(CancellationToken cancellationToken);
 }
 
 internal sealed class UserService(
@@ -12,11 +12,11 @@ internal sealed class UserService(
     private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
     private readonly UserAuthenticationStateProvider _authenticationStateProvider = authenticationStateProvider;
 
-    public async Task<UserResponse?> GetUserAsync(CancellationToken cancellationToken)
+    public async Task<ApiResult<UserResponse>> GetUserAsync(CancellationToken cancellationToken)
     {
         if (!_authenticationStateProvider.CurrentUser.IsAuthenticated)
         {
-            return null;
+            return new NotAuthenticatedApiResultError();
         }
 
         string userId = _authenticationStateProvider.CurrentUser.UserId!;
@@ -25,11 +25,12 @@ internal sealed class UserService(
         var response = await client.GetAsync($"users/{userId}", cancellationToken);
         if (!response.IsSuccessStatusCode)
         {
-            // FIXME: Do something when the request fails
-            return null;
+            return response.StatusCode.ToApiResultError();
         }
 
-        return await response.Content.ReadFromJsonAsync<UserResponse>(cancellationToken)
-            ?? null;
+        var value = await response.Content.ReadFromJsonAsync<UserResponse>(cancellationToken);
+        if (value is null) return new ServerErrorApiResultError();
+
+        return value;
     }
 }
