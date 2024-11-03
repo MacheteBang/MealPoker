@@ -1,4 +1,3 @@
-using MealBot.Api.Common.Errors;
 using System.Reflection;
 
 namespace MealBot.Api;
@@ -10,7 +9,6 @@ public static class GlobalDependencyInjection
         Assembly thisAssembly = typeof(GlobalDependencyInjection).Assembly;
 
         services.AddSerilog();
-        services.AddSingleton<ProblemDetailsFactory, MealBotProblemDetailsFactory>();
         services.AddMediatR(mediatROptions => mediatROptions.RegisterServicesFromAssembly(thisAssembly));
         services.AddValidatorsFromAssembly(thisAssembly);
         return services;
