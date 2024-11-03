@@ -1,9 +1,11 @@
 ﻿namespace MealBot.Sdk.Contracts.Responses;
 
-public class MealResponse
-{
-    public Guid MealId { get; init; }
-    public required string Name { get; set; }
-    public string? Description { get; set; }
-    public List<MealPart>? MealParts { get; set; } = [];
-}
+public record MealResponse(
+    Guid MealId,
+    Guid OwnerUserId,
+    string OwnerFirstName,
+    string OwnerLastName,
+    string Name,
+    string? Description,
+    List<MealPart>? MealParts
+);

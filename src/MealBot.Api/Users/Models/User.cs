@@ -1,6 +1,6 @@
 namespace MealBot.Api.Users.Models;
 
-internal sealed class User
+public sealed class User
 {
     private User() { }
     public static User Create(

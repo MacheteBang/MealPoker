@@ -6,14 +6,16 @@ public sealed class GetMealsEndpoint : MealBotEndpoint
     {
         app.MapGet(GlobalSettings.RoutePaths.Meals, async (
             HttpContext context,
-            ISender sender) =>
+            ISender sender,
+            [FromQuery] bool family = false,
+            [FromQuery] bool includeCurrentUser = false) =>
         {
             if (!Guid.TryParse(context.User.FindFirstValue(JwtRegisteredClaimNames.Sub), out Guid userId))
             {
                 return Problem(Identity.Errors.SubMissingFromToken());
             }
 
-            var result = await sender.Send(new GetMealsQuery(userId));
+            var result = await sender.Send(new GetMealsQuery(userId, family, includeCurrentUser));
 
             return result.Match(
                 meals => Results.Ok(meals.Select(meal => meal.ToResponse())),

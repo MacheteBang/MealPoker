@@ -1,11 +1,11 @@
 namespace MealBot.Api.Meals.Features.GetMeals;
 
-public sealed class GetMealsQueryHandler(
+internal sealed class GetMealsQueryHandler(
     IValidator<GetMealsQuery> validator,
-    IMealsService MealsService) : IRequestHandler<GetMealsQuery, ErrorOr<List<Meal>>>
+    MealBotDbContext mealBotDbContext) : IRequestHandler<GetMealsQuery, ErrorOr<List<Meal>>>
 {
     private readonly IValidator<GetMealsQuery> _validator = validator;
-    private readonly IMealsService _MealsService = MealsService;
+    private readonly MealBotDbContext _mealBotDbContext = mealBotDbContext;
 
     public async Task<ErrorOr<List<Meal>>> Handle(GetMealsQuery query, CancellationToken cancellationToken)
     {
@@ -17,7 +17,26 @@ public sealed class GetMealsQueryHandler(
                 .ToList();
         }
 
-        var meals = await _MealsService.GetMealsByUserIdAsync(query.OwnerUserId);
+        if (!query.IsFamilyMeals) // User's meals only
+        {
+            return await _mealBotDbContext.Meals
+                .Include(m => m.Owner)
+                .Where(m => m.OwnerUserId == query.OwnerUserId)
+                .ToListAsync(cancellationToken);
+        }
+
+        // Family's meals
+        var user = await _mealBotDbContext.Users.SingleOrDefaultAsync(u => u.UserId == query.OwnerUserId);
+        if (user is null)
+        {
+            return Users.Errors.UserNotFound();
+        }
+
+        var meals = await _mealBotDbContext.Meals
+            .Include(m => m.Owner)
+            .Where(m => m.Owner.FamilyId == user.FamilyId)
+            .Where(m => query.IncludeCurrentUser || m.OwnerUserId != query.OwnerUserId)
+            .ToListAsync(cancellationToken);
 
         return meals;
     }

@@ -39,6 +39,10 @@ public static class ModelConfigurationExtensions
         modelBuilder.Entity<Meal>()
             .HasKey(m => m.MealId)
             .HasName("PK_Meals");
+
+        modelBuilder.Entity<Meal>()
+            .HasOne(m => m.Owner);
+
         modelBuilder.Entity<Meal>()
             .OwnsMany(m => m.MealParts, a =>
             {

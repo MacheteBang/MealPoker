@@ -8,14 +8,15 @@ public class Meal
     public string? Description { get; set; }
     public ICollection<MealPart>? MealParts { get; set; } = [];
 
-    public MealResponse ToResponse() =>
-        new()
-        {
-            MealId = MealId,
-            Name = Name,
-            Description = Description,
-            MealParts = MealParts is null
-                ? null
-                : [.. MealParts]
-        };
+    public virtual User Owner { get; set; }
+
+    public MealResponse ToResponse() => new(
+        MealId,
+        Owner.UserId,
+        Owner.FirstName,
+        Owner.LastName,
+        Name,
+        Description,
+        MealParts is null ? null : [.. MealParts]
+    );
 }
