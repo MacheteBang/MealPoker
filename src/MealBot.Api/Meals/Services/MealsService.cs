@@ -2,8 +2,6 @@ namespace MealBot.Api.Meals.Services;
 
 public interface IMealsService
 {
-    Task AddMealAsync(Meal meal);
-    Task<List<Meal>> GetMealsByUserIdAsync(Guid ownerUserId);
     Task<Meal?> GetMealByUserIdAsync(Guid ownerUserId, Guid mealId);
     Task<Meal?> UpdateMealAsync(Meal meal);
     Task<bool> DeleteMealByUserIdAsync(Guid ownerUserId, Guid mealId);
@@ -12,19 +10,6 @@ public interface IMealsService
 internal sealed class MealsService(MealBotDbContext mealBotDbContext) : IMealsService
 {
     private readonly MealBotDbContext _mealBotDbContext = mealBotDbContext;
-
-    public async Task AddMealAsync(Meal meal)
-    {
-        await _mealBotDbContext.Meals.AddAsync(meal);
-        await _mealBotDbContext.SaveChangesAsync();
-    }
-
-    public async Task<List<Meal>> GetMealsByUserIdAsync(Guid ownerUserId)
-    {
-        return await _mealBotDbContext.Meals
-            .Where(m => m.OwnerUserId == ownerUserId)
-            .ToListAsync();
-    }
 
     public async Task<Meal?> GetMealByUserIdAsync(Guid ownerUserId, Guid mealId)
     {
