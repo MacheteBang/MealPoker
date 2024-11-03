@@ -4,47 +4,73 @@
 
 <PageTitle>Meals</PageTitle>
 
-<div class="row">
+<div class="row pb-2">
     <div class="col">
-        <h1>Meals</h1>
+        <h3>My Meals</h3>
     </div>
     <div class="col-auto ms-auto">
         <NavLink class="btn btn-primary" href="/meals/add">Add Meal</NavLink>
     </div>
 </div>
-@if (_mealsResponse.IsProcessing)
-{
-    <p>Loading Meals...</p>
-}
-else if (_mealsResponse.IsError)
-{
-    <p class="text-center text-danger">Error loading meals...</p>
-}
-else
-{
-    foreach (var meal in _mealsResponse.Value)
+<div>
+    @if (_userMealsResponse.IsProcessing)
     {
-        <div class="pb-2">
-            <MealRow Meal="@meal" OnDelete="HandleDelete" />
-        </div>
-    }
-}
+        <p>Loading your meals...</p>
 
+    }
+    else if (_userMealsResponse.IsError)
+    {
+        <p class="text-center text-danger">Error loading your meals...</p>
+    }
+    else
+    {
+        foreach (var meal in _userMealsResponse.Value)
+        {
+            <div class="pb-2">
+                <MealRow Meal="@meal" OnDelete="HandleDelete" />
+            </div>
+        }
+    }
+</div>
+<div class="row pt-2">
+    <h3>Family Meals</h3>
+</div>
+<div>
+    @if (_familyMealsResponse.IsProcessing)
+    {
+        <p>Loading family meals...</p>
+    }
+    else if (_familyMealsResponse.IsError)
+    {
+        <p class="text-center text-danger">Error loading family meals...</p>
+    }
+    else
+    {
+        foreach (var meal in _familyMealsResponse.Value)
+        {
+            <div class="pb-2">
+                <FamilyMealRow Meal="@meal" />
+            </div>
+        }
+    }
+</div>
 
 @code {
-    private ApiResult<List<MealResponse>> _mealsResponse = new();
+    private ApiResult<List<MealResponse>> _userMealsResponse = new();
+    private ApiResult<List<MealResponse>> _familyMealsResponse = new();
     private ApiResult<bool> _deleteMealResponse = new();
 
     protected override async Task OnInitializedAsync()
     {
-        _mealsResponse = await _mealService.GetMealsAsync(CancellationToken.None);
+        _userMealsResponse = await _mealService.GetUserMealsAsync(CancellationToken.None);
+        _familyMealsResponse = await _mealService.GetFamilyMealsAsync(CancellationToken.None);
     }
 
     private async Task HandleDelete(MealResponse meal)
     {
-        if (_mealsResponse.HasValue)
+        if (_userMealsResponse.HasValue)
         {
-            _mealsResponse.Value.Remove(meal);
+            _userMealsResponse.Value.Remove(meal);
             _deleteMealResponse = await _mealService.DeleteMealAsync(meal.MealId, CancellationToken.None);
         }
     }

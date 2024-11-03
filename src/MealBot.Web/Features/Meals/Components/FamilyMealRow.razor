@@ -1,0 +1,28 @@
+<div class="border rounded-2 w-100 p-2">
+    <div class="row">
+        <div class="col">
+            <h4>@Meal.Name</h4>
+        </div>
+        <div class="col-auto">
+            <ProfilePicture UserId="@Meal.OwnerUserId" FirstName="@Meal.OwnerFirstName"
+                LastName="@Meal.OwnerLastName" />
+        </div>
+    </div>
+    <p>@Meal.Description</p>
+    <div class="container">
+        <div class="row">
+            @foreach (var mealPart in Meal.MealParts ?? [])
+            {
+                <div class="col-md-6">
+                    <MealPartRow MealPart="mealPart" />
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code
+{
+    [Parameter]
+    public required MealResponse Meal { get; set; }
+}

@@ -1,0 +1,19 @@
+@inject IHttpClientFactory _httpClientFactory
+
+<img src="@_profileImageUrl" alt="@FirstName @LastName" class="rounded-circle" />
+
+@code
+{
+    [Parameter] public Guid UserId { get; set; }
+    [Parameter] public string? FirstName { get; set; }
+    [Parameter] public string? LastName { get; set; }
+    [Parameter] public int? Width { get; set; } = 32;
+
+    private string _profileImageUrl = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        var httpClient = _httpClientFactory.CreateClient();
+        _profileImageUrl = $"{httpClient.BaseAddress}users/{UserId.ToString()}/profile-images?width={Width}";
+    }
+}
