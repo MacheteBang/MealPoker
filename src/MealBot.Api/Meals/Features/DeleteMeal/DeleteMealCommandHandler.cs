@@ -1,9 +1,11 @@
 namespace MealBot.Api.Meals.Features.DeleteMeal;
 
-public sealed class DeleteMealCommandHandler(IValidator<DeleteMealCommand> validator, IMealsService MealsService) : IRequestHandler<DeleteMealCommand, ErrorOr<Success>>
+internal sealed class DeleteMealCommandHandler(
+    IValidator<DeleteMealCommand> validator,
+    MealBotDbContext mealBotDbContext) : IRequestHandler<DeleteMealCommand, ErrorOr<Success>>
 {
     private readonly IValidator<DeleteMealCommand> _validator = validator;
-    private readonly IMealsService _MealsService = MealsService;
+    private readonly MealBotDbContext _mealBotDbContext = mealBotDbContext;
 
     public async Task<ErrorOr<Success>> Handle(DeleteMealCommand command, CancellationToken cancellationToken)
     {
@@ -15,12 +17,18 @@ public sealed class DeleteMealCommandHandler(IValidator<DeleteMealCommand> valid
                 .ToList();
         }
 
-        var meal = await _MealsService.DeleteMealByUserIdAsync(command.OwnerUserId, command.MealId);
+        var meal = await _mealBotDbContext.Meals
+            .FirstOrDefaultAsync(m =>
+                m.OwnerUserId == command.OwnerUserId
+                && m.MealId == command.MealId);
 
-        if (!meal)
+        if (meal is null)
         {
             return Errors.MealNotFoundError(command.MealId);
         }
+
+        _mealBotDbContext.Meals.Remove(meal);
+        await _mealBotDbContext.SaveChangesAsync(cancellationToken);
 
         return Result.Success;
     }

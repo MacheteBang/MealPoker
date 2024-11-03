@@ -1,11 +1,11 @@
 namespace MealBot.Api.Meals.Features.UpdateMeal;
 
-public sealed class UpdateMealCommandHandler(
+internal sealed class UpdateMealCommandHandler(
     IValidator<UpdateMealCommand> validator,
-    IMealsService MealsService) : IRequestHandler<UpdateMealCommand, ErrorOr<Meal>>
+    MealBotDbContext mealBotDbContext) : IRequestHandler<UpdateMealCommand, ErrorOr<Meal>>
 {
     private readonly IValidator<UpdateMealCommand> _validator = validator;
-    private readonly IMealsService _MealsService = MealsService;
+    private readonly MealBotDbContext _mealBotDbContext = mealBotDbContext;
 
     public async Task<ErrorOr<Meal>> Handle(UpdateMealCommand command, CancellationToken cancellationToken)
     {
@@ -17,6 +17,16 @@ public sealed class UpdateMealCommandHandler(
                 .ToList();
         }
 
+        var existingMeal = await _mealBotDbContext.Meals
+            .FirstOrDefaultAsync(m =>
+                m.OwnerUserId == command.OwnerUserId
+                && m.MealId == command.MealId);
+
+        if (existingMeal is null)
+        {
+            return Errors.MealNotFoundError(command.MealId);
+        }
+
         var meal = new Meal
         {
             OwnerUserId = command.OwnerUserId,
@@ -26,12 +36,10 @@ public sealed class UpdateMealCommandHandler(
             MealParts = command.MealParts
         };
 
-        var updatedMeal = await _MealsService.UpdateMealAsync(meal);
+        _mealBotDbContext.Meals.Remove(existingMeal);
+        await _mealBotDbContext.Meals.AddAsync(meal);
+        await _mealBotDbContext.SaveChangesAsync();
 
-        return updatedMeal switch
-        {
-            null => Errors.MealNotFoundError(command.MealId),
-            _ => updatedMeal!
-        };
+        return meal;
     }
 }

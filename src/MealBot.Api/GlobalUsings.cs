@@ -21,7 +21,6 @@ global using MealBot.Api.Families;
 global using MealBot.Api.Families.Models;
 global using MealBot.Api.Meals;
 global using MealBot.Api.Meals.Models;
-global using MealBot.Api.Meals.Services;
 global using MealBot.Api.Meals.Validators;
 global using MealBot.Api.Users;
 global using MealBot.Api.Users.Models;
