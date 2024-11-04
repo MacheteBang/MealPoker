@@ -1,0 +1,18 @@
+@import "../../external/bootstrap-5.3.3/scss/functions";
+
+// Include any default variable overrides here (though functions won't be available)
+// scss-docs-start theme-color-variables
+$primary: #B22222;
+$secondary: #222222;
+$success: #006400;
+$danger: #8B0000;
+$warning: #DAA520;
+$info: #4682B4;
+$light: #F5F5DC;
+$dark: #333333;
+// scss-docs-end theme-color-variables
+
+
+@import "../../external/bootstrap-5.3.3/scss/bootstrap.scss";
+
+// Then add additional custom code here
