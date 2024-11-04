@@ -1,21 +1,18 @@
 @inject IMealService _mealService
 
-<div class="d-flex">
-    <div>
-        <h5>
-            @(_mealService.GetEmojiForCategory(MealPart.Category) ?? "")
-            @MealPart.Name
-        </h5>
+<div class="row position-relative" style="grid-auto-rows: 1fr;">
+    <div class="col-auto text-center">
+        <span class="align-middle">@(_mealService.GetEmojiForCategory(MealPart.Category) ?? "")</span>
     </div>
-    @if (!string.IsNullOrEmpty(MealPart.Url))
-    {
-        <div class="ms-auto">
-            <a href="@MealPart.Url" target="_blank">link</a>
-        </div>
-    }
-</div>
-<div class="ms-auto">
-    <p>@MealPart.Description</p>
+    <div class="col">
+        <span class="align-middle">@MealPart.Name</span>
+    </div>
+    <div class="col-auto">
+        @if (!string.IsNullOrEmpty(MealPart.Url))
+        {
+            <a class="stretched-link" href="@MealPart.Url" target="_blank">View Recipe</a>
+        }
+    </div>
 </div>
 
 @code

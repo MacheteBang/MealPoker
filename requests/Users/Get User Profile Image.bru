@@ -5,13 +5,17 @@ meta {
 }
 
 get {
-  url: {{mealbotApiUrl}}/users/:userId/profile-image
+  url: {{mealbotApiUrl}}/users/:userId/profile-images?width=32
   body: none
   auth: bearer
 }
 
+params:query {
+  width: 32
+}
+
 params:path {
-  userId: 10b905e1-d3e0-42d3-b06f-67d46681bfca
+  userId: 6d13b7f0-2dba-45c1-bfa0-0e7e3fb55011
 }
 
 auth:bearer {

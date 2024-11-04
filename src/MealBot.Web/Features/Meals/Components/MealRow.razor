@@ -7,17 +7,11 @@
             <button class="btn btn-sm btn-danger" @onclick="Delete">X</button>
         </div>
     </div>
-    <p>@Meal.Description</p>
-    <div class="container">
-        <div class="row">
-            @foreach (var mealPart in Meal.MealParts ?? [])
-            {
-                <div class="col-md-6">
-                    <MealPartRow MealPart="mealPart" />
-                </div>
-            }
-        </div>
-    </div>
+    <p class="text-secondary">@Meal.Description</p>
+    @foreach (var mealPart in Meal.MealParts ?? [])
+    {
+        <MealPartRow MealPart="mealPart" />
+    }
 </div>
 
 @code
