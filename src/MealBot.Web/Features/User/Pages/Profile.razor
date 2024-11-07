@@ -20,48 +20,47 @@
     }
 </style>
 
-<div class="mx-auto" style="max-width: 512px;">
-    <div class="text-center">
 
-        <img src='@($"{_userAuthenticationStateProvider.CurrentUser.PictureUri}?width=128")'
-            style="border-radius:50%;height:128px;"
-            alt="@(_userAuthenticationStateProvider.CurrentUser.FirstName + ' ' + _userAuthenticationStateProvider.CurrentUser.LastName)" />
-        <h1>
-            @_userAuthenticationStateProvider.CurrentUser.FirstName
-            @_userAuthenticationStateProvider.CurrentUser.LastName
-        </h1>
-    </div>
-    <div class="mb-3">
-        @if (_userResponse.IsProcessing)
+<div class="text-center">
+
+    <img src='@($"{_userAuthenticationStateProvider.CurrentUser.PictureUri}?width=128")'
+        style="border-radius:50%;height:128px;"
+        alt="@(_userAuthenticationStateProvider.CurrentUser.FirstName + ' ' + _userAuthenticationStateProvider.CurrentUser.LastName)" />
+    <h1>
+        @_userAuthenticationStateProvider.CurrentUser.FirstName
+        @_userAuthenticationStateProvider.CurrentUser.LastName
+    </h1>
+</div>
+<div class="mb-3">
+    @if (_userResponse.IsProcessing)
+    {
+        <p>Loading User Profile...</p>
+    }
+    else
+    {
+        if (_userResponse.IsError)
         {
-            <p>Loading User Profile...</p>
+            <p class="text-center text-danger">There was an error retrieving the user profile.</p>
         }
         else
         {
-            if (_userResponse.IsError)
-            {
-                <p class="text-center text-danger">There was an error retrieving the user profile.</p>
-            }
-            else
-            {
-                <AddEditFamily FamilyId="@_userResponse.Value.FamilyId"
-                    OnCreateFamily="async () => await LoadUser(CancellationToken.None)"
-                    OnLeaveFamily="async () => await LoadUser(CancellationToken.None)"
-                    OnJoinFamily="async () => await LoadUser(CancellationToken.None)" />
-            }
+            <AddEditFamily FamilyId="@_userResponse.Value.FamilyId"
+                OnCreateFamily="async () => await LoadUser(CancellationToken.None)"
+                OnLeaveFamily="async () => await LoadUser(CancellationToken.None)"
+                OnJoinFamily="async () => await LoadUser(CancellationToken.None)" />
         }
-    </div>
+    }
+</div>
 
-    <div class="mb-3">
-        <h4>Current Token</h4>
-        <pre id="gfg">
-            @_accessToken
+<div class="mb-3">
+    <h4>Current Token</h4>
+    <pre id="gfg">
+        @_accessToken
         </pre>
-    </div>
+</div>
 
-    <div class="text-center">
-        <a class="btn btn-primary" href="signout">Sign Out</a>
-    </div>
+<div class="text-center">
+    <a class="btn btn-primary" href="signout">Sign Out</a>
 </div>
 
 @code

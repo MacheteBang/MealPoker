@@ -3,12 +3,24 @@ body {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-h1:focus {
-  outline: none;
+.wordmark {
+  font-size: 1.5rem;
 }
 
-.content {
-  padding-top: 1.1rem;
+.md-sm {
+  max-width: 576px;
+}
+.mw-md {
+  max-width: 768px;
+}
+.mw-lg {
+  max-width: 992px;
+}
+.mw-xl {
+  max-width: 1200px;
+}
+.mw-xxl {
+  max-width: 1400px;
 }
 
 .valid.modified:not([type="checkbox"]) {

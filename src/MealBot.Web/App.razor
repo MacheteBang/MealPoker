@@ -6,10 +6,9 @@
                     <p>Hang on, we're checking your credentials..</p>
                 </Authorizing>
                 <NotAuthorized>
-                    <p>You are not authorized to view this area. Please, sign in.</p>
+                    <RedirectIndex />
                 </NotAuthorized>
             </AuthorizeRouteView>
-            <FocusOnNavigate RouteData="@routeData" Selector="h1" />
         </Found>
         <NotFound>
             <PageTitle>Not found</PageTitle>

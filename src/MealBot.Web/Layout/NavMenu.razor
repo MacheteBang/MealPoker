@@ -1,43 +1,30 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">MealBot.Web</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-    </div>
-</div>
-
-<div class="@NavMenuCssClass nav-scrollable" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Home
-            </NavLink>
+﻿<nav class="p-3 bg-white">
+    <div class="row align-items-center">
+        <div class="col">
+            <span class="wordmark">MealPoker</span>
         </div>
+
         <AuthorizeView>
             <Authorized>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="profile">
-                        <i class="bi bi-person-circle"></i> Profile
+                <div class="col-auto nav-item">
+                    <NavLink class="nav-link p-2" href="home">
+                        Home
                     </NavLink>
                 </div>
-                <div class="nav-item px-3">
-                    <NavLink class="nav-link" href="meals">
-                        <i class="bi bi-egg-fried"></i> Meals
+                <div class="col-auto nav-item">
+                    <NavLink class="nav-link p-2" href="meals">
+                        Meals
                     </NavLink>
+                </div>
+                <div class="col-auto">
+                    <ProfileButton />
                 </div>
             </Authorized>
+            <NotAuthorized>
+                <div class="col-auto">
+                    <GoogleLoginButton />
+                </div>
+            </NotAuthorized>
         </AuthorizeView>
-    </nav>
-</div>
-
-@code {
-    private bool collapseNavMenu = true;
-
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
-}
+    </div>
+</nav>

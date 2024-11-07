@@ -2,25 +2,10 @@
 @inject UserAuthenticationStateProvider AuthState
 @inject IJSRuntime JSRuntime
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+<div class="sticky-top">
+    <NavMenu />
+</div>
 
-    <main>
-        <div class="top-row px-4">
-            <AuthorizeView>
-                <NotAuthorized>
-                    <GoogleLoginButton />
-                </NotAuthorized>
-                <Authorized>
-                    <ProfileButton />
-                </Authorized>
-            </AuthorizeView>
-        </div>
-
-        <div class="container py-4">
-            @Body
-        </div>
-    </main>
+<div class="container">
+    @Body
 </div>

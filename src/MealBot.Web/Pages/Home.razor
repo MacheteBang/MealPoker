@@ -1,15 +1,2 @@
-﻿@page "/"
-@attribute [AllowAnonymous]
-@inject UserAuthenticationStateProvider _userAuthenticationStateProvider
-@inject ITokenService _tokenService
-
-<PageTitle>Home</PageTitle>
-
-<AuthorizeView>
-    <Authorized>
-        <p>Welcome @_userAuthenticationStateProvider.CurrentUser.FirstName</p>
-    </Authorized>
-    <NotAuthorized>
-        <p>Welcome Guest</p>
-    </NotAuthorized>
-</AuthorizeView>
+@page "/home"
+<h1>Today's Menu</h1>

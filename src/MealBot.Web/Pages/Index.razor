@@ -1,0 +1,25 @@
+﻿@page "/"
+@attribute [AllowAnonymous]
+@inject UserAuthenticationStateProvider _userAuthenticationStateProvider
+@inject ITokenService _tokenService
+
+<PageTitle>Home</PageTitle>
+<AuthorizeView>
+    <Authorized>
+        <RedirectHome />
+    </Authorized>
+    <NotAuthorized>
+        <div class="text-center display-1 pt-5">
+            Welcome to MealPoker.com
+        </div>
+        <div class="text-center display-5 pt-3">
+            Make Meal Planning a Breeze!
+        </div>
+        <div class="text-center pt-5">
+            Tired of last-minute dinner decisions and endless grocery lists? MealPoker.com is here to streamline your
+            weekly
+            meal planning, helping families create delicious, balanced meals without the stress. Whether you're a busy
+            parent, a meal-prep enthusiast, or just someone looking to save time and money, MealPoker has you covered.
+        </div>
+    </NotAuthorized>
+</AuthorizeView>
