@@ -78,7 +78,7 @@ internal sealed class TokenService(
         try
         {
             var token = tokenHandler.ReadJwtToken(accessToken);
-            var userIdClaim = token.Claims.FirstOrDefault(c => c.Type == "nameid");
+            var userIdClaim = token.Claims.FirstOrDefault(c => c.Type == JwtRegisteredClaimNames.Sub);
             if (userIdClaim is null)
             {
                 return Error.Failure("No user ID claim found in token");
