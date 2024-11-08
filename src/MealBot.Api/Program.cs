@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using HealthChecks.UI.Client;
 using Serilog.Core;
 
 Log.Logger = CreateLoggerConfiguration();
@@ -40,6 +42,10 @@ var app = builder.Build();
     app.UseCors();
     app.UsePresentation();
     app.MapMealBotEndpoints();
+    app.MapHealthChecks("/_health", new HealthCheckOptions
+    {
+        ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+    });
 }
 
 app.Run();

@@ -25,7 +25,7 @@ public static class GlobalDependencyInjection
     {
         string connectionString = configuration.GetRequiredValue<string>("ConnectionStrings:Database");
         services.AddDbContext<MealBotDbContext>(options => options.UseSqlServer(connectionString));
-
+        services.AddHealthChecks().AddSqlServer(connectionString);
         return services;
     }
 
