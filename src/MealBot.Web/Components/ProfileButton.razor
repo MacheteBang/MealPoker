@@ -1,7 +1,19 @@
 @inject UserAuthenticationStateProvider _userAuthenticationStateProvider
 
-<a href="/profile">
+<NavLink class="nav-link p-2" href="profile">
+    @if (ShowName)
+    {
+        <span class="me-2">
+            @_userAuthenticationStateProvider.CurrentUser.FirstName @_userAuthenticationStateProvider.CurrentUser.LastName
+        </span>
+    }
+
     <ProfilePicture UserId="Guid.Parse(_userAuthenticationStateProvider.CurrentUser.UserId!)"
         FirstName="@_userAuthenticationStateProvider.CurrentUser.FirstName"
         LastName="@_userAuthenticationStateProvider.CurrentUser.LastName" />
-</a>
+</NavLink>
+
+@code {
+    [Parameter]
+    public bool ShowName { get; set; } = true;
+}
