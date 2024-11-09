@@ -6,7 +6,10 @@ Log.Logger = CreateLoggerConfiguration();
 
 var builder = WebApplication.CreateBuilder(args);
 {
-    builder.Configuration.AddJsonFile("appsettings.Secrets.json", true);
+    if (builder.Environment.IsDevelopment())
+    {
+        builder.Configuration.AddJsonFile("appsettings.Secrets.json", true);
+    }
 
     // Add services to the container.
     builder.Services.AddHttpContextAccessor();
