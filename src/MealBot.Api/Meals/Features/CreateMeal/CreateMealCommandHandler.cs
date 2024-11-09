@@ -17,16 +17,23 @@ internal sealed class CreateMealCommandHandler(
                 .ToList();
         }
 
+        var user = await _mealBotDbContext.Users.FindAsync(command.OwnerUserId, cancellationToken);
+        if (user == null)
+        {
+            return Users.Errors.UserNotFound();
+        }
+
         var meal = new Meal
         {
             OwnerUserId = command.OwnerUserId,
+            Owner = user,
             Name = command.Name,
             Description = command.Description,
             MealParts = command.MealParts
         };
 
-        await _mealBotDbContext.Meals.AddAsync(meal);
-        await _mealBotDbContext.SaveChangesAsync();
+        await _mealBotDbContext.Meals.AddAsync(meal, cancellationToken);
+        await _mealBotDbContext.SaveChangesAsync(cancellationToken);
 
         return meal;
     }
