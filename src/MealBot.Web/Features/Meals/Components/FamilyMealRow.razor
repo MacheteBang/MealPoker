@@ -3,20 +3,18 @@
         <div class="col">
             <h4>@Meal.Name</h4>
         </div>
-        <div class="col-auto">
-            <ProfilePicture UserId="@Meal.OwnerUserId" FirstName="@Meal.OwnerFirstName"
-                LastName="@Meal.OwnerLastName" />
-        </div>
+        <p class="text-secondary">@Meal.Description</p>
+        @foreach (var mealPart in Meal.MealParts ?? [])
+        {
+            <MealPartRow MealPart="mealPart" />
+        }
     </div>
-    <p>@Meal.Description</p>
-    <div class="container">
-        <div class="row">
-            @foreach (var mealPart in Meal.MealParts ?? [])
-            {
-                <div class="col-md-6">
-                    <MealPartRow MealPart="mealPart" />
-                </div>
-            }
+    <div class="row my-1">
+        <div class="col text-start">
+            <div class="border-top pt-2">
+                <ProfilePicture UserId="@Meal.OwnerUserId" FirstName="@Meal.OwnerFirstName"
+                    LastName="@Meal.OwnerLastName" />
+            </div>
         </div>
     </div>
 </div>

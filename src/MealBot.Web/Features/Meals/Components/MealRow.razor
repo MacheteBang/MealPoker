@@ -1,17 +1,23 @@
 <div class="border rounded-2 w-100 p-2">
     <div class="row">
         <div class="col">
-            <h4>@Meal.Name</h4>
+            <h5>@Meal.Name</h5>
         </div>
-        <div class="col-auto">
-            <button class="btn btn-sm btn-danger" @onclick="Delete">X</button>
+        <p class="text-secondary">@Meal.Description</p>
+        @foreach (var mealPart in Meal.MealParts ?? [])
+        {
+            <MealPartRow MealPart="mealPart" />
+        }
+    </div>
+    <div class="row my-1">
+        <div class="col text-end">
+            <div class="border-top pt-2">
+                <a class="link-danger" @onclick="Delete">
+                    <i class="fa-solid fa-trash-can"></i>
+                </a>
+            </div>
         </div>
     </div>
-    <p class="text-secondary">@Meal.Description</p>
-    @foreach (var mealPart in Meal.MealParts ?? [])
-    {
-        <MealPartRow MealPart="mealPart" />
-    }
 </div>
 
 @code

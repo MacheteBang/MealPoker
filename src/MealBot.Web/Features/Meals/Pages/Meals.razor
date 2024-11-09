@@ -9,7 +9,9 @@
         <h3>My Meals</h3>
     </div>
     <div class="col-auto ms-auto">
-        <NavLink class="btn btn-primary" href="/meals/add">Add Meal</NavLink>
+        <a class="link-success" href="/meals/add">
+            <i class="fa-solid fa-circle-plus fa-2xl"></i>
+        </a>
     </div>
 </div>
 <div>
@@ -22,14 +24,20 @@
     {
         <p class="text-center text-danger">Error loading your meals...</p>
     }
+    else if ((_userMealsResponse.Value.Count == 0))
+    {
+        <p class="text-muted text-center my-5">You have no meals...</p>
+    }
     else
     {
-        foreach (var meal in _userMealsResponse.Value)
-        {
-            <div class="pb-2">
-                <MealRow Meal="@meal" OnDelete="HandleDelete" />
-            </div>
-        }
+        <div class="row">
+            @foreach (var meal in _userMealsResponse.Value)
+            {
+                <div class="pb-2 col-sm-6">
+                    <MealRow Meal="@meal" OnDelete="HandleDelete" />
+                </div>
+            }
+        </div>
     }
 </div>
 <div class="row pt-2">
@@ -44,14 +52,20 @@
     {
         <p class="text-center text-danger">Error loading family meals...</p>
     }
+    else if ((_userMealsResponse.Value.Count == 0))
+    {
+        <p class="text-muted text-center my-5">Noone else in your family has added meals.</p>
+    }
     else
     {
-        foreach (var meal in _familyMealsResponse.Value)
-        {
-            <div class="pb-2">
-                <FamilyMealRow Meal="@meal" />
-            </div>
-        }
+        <div class="row">
+            @foreach (var meal in _familyMealsResponse.Value)
+            {
+                <div class="pb-2 col-sm-6">
+                    <FamilyMealRow Meal="@meal" />
+                </div>
+            }
+        </div>
     }
 </div>
 
