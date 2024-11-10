@@ -8,11 +8,20 @@
 <form method="post" @onsubmit="Submit">
 
     <div class="row">
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary-outline ms-auto"
+                @onclick='() => NavigationManager.NavigateTo("/meals")'>
+                <i class="fa-solid fa-chevron-left fa-xl"></i>
+            </button>
+        </div>
         <div class="col">
             <h1>Add Meal</h1>
+            <p class="text-muted">Add a meal to your collection.</p>
         </div>
         <div class="col-auto">
-            <button type="submit" class="btn btn-primary ms-auto">Save Meal</button>
+            <button type="submit" class="btn btn-primary ms-auto">
+                <i class="fa-solid fa-floppy-disk"></i>
+            </button>
         </div>
     </div>
 
@@ -32,16 +41,20 @@
         <div class="row">
             <div class="col">
                 <h4>Dishes</h4>
+                <p class="text-muted">
+                    Dishes are the different parts of the meal. Add the main course, side dishes, and even dessert!
+                </p>
             </div>
             <div class="col-auto">
-                <button type="button" class="btn btn-sm btn-success" @onclick="AddPart">+</button>
+                <a class="link-success" @onclick="AddPart">
+                    <i class="fa-solid fa-circle-plus fa-2xl"></i>
+                </a>
             </div>
         </div>
     </div>
-
     @if (Model.Parts.Count == 0)
     {
-        <div class="border rounded p-5 text-center text-muted">
+        <div class="border rounded p-3 text-center text-muted">
             No dishes added yet.
         </div>
     }
@@ -63,9 +76,9 @@
                     </h5>
                 </div>
                 <div class="col-auto">
-                    <button type="button" class="btn btn-sm btn-danger" @onclick="() => RemovePart(part)">
-                        X
-                    </button>
+                    <a class="link-danger" @onclick="() => RemovePart(part)">
+                        <i class="fa-solid fa-trash fa-lg"></i>
+                    </a>
                 </div>
             </div>
             <div class="row mb-3">
@@ -99,7 +112,7 @@
             </div>
             <div class="mb-3">
                 <label for="@($"dishUrl{Model.Parts.IndexOf(part)}Input")" class="form-label" aria-label="Dish Name">
-                    Url
+                    Link to Recipe
                     <span class="text-muted">(optional)</span>
                 </label>
                 <InputText @bind-Value="@part.Url" id="@($"dishUrl{Model.Parts.IndexOf(part)}Input")"

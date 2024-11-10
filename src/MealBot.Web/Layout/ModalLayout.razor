@@ -6,10 +6,16 @@
         <RedirectIndex />
     </NotAuthorized>
     <Authorized>
-        <div class="bg-dark vh-100 p-4">
-            <div class="container py-2 border rounded-3 bg-light">
+        <div class="vh-100 py-0 py-sm-3 overflow-auto modal-background">
+            <div class="container py-2 border rounded-3 bg-body">
                 @Body
             </div>
         </div>
     </Authorized>
 </AuthorizeView>
+
+<style>
+    .modal-background {
+        background-color: #2E8B57; // Classic Poker Table Green
+    }
+</style>
