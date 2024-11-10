@@ -19,7 +19,7 @@
             <p class="text-muted">Add a meal to your collection.</p>
         </div>
         <div class="col-auto">
-            <button type="submit" class="btn btn-primary ms-auto">
+            <button type="submit" class="btn btn-primary ms-auto" disabled="@_isSubmitting">
                 <i class="fa-solid fa-floppy-disk"></i>
             </button>
         </div>
@@ -127,6 +127,8 @@
     [SupplyParameterFromForm]
     public required MealFormModel Model { get; set; }
 
+    private bool _isSubmitting = false;
+
     private IEnumerable<MealPartCategory> MealPartCategories => Enum
     .GetValues<MealPartCategory>()
     .Cast<MealPartCategory>()
@@ -138,6 +140,8 @@
 
     private async Task Submit()
     {
+        _isSubmitting = true;
+
         var mealRequest = new CreateMealRequest(
         Model.Name,
         Model.Description,
@@ -153,5 +157,7 @@
         await _mealService.AddMealAsync(mealRequest, CancellationToken.None);
 
         NavigationManager.NavigateTo("/meals");
+
+        _isSubmitting = false;
     }
 }
