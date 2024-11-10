@@ -73,11 +73,31 @@
     </div>
 }
 
+<Dialog Title="Delete Meal?" Opened="@isDeleteMealDialogOpened"
+    CloseButtonClicked="@(() => isDeleteMealDialogOpened = false)">
+    <BodyContent>
+        <div class="pb-4">
+            Are you sure you want to delete the meal with the name <span class="fw-bold">@mealToDelete?.Name</span>?
+            This action cannot be undone.
+        </div>
+    </BodyContent>
+    <FooterContent>
+        <div class="text-end">
+            <button class="btn btn-outline-primary" @onclick="() => isDeleteMealDialogOpened = false">Cancel</button>
+            <button class="btn btn-danger" @onclick="DeleteMeal">Delete</button>
+        </div>
+    </FooterContent>
+</Dialog>
+
+
 @code {
     private ApiResult<UserResponse> _userResponse = new();
     private ApiResult<List<MealResponse>> _userMealsResponse = new();
     private ApiResult<List<MealResponse>> _familyMealsResponse = new();
     private ApiResult<bool> _deleteMealResponse = new();
+
+    private bool isDeleteMealDialogOpened = false;
+    private MealResponse? mealToDelete;
 
     protected override async Task OnInitializedAsync()
     {
@@ -88,10 +108,17 @@
 
     private async Task HandleDelete(MealResponse meal)
     {
-        if (_userMealsResponse.HasValue)
+        mealToDelete = meal;
+        isDeleteMealDialogOpened = true;
+    }
+    private async Task DeleteMeal()
+    {
+        if (mealToDelete is not null && _userMealsResponse.HasValue)
         {
-            _userMealsResponse.Value.Remove(meal);
-            _deleteMealResponse = await _mealService.DeleteMealAsync(meal.MealId, CancellationToken.None);
+            _userMealsResponse.Value.Remove(mealToDelete!);
+            _deleteMealResponse = await _mealService.DeleteMealAsync(mealToDelete.MealId, CancellationToken.None);
         }
+
+        isDeleteMealDialogOpened = false;
     }
 }
