@@ -1,4 +1,5 @@
-@page "/profile"
+@page "/profile/"
+@page "/profile/join-family/{familyCode}"
 @attribute [Authorize]
 @inject UserAuthenticationStateProvider _userAuthenticationStateProvider
 @inject IBrowserStorageService _browserStorageService
@@ -35,7 +36,7 @@
                 <AddEditFamily FamilyId="@_userResponse.Value.FamilyId"
                     OnCreateFamily="async () => await LoadUser(CancellationToken.None)"
                     OnLeaveFamily="async () => await LoadUser(CancellationToken.None)"
-                    OnJoinFamily="async () => await LoadUser(CancellationToken.None)" />
+                    OnJoinFamily="async () => await LoadUser(CancellationToken.None)" JoinFamilyCode="@FamilyCode" />
             </div>
         }
     }
@@ -69,6 +70,8 @@
 
 @code
 {
+    [Parameter] public string? FamilyCode { get; set; }
+
     private bool _isBusy_User = true;
 
     private string _accessToken = string.Empty;

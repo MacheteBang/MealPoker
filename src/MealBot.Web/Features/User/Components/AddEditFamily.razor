@@ -2,6 +2,7 @@
 @inject IFamilyService _familyService
 @inject IHttpClientFactory _httpClientFactory
 @inject IJSRuntime _jsRuntime
+@inject NavigationManager _navigationManager
 
 <h4>My Family</h4>
 @if (_isBusy)
@@ -88,11 +89,11 @@ else
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col text-end">
-                        <button class="btn btn-sm btn-secondary" @onclick="() => _isCreatingFamily = false">Cancel</button>
-                    </div>
-                    <div class="col-auto text-end">
-                        <button class="btn btn-sm btn-primary">Create</button>
+                    <div class="col">
+                        <div class="text-end">
+                            <button class="btn btn-sm btn-outline-primary" @onclick="() => _isCreatingFamily = false">Cancel</button>
+                            <button class="btn btn-sm btn-primary ms-2">Create</button>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -100,6 +101,11 @@ else
         else if (_isJoiningFamily)
         {
             <form @onsubmit="JoinFamily">
+                <div class="row">
+                    <div class="col">
+                        Enter the code given to you by another family member.
+                    </div>
+                </div>
                 <div class="row mb-3">
                     <label for="familyCodeInput" class="col-sm-3 col-form-label">Family Code</label>
                     <div class="col-sm-9">
@@ -107,11 +113,14 @@ else
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col text-end">
-                        <button class="btn btn-sm btn-secondary" @onclick="() => _isJoiningFamily = false">Cancel</button>
-                    </div>
-                    <div class="col-auto text-end">
-                        <button class="btn btn-sm btn-primary">Join</button>
+                    <div class="col">
+                        <div class="text-end">
+                            <div class="@_showJoinFromUrlCss d-inline text-info">
+                                Select 'Join' to join a family using this code.
+                            </div>
+                            <button class="btn btn-sm btn-outline-primary ms-2" @onclick="CancelJoinFamily">Cancel</button>
+                            <button class="btn btn-sm btn-primary ms-2">Join</button>
+                        </div>
                     </div>
                 </div>
             </form>
@@ -131,21 +140,40 @@ else
         }
     </div>
 }
+
+<Dialog Title="Already Part of a Family" Opened="@_alreadyPartOfFamilyDialogOpen"
+    CloseButtonClicked="@(() => _alreadyPartOfFamilyDialogOpen = false)">
+    <BodyContent>
+        <div class="pb-4">
+            You are already part of a family. You cannot join another family.
+        </div>
+    </BodyContent>
+    <FooterContent>
+        <div class="text-end">
+            <button class="btn btn-primary" @onclick="@(() => _alreadyPartOfFamilyDialogOpen = false)">Ok</button>
+        </div>
+    </FooterContent>
+</Dialog>
+
 @code
 {
     [SupplyParameterFromForm]
-    private CreateFamilyFormModel? CreateFamilyModel { get; set; } = new();
+    private CreateFamilyFormModel CreateFamilyModel { get; set; } = new();
     [SupplyParameterFromForm]
-    private JoinFamilyFormModel? JoinFamilyModel { get; set; } = new();
+    private JoinFamilyFormModel JoinFamilyModel { get; set; } = new();
 
     [Parameter] public Guid? FamilyId { get; set; }
     [Parameter] public EventCallback<FamilyResponse> OnCreateFamily { get; set; }
     [Parameter] public EventCallback OnLeaveFamily { get; set; }
     [Parameter] public EventCallback OnJoinFamily { get; set; }
+    [Parameter] public string? JoinFamilyCode { get; set; }
 
     private bool _isBusy = true;
     private bool _isCreatingFamily = false;
     private bool _isJoiningFamily = false;
+
+    private string _showJoinFromUrlCss = "d-none";
+    private bool _alreadyPartOfFamilyDialogOpen = false;
 
     private ApiResult<FamilyResponse> _familyResponse = new();
     private string _profileImageUrl = "";
@@ -159,6 +187,22 @@ else
     {
         var httpClient = _httpClientFactory.CreateClient();
         _profileImageUrl = $"{httpClient.BaseAddress}";
+
+        if (!string.IsNullOrEmpty(JoinFamilyCode))
+        {
+            if (FamilyId is not null)
+            {
+                _alreadyPartOfFamilyDialogOpen = true;
+            }
+            else
+            {
+                _isJoiningFamily = true;
+                JoinFamilyModel = new() {FamilyCode = JoinFamilyCode};
+                _showJoinFromUrlCss = "";
+            }
+
+            _navigationManager.NavigateTo(_navigationManager.Uri.Replace($"/join-family/{JoinFamilyCode}", ""), replace: true);
+        }
     }
 }
 
@@ -183,6 +227,12 @@ else
         await _familyService.JoinFamilyAsync(JoinFamilyModel.FamilyCode, CancellationToken.None);
         await OnJoinFamily.InvokeAsync();
         _isBusy = false;
+    }
+    private void CancelJoinFamily()
+    {
+         _isJoiningFamily = false;
+         JoinFamilyModel = new();
+         _showJoinFromUrlCss = "d-none";
     }
     private async Task CreateFamily()
     {
@@ -220,7 +270,7 @@ else
         new
         {
             Title = "Join Your Family in MealPoker",
-            Text = $"Join your family in planning meals using MealPoker. Use the family code: {Environment.NewLine}{Environment.NewLine}{_familyResponse.Value.Code}",
+            Text = $"Join your family in planning meals using MealPoker. Use this link to join your family: {Environment.NewLine}{Environment.NewLine}{_navigationManager.BaseUri}join-family/{_familyResponse.Value.Code}",
         });
     }
 }
