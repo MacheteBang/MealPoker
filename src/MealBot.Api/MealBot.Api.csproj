@@ -22,4 +22,9 @@
   <ItemGroup>
     <ProjectReference Include="..\MealBot.Sdk\MealBot.Sdk.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Update="Assets\Default_pfp.jpg">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

@@ -78,6 +78,20 @@ internal sealed class AuthenticationService(
                 throw new Exception("Failed to save profile image");
             }
         }
+        else
+        {
+            // Read the file into a stream
+            using var fileStream = new FileStream("Assets/Default_pfp.jpg", FileMode.Open, FileAccess.Read);
+
+            var saveResult = await _profileImageStorageService.SaveImageAsync(
+                user.UserId,
+                fileStream);
+
+            if (saveResult.IsError)
+            {
+                throw new Exception("Failed to save profile image");
+            }
+        }
     }
 
     private static bool IsUserDifferent(User user, ExternalIdentity externalIdentity) =>
