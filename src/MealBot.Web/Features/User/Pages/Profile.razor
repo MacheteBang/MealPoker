@@ -7,20 +7,6 @@
 
 <PageTitle>Profile</PageTitle>
 
-<style>
-    #gfg {
-        overflow-x: auto;
-        white-space: pre-wrap;
-        word-wrap: break-word;
-        font-size: 15px;
-    }
-
-    pre {
-        overflow-x: auto;
-    }
-</style>
-
-
 <div class="text-center">
 
     <img src='@($"{_userAuthenticationStateProvider.CurrentUser.PictureUri}?width=128")'
@@ -52,16 +38,18 @@
     }
 </div>
 
-<div class="mb-3">
-    <h4>Current Token</h4>
-    <pre id="gfg">
-        @_accessToken
-        </pre>
+<div class="text-center pt-3">
+    <a class="btn btn-danger px-5" href="signout">Sign Out</a>
 </div>
 
-<div class="text-center">
-    <a class="btn btn-primary" href="signout">Sign Out</a>
+<hr class="mt-5">
+<h4>For Developers</h4>
+<span class="fw-bold">Current Access Token</span>
+<div class="p-2 font-monospace bg-light text-break border">
+    @_accessToken
 </div>
+
+
 
 @code
 {
