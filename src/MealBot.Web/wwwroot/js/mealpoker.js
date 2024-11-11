@@ -5,3 +5,10 @@ function copyTextInElement(elementId) {
    // Copy the text inside the text field
   navigator.clipboard.writeText(copyText);
 }
+
+function shareToDevice(sharedInformation)
+{
+  if (navigator.canShare) {
+    navigator.share(sharedInformation);
+  }
+}

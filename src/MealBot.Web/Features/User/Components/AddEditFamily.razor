@@ -1,8 +1,9 @@
 @using MealBot.Web.Features.User.FormModels
 @inject IFamilyService _familyService
 @inject IHttpClientFactory _httpClientFactory
+@inject IJSRuntime _jsRuntime
 
-<h4>Family</h4>
+<h4>My Family</h4>
 @if (_isBusy)
 {
     <p>Loading...</p>
@@ -19,25 +20,49 @@ else if (FamilyId is not null)
     }
     else
     {
-        <p class="fw-bold">@_familyResponse.Value.Name</p>
-        <p>@_familyResponse.Value.Description</p>
-        <p>
-            Family Code: <code>@_familyResponse.Value.Code</code>
-        </p>
-        @foreach (var member in _familyResponse.Value.Members ?? [])
-        {
-            <div class="row ms-2">
-                <div class="col-1">
-                    <img src='@($"{_profileImageUrl}users/{member.UserId}/profile-images?width=32")'
-                        alt="@member.FirstName @member.LastName" class="rounded-circle" />
-                </div>
-                <div class="col-11">
-                    <p>@member.FirstName @member.LastName</p>
+        <div>
+            <span class="fw-bold">@_familyResponse.Value.Name</span>
+            @if (!string.IsNullOrWhiteSpace(_familyResponse.Value.Description))
+            {
+                <span>@_familyResponse.Value.Description</span>
+            }
+        </div>
+        
+        <div class="mt-4">
+            <span class="fw-bold">Family Code</span>
+        <div class="row align-items-middle mt-1">
+            <div class="col  align-items-middle mt-1">
+                <div class="text-center font-monospace border bg-light">
+                    @_familyResponse.Value.Code
                 </div>
             </div>
-        }
+            <div class="col-auto">
+                <button class="btn btn-sm btn-primary" type="button" @onclick="ShareFamilyCode">
+                    <i class="fa-solid fa-share-from-square"></i>
+                </button>
+            </div>
+        </div>
+        </div>
+
+
+        <div class="mt-4 fw-bold">Family Members</div>
+        <div class="mt-1">
+            @foreach (var member in _familyResponse.Value.Members ?? [])
+            {
+                <div class="row ms-2 align-items-middle">
+                    <div class="col-auto">
+                        <img src='@($"{_profileImageUrl}users/{member.UserId}/profile-images?width=32")'
+                            alt="@member.FirstName @member.LastName" class="rounded-circle" />
+                    </div>
+                    <div class="col">
+                        <p>@member.FirstName @member.LastName</p>
+                    </div>
+                </div>
+            }
+        </div>
         <div class="text-end">
-            <button class="btn btn-sm btn-danger" type="button" @onclick="LeaveFamily">
+            <button class="btn btn-sm btn-danger ms-1" type="button" @onclick="LeaveFamily">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
                 Leave Family
             </button>
         </div>
@@ -130,7 +155,7 @@ else
         await LoadFamily(CancellationToken.None);
     }
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         var httpClient = _httpClientFactory.CreateClient();
         _profileImageUrl = $"{httpClient.BaseAddress}";
@@ -182,5 +207,20 @@ else
         _isCreatingFamily = false;
         _isJoiningFamily = false;
         _isBusy = false;
+    }
+
+    private async Task ShareFamilyCode()
+    {
+        if (FamilyId is null)
+        {
+            return;
+        }
+
+        await _jsRuntime.InvokeVoidAsync("shareToDevice",
+        new
+        {
+            Title = "Join Your Family in MealPoker",
+            Text = $"Join your family in planning meals using MealPoker. Use the family code: {Environment.NewLine}{Environment.NewLine}{_familyResponse.Value.Code}",
+        });
     }
 }

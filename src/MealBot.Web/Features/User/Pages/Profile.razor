@@ -31,15 +31,18 @@
         }
         else
         {
-            <AddEditFamily FamilyId="@_userResponse.Value.FamilyId"
-                OnCreateFamily="async () => await LoadUser(CancellationToken.None)"
-                OnLeaveFamily="async () => await LoadUser(CancellationToken.None)"
-                OnJoinFamily="async () => await LoadUser(CancellationToken.None)" />
+            <div class="mt-4">
+                <AddEditFamily FamilyId="@_userResponse.Value.FamilyId"
+                    OnCreateFamily="async () => await LoadUser(CancellationToken.None)"
+                    OnLeaveFamily="async () => await LoadUser(CancellationToken.None)"
+                    OnJoinFamily="async () => await LoadUser(CancellationToken.None)" />
+            </div>
         }
     }
 </div>
 
-<div class="text-center pt-3">
+<hr class="mt-5">
+<div class="text-center pt-4">
     <a class="btn btn-danger px-5" href="signout">Sign Out</a>
 </div>
 
