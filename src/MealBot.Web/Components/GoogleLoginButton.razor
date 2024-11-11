@@ -1,5 +1,25 @@
 ﻿@inject IdentityProviderService IdentityProvider
 
-<button class="btn btn-primary" @onclick="IdentityProvider.AuthenticateWithGoogle">
-    Sign In
+<button class="btn btn-primary" disabled=@isDisabled @onclick="SignIn">
+    @if (isDisabled)
+    {
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        <span class="visually-hidden">Loading...</span>
+    }
+    else
+    {
+        <span>Sign In</span>
+    }
+
 </button>
+
+@code {
+    private bool isDisabled = false;
+
+    private async Task SignIn()
+    {
+        isDisabled = true;
+        await IdentityProvider.AuthenticateWithGoogle();
+    }
+
+}
