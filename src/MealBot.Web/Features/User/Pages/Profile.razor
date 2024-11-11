@@ -4,6 +4,7 @@
 @inject IBrowserStorageService _browserStorageService
 @inject IUserService _userService
 @inject IFamilyService _familyService
+@inject IJSRuntime _jsRuntime
 
 <PageTitle>Profile</PageTitle>
 
@@ -44,10 +45,22 @@
 
 <hr class="mt-5">
 <h4>For Developers</h4>
-<span class="fw-bold">Current Access Token</span>
-<div class="p-2 font-monospace bg-light text-break border">
+<div class="row py-3 align-items-middle">
+    <div class="col">
+        <div class="fw-bold">Current Access Token</div>
+        <div class="text-muted @displayCopySuccessCss">Copied!</div>
+    </div>
+    <div class="col-auto py-2">
+        <button class="btn btn-primary" @onclick="CopyAccessTokenToClipboard">
+            <i class="fa-regular fa-copy"></i>
+        </button>
+    </div>
+</div>
+
+<div id="accessTokenText" class="p-2 font-monospace bg-light text-break border">
     @_accessToken
 </div>
+
 
 
 
@@ -70,5 +83,14 @@
     {
         _userResponse = await _userService.GetUserAsync(cancellationToken);
         StateHasChanged();
+    }
+
+
+    private string displayCopySuccessCss = "d-none";
+
+    private async Task CopyAccessTokenToClipboard()
+    {
+        await _jsRuntime.InvokeVoidAsync("copyTextInElement", "accessTokenText");
+        displayCopySuccessCss = "";
     }
 }
