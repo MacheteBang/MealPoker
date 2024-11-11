@@ -1,4 +1,5 @@
 ﻿@inject IdentityProviderService IdentityProvider
+@inject NavigationManager NavigationManager
 
 <button class="btn btn-primary" disabled=@isDisabled @onclick="SignIn">
     @if (isDisabled)
@@ -15,6 +16,14 @@
 
 @code {
     private bool isDisabled = false;
+
+    protected override void OnInitialized()
+    {
+        if (NavigationManager.Uri.Contains("callback"))
+        {
+            isDisabled = true;
+        }
+    }
 
     private async Task SignIn()
     {

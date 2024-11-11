@@ -3,10 +3,7 @@
         <Found Context="routeData">
             <AuthorizeRouteView RouteData="routeData" DefaultLayout="typeof(MainLayout)">
                 <Authorizing>
-                    <div class="p-5">
-                        <div class="loader mx-auto"></div>
-                    </div>
-                    <div>Hang on, we're checking your credentials..</div>
+                    <AuthorizingLoader />
                 </Authorizing>
                 <NotAuthorized>
                     <RedirectIndex />
