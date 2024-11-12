@@ -9,16 +9,19 @@
 
 <PageTitle>Profile</PageTitle>
 
-<div class="text-center">
-
-    <img src='@($"{_userAuthenticationStateProvider.CurrentUser.PictureUri}?width=128")'
-        style="border-radius:50%;height:128px;"
-        alt="@(_userAuthenticationStateProvider.CurrentUser.FirstName + ' ' + _userAuthenticationStateProvider.CurrentUser.LastName)" />
-    <div class="display-4">
-        @_userAuthenticationStateProvider.CurrentUser.FirstName
-        @_userAuthenticationStateProvider.CurrentUser.LastName
+<div class="row align-items-middle">
+    <div class="col-auto">
+        <img src='@($"{_userAuthenticationStateProvider.CurrentUser.PictureUri}?width=64")' style="border-radius:50%"
+            alt="@(_userAuthenticationStateProvider.CurrentUser.FirstName + ' ' + _userAuthenticationStateProvider.CurrentUser.LastName)" />
+    </div>
+    <div class="col">
+        <span class="display-5 fw-bold">
+            @(_userAuthenticationStateProvider.CurrentUser.FirstName + ' ' +
+                _userAuthenticationStateProvider.CurrentUser.LastName)
+        </span>
     </div>
 </div>
+
 <div class="mb-3">
     @if (_userResponse.IsProcessing)
     {
