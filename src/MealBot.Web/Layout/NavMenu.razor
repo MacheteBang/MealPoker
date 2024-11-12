@@ -3,10 +3,8 @@
         <a class="navbar-brand" href="home">MealPoker</a>
         <AuthorizeView>
             <Authorized>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
-                    data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                    aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
+                <button class="navbar-toggler" type="button" @onclick="ToggleNav" aria-label="Toggle navigation">
+                    <i class="fa-solid fa-bars"></i>
                 </button>
             </Authorized>
             <Authorizing>
@@ -18,19 +16,19 @@
         </AuthorizeView>
         <AuthorizeView>
             <Authorized>
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0 mt-2 mt-md-0 align-items-sm-center align-items-end">
-                        <li class="nav-item mx-2 mb-2 mb-md-0">
-                            <NavLink class="nav-link p-2" href="home">
+                <div class="collapse navbar-collapse @showNavBarCss">
+                    <ul class="navbar-nav ms-auto align-items-sm-center align-items-end">
+                        <li class="nav-item">
+                            <NavLink class="nav-link p-2" href="home" @onclick="ToggleNav">
                                 Home
                             </NavLink>
                         </li>
-                        <li class="nav-item mx-2 mb-2 mb-md-0">
-                            <NavLink class="nav-link p-2" href="meals">
+                        <li class="nav-item ms-2">
+                            <NavLink class="nav-link p-2" href="meals" @onclick="ToggleNav">
                                 Meals
                             </NavLink>
                         </li>
-                        <li class="nav-item mx-2 mb-2 mb-md-0">
+                        <li class="nav-item ms-2" @onclick="ToggleNav">
                             <ProfileButton ShowName=true />
                         </li>
                     </ul>
@@ -39,3 +37,20 @@
         </AuthorizeView>
     </div>
 </nav>
+
+@code {
+    private string showNavBarCss = "";
+
+    private void ToggleNav()
+    {
+        Console.WriteLine("Toggling nav bar");
+        if (showNavBarCss == "")
+        {
+            showNavBarCss = "show";
+        }
+        else
+        {
+            showNavBarCss = "";
+        }
+    }
+}
