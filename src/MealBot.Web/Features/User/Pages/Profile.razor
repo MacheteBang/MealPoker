@@ -9,16 +9,16 @@
 
 <PageTitle>Profile</PageTitle>
 
-<div class="row align-items-middle">
+<div class="row align-items-center">
     <div class="col-auto">
         <img src='@($"{_userAuthenticationStateProvider.CurrentUser.PictureUri}?width=64")' style="border-radius:50%"
             alt="@(_userAuthenticationStateProvider.CurrentUser.FirstName + ' ' + _userAuthenticationStateProvider.CurrentUser.LastName)" />
     </div>
     <div class="col">
-        <span class="display-5 fw-bold">
+        <div class="display-5 fw-bold">
             @(_userAuthenticationStateProvider.CurrentUser.FirstName + ' ' +
                 _userAuthenticationStateProvider.CurrentUser.LastName)
-        </span>
+        </div>
     </div>
 </div>
 
@@ -53,7 +53,7 @@
 
 <hr class="mt-5">
 <Section Title="For Developers">
-    <div class="row align-items-middle">
+    <div class="row align-items-center">
         <div class="col">
             <span class="fw-bold">Current Access Token</span>
             <div class="text-muted @displayCopySuccessCss">Copied!</div>
@@ -65,7 +65,7 @@
         </div>
     </div>
 
-    <div id="accessTokenText" class="p-2 font-monospace bg-light text-break border">
+    <div id="accessTokenText" class="mt-2 p-2 font-monospace bg-light text-break border">
         @_accessToken
     </div>
 </Section>

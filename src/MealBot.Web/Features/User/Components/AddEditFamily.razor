@@ -49,18 +49,18 @@ else if (FamilyId is not null)
         <div class="mt-2">
             @foreach (var member in _familyResponse.Value.Members ?? [])
             {
-                <div class="row ms-2 align-items-middle">
+                <div class="row mt-2 ms-2 align-items-center">
                     <div class="col-auto">
                         <img src='@($"{_profileImageUrl}users/{member.UserId}/profile-images?width=32")'
                             alt="@member.FirstName @member.LastName" class="rounded-circle" />
                     </div>
                     <div class="col">
-                        <p>@member.FirstName @member.LastName</p>
+                        <span>@member.FirstName @member.LastName</span>
                     </div>
                 </div>
             }
         </div>
-        <div class="text-end">
+        <div class="mt-2 text-end">
             <button class="btn btn-sm btn-danger ms-1" type="button" @onclick="LeaveFamily">
                 <i class="fa-solid fa-arrow-right-from-bracket"></i>
                 Leave Family
