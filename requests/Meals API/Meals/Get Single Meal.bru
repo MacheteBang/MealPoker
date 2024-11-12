@@ -7,9 +7,13 @@ meta {
 get {
   url: {{mealbotApiUrl}}/meals/:mealId
   body: none
-  auth: none
+  auth: bearer
 }
 
 params:path {
-  mealId: 21a49b85-7395-45dc-a3d6-f396ab18ed52
+  mealId: 69d0d6ee-a8ee-44ab-85e5-aad0127fd15b
+}
+
+auth:bearer {
+  token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2ZDEzYjdmMC0yZGJhLTQ1YzEtYmZhMC0wZTdlM2ZiNTUwMTEiLCJlbWFpbCI6ImpvbmF0aGFuLmdyZWdvcnNreUBnbWFpbC5jb20iLCJnaXZlbl9uYW1lIjoiSm9uYXRoYW4iLCJmYW1pbHlfbmFtZSI6IkdyZWdvcnNreSIsInByb2ZpbGVfaW1hZ2UiOiJodHRwOi8vbG9jYWxob3N0OjQyMDY5L3VzZXJzLzZkMTNiN2YwLTJkYmEtNDVjMS1iZmEwLTBlN2UzZmI1NTAxMS9wcm9maWxlLWltYWdlcyIsIm5iZiI6MTczMTQ0MTkzNywiZXhwIjoxNzMxNDQyODM3LCJpYXQiOjE3MzE0NDE5MzcsImlzcyI6Ik1lYWxCb3QiLCJhdWQiOiJNZWFsQm90In0.W4xlx-R-iKtYzAeXm4IcERALre99TsiWOReIZHwAvHk
 }

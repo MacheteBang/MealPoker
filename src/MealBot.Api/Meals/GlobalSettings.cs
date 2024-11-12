@@ -6,5 +6,6 @@ public partial class GlobalSettings
     {
         public const string Meals = "/meals";
         public const string MealPartCategories = "/meal-part-categories";
+        public const string MealRatings = "/meal-ratings";
     }
 }
