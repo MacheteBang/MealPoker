@@ -19,6 +19,6 @@ public class Meal
         Name,
         Description,
         MealParts is null ? null : [.. MealParts],
-        Ratings?.Select(r => new MealRatingResponse(r.UserId, r.Rating.ToString())).ToList()
+        Ratings?.Select(r => new MealRatingResponse(r.UserId, r.Rating)).ToList()
     );
 }

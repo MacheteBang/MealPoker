@@ -35,6 +35,7 @@ var builder = WebApplication.CreateBuilder(args);
     builder.Services.Configure<Microsoft.AspNetCore.Http.Json.JsonOptions>(options =>
     {
         options.SerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
+        options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
 }
 

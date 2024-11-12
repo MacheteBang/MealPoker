@@ -1,3 +1,3 @@
 namespace MealBot.Sdk.Contracts.Responses;
 
-public record MealRatingResponse(Guid UserId, string Rating);
+public record MealRatingResponse(Guid UserId, MealRating Rating);

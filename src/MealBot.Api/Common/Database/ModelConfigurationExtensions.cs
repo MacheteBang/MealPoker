@@ -50,6 +50,10 @@ public static class ModelConfigurationExtensions
                 a.WithOwner().HasForeignKey("MealId");
                 a.Property<int>("MealPartId");
                 a.HasKey("MealPartId");
+                a.Property(p => p.Category)
+                    .HasConversion(
+                        v => v.ToString(),
+                        v => (MealPartCategory)Enum.Parse(typeof(MealPartCategory), v));
             });
 
         return modelBuilder;

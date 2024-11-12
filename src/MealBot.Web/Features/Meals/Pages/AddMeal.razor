@@ -131,8 +131,7 @@
 
     private IEnumerable<MealPartCategory> MealPartCategories => Enum
     .GetValues<MealPartCategory>()
-    .Cast<MealPartCategory>()
-    .Where(c => c != MealPartCategory.Unknown);
+    .Cast<MealPartCategory>();
 
     protected override void OnInitialized() => Model ??= new MealFormModel { Name = "" };
     private void AddPart() => Model!.Parts.Add(new MealFormModel.MealPartFormModel());
@@ -147,7 +146,7 @@
         Model.Description,
         Model.Parts.Select(p => new MealPart
             {
-                Category = p.Category.ToString(),
+                Category = p.Category,
                 Name = p.Name,
                 Description = p.Description,
                 Url = p.Url
