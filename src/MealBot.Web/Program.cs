@@ -1,7 +1,8 @@
-using MealBot.Web.Features.User.Services;
-
 var builder = WebAssemblyHostBuilder.CreateDefault(args);
 {
+    builder.Logging.SetMinimumLevel(
+        builder.HostEnvironment.IsDevelopment() ? LogLevel.Information : LogLevel.Error);
+
     builder.RootComponents.Add<App>("#app");
     builder.RootComponents.Add<HeadOutlet>("head::after");
 
