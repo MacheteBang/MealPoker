@@ -1,0 +1,14 @@
+@if (!string.IsNullOrWhiteSpace(Title))
+{
+    <h1>@Title</h1>
+}
+<div class="bg-body border rounded-3 shadow p-3 @Css">
+    @ChildContent
+</div>
+
+@code
+{
+    [Parameter] public string? Title { get; set; }
+    [Parameter] public string? Css { get; set; }
+    [Parameter] public RenderFragment? ChildContent { get; set; }
+}

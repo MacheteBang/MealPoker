@@ -4,7 +4,6 @@
 @inject IJSRuntime _jsRuntime
 @inject NavigationManager _navigationManager
 
-<h4>My Family</h4>
 @if (_isBusy)
 {
     <p>Loading...</p>
@@ -30,24 +29,24 @@ else if (FamilyId is not null)
         </div>
         
         <div class="mt-4">
-            <span class="fw-bold">Family Code</span>
-        <div class="row align-items-middle mt-1">
-            <div class="col  align-items-middle mt-1">
+            <div class="fw-bold">Family Code</div>
+            <div class="mt-2">
                 <div class="text-center font-monospace border bg-light">
                     @_familyResponse.Value.Code
                 </div>
             </div>
-            <div class="col-auto">
+            <div class="mt-2 text-center">
                 <button class="btn btn-sm btn-primary" type="button" @onclick="ShareFamilyCode">
                     <i class="fa-solid fa-share-from-square"></i>
+                    <span class="ms-1">Invite Someone</span>
                 </button>
             </div>
         </div>
-        </div>
 
 
-        <div class="mt-4 fw-bold">Family Members</div>
-        <div class="mt-1">
+        <div class="mt-4">
+        <div class="fw-bold">Members</div>
+        <div class="mt-2">
             @foreach (var member in _familyResponse.Value.Members ?? [])
             {
                 <div class="row ms-2 align-items-middle">
@@ -67,6 +66,7 @@ else if (FamilyId is not null)
                 Leave Family
             </button>
         </div>
+        </div>
     }
 }
 else
@@ -75,25 +75,27 @@ else
         @if (_isCreatingFamily)
         {
             <form @onsubmit="CreateFamily">
-                <div class="row mb-3">
-                    <label for="familyNameInput" class="col-sm-2 col-form-label">Name</label>
-                    <div class="col-sm-10">
-                        <InputText @bind-Value="CreateFamilyModel.Name" class="form-control" id="familyNameInput" />
+                <div class="">
+                    <div class="mt-2">
+                        Creating a family allows you to share your meals and plan together. Once you create your family, you'll be able to easily invite others to join.
                     </div>
-                </div>
-                <div class="row mb-3">
-                    <label for="familyDescriptionInput" class="col-sm-2 col-form-label">Description</label>
-                    <div class="col-sm-10">
-                        <InputTextArea @bind-Value="CreateFamilyModel.Description" class="form-control"
-                            id="familyDescriptionInput" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="text-end">
-                            <button class="btn btn-sm btn-outline-primary" @onclick="() => _isCreatingFamily = false">Cancel</button>
-                            <button class="btn btn-sm btn-primary ms-2">Create</button>
+
+                    <div class="row mt-2">
+                        <label for="familyNameInput" class="col-sm-2 col-form-label">Name</label>
+                        <div class="col-sm-10">
+                            <InputText @bind-Value="CreateFamilyModel.Name" class="form-control" id="familyNameInput" />
                         </div>
+                    </div>
+                    <div class="row mt-2">
+                        <label for="familyDescriptionInput" class="col-sm-2 col-form-label">Description</label>
+                        <div class="col-sm-10">
+                            <InputTextArea @bind-Value="CreateFamilyModel.Description" class="form-control"
+                                id="familyDescriptionInput" />
+                        </div>
+                    </div>
+                    <div class="mt-2 text-center">
+                        <button class="btn btn-outline-primary" @onclick="() => _isCreatingFamily = false">Cancel</button>
+                        <button class="btn btn-primary ms-2">Create</button>
                     </div>
                 </div>
             </form>
@@ -101,26 +103,19 @@ else
         else if (_isJoiningFamily)
         {
             <form @onsubmit="JoinFamily">
-                <div class="row">
-                    <div class="col">
-                        Enter the code given to you by another family member.
+                <div class="">
+                    <div class="fw-bold">Enter Your Family Code</div>
+                    <div class="mt-2">
+                        A Family Code allows families to easily join together. If you have a Family Code, enter it below.
                     </div>
-                </div>
-                <div class="row mb-3">
-                    <label for="familyCodeInput" class="col-sm-3 col-form-label">Family Code</label>
-                    <div class="col-sm-9">
-                        <InputText @bind-Value="JoinFamilyModel.FamilyCode" class="form-control" id="familyCodeInput" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="text-end">
-                            <div class="@_showJoinFromUrlCss d-inline text-info">
-                                Select 'Join' to join a family using this code.
-                            </div>
-                            <button class="btn btn-sm btn-outline-primary ms-2" @onclick="CancelJoinFamily">Cancel</button>
-                            <button class="btn btn-sm btn-primary ms-2">Join</button>
+                    <div class="mt-2">
+                        <div class="text-center font-monospace border bg-light">
+                            <InputText @bind-Value="JoinFamilyModel.FamilyCode" class="form-control" id="familyCodeInput" />
                         </div>
+                    </div>
+                    <div class="mt-2 text-center">
+                        <button class="btn btn-outline-primary ms-2" @onclick="CancelJoinFamily">Cancel</button>
+                        <button class="btn btn-primary ms-2">Join</button>
                     </div>
                 </div>
             </form>
@@ -172,7 +167,6 @@ else
     private bool _isCreatingFamily = false;
     private bool _isJoiningFamily = false;
 
-    private string _showJoinFromUrlCss = "d-none";
     private bool _alreadyPartOfFamilyDialogOpen = false;
 
     private ApiResult<FamilyResponse> _familyResponse = new();
@@ -198,7 +192,6 @@ else
             {
                 _isJoiningFamily = true;
                 JoinFamilyModel = new() {FamilyCode = JoinFamilyCode};
-                _showJoinFromUrlCss = "";
             }
 
             _navigationManager.NavigateTo(_navigationManager.Uri.Replace($"/join-family/{JoinFamilyCode}", ""), replace: true);
@@ -232,7 +225,6 @@ else
     {
          _isJoiningFamily = false;
          JoinFamilyModel = new();
-         _showJoinFromUrlCss = "d-none";
     }
     private async Task CreateFamily()
     {

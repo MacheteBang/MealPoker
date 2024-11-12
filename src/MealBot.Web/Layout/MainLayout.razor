@@ -2,10 +2,13 @@
 @inject UserAuthenticationStateProvider AuthState
 @inject IJSRuntime JSRuntime
 
-<div class="sticky-top">
-    <NavMenu />
-</div>
+<div class="vh-100 bg-body-secondary overflow-auto">
+    <div class="sticky-top">
+        <NavMenu />
+    </div>
 
-<div class="container my-4">
-    @Body
+    <div class="container my-4 p-3">
+        @Body
+    </div>
+
 </div>

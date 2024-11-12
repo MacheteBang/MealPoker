@@ -7,15 +7,16 @@
 
 <div class="row pb-2">
     <div class="col">
-        <h3>My Meals</h3>
+        <h1>My Meals</h1>
     </div>
-    <div class="col-auto ms-auto">
-        <a class="link-success" href="/meals/add">
-            <i class="fa-solid fa-circle-plus fa-2xl"></i>
+    <div class="col-auto align-items-middle ms-auto">
+        <a class="btn btn-primary btn" href="/meals/add">
+            <i class="fa-solid fa-circle-plus"></i>
+            <span class="ms-1">Add Meal</span>
         </a>
     </div>
 </div>
-<div>
+<div class="">
     @if (_userMealsResponse.IsProcessing)
     {
         <p>Loading your meals...</p>
@@ -34,42 +35,44 @@
         <div class="row">
             @foreach (var meal in _userMealsResponse.Value)
             {
-                <div class="pb-2 col-sm-6">
+                <Section Css="col-sm-6">
                     <MealRow Meal="@meal" OnDelete="HandleDelete" />
-                </div>
+                </Section>
             }
         </div>
     }
 </div>
 @if (!_userResponse.IsProcessing && !_userResponse.IsError && _userResponse.Value.FamilyId.HasValue)
 {
-    <div class="row pt-2">
-        <h3>Family Meals</h3>
-    </div>
-    <div>
-        @if (_familyMealsResponse.IsProcessing)
-        {
-            <p>Loading family meals...</p>
-        }
-        else if (_familyMealsResponse.IsError)
-        {
-            <p class="text-center text-danger">Error loading family meals...</p>
-        }
-        else if ((_userMealsResponse.Value.Count == 0))
-        {
-            <p class="text-muted text-center my-5">No one else in your family has added meals.</p>
-        }
-        else
-        {
-            <div class="row">
-                @foreach (var meal in _familyMealsResponse.Value)
-                {
-                    <div class="pb-2 col-sm-6">
-                        <FamilyMealRow Meal="@meal" />
-                    </div>
-                }
-            </div>
-        }
+    <div class="mt-4">
+        <div class="row pt-2">
+            <h1>My Family's Meals</h1>
+        </div>
+        <div>
+            @if (_familyMealsResponse.IsProcessing)
+            {
+                <p>Loading family meals...</p>
+            }
+            else if (_familyMealsResponse.IsError)
+            {
+                <p class="text-center text-danger">Error loading family meals...</p>
+            }
+            else if ((_userMealsResponse.Value.Count == 0))
+            {
+                <p class="text-muted text-center my-5">No one else in your family has added meals.</p>
+            }
+            else
+            {
+                <div class="row">
+                    @foreach (var meal in _familyMealsResponse.Value)
+                    {
+                        <Section Css="col-sm-6">
+                            <FamilyMealRow Meal="@meal" />
+                        </Section>
+                    }
+                </div>
+            }
+        </div>
     </div>
 }
 

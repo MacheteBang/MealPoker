@@ -14,10 +14,10 @@
     <img src='@($"{_userAuthenticationStateProvider.CurrentUser.PictureUri}?width=128")'
         style="border-radius:50%;height:128px;"
         alt="@(_userAuthenticationStateProvider.CurrentUser.FirstName + ' ' + _userAuthenticationStateProvider.CurrentUser.LastName)" />
-    <h1>
+    <div class="display-4">
         @_userAuthenticationStateProvider.CurrentUser.FirstName
         @_userAuthenticationStateProvider.CurrentUser.LastName
-    </h1>
+    </div>
 </div>
 <div class="mb-3">
     @if (_userResponse.IsProcessing)
@@ -33,38 +33,39 @@
         else
         {
             <div class="mt-4">
-                <AddEditFamily FamilyId="@_userResponse.Value.FamilyId"
-                    OnCreateFamily="async () => await LoadUser(CancellationToken.None)"
-                    OnLeaveFamily="async () => await LoadUser(CancellationToken.None)"
-                    OnJoinFamily="async () => await LoadUser(CancellationToken.None)" JoinFamilyCode="@FamilyCode" />
+                <Section Title="My Family">
+                    <AddEditFamily FamilyId="@_userResponse.Value.FamilyId"
+                        OnCreateFamily="async () => await LoadUser(CancellationToken.None)"
+                        OnLeaveFamily="async () => await LoadUser(CancellationToken.None)"
+                        OnJoinFamily="async () => await LoadUser(CancellationToken.None)" JoinFamilyCode="@FamilyCode" />
+                </Section>
             </div>
         }
     }
 </div>
 
-<hr class="mt-5">
-<div class="text-center pt-4">
+<div class="text-center mt-4 pt-4">
     <a class="btn btn-danger px-5" href="signout">Sign Out</a>
 </div>
 
 <hr class="mt-5">
-<h4>For Developers</h4>
-<div class="row py-3 align-items-middle">
-    <div class="col">
-        <div class="fw-bold">Current Access Token</div>
-        <div class="text-muted @displayCopySuccessCss">Copied!</div>
+<Section Title="For Developers">
+    <div class="row align-items-middle">
+        <div class="col">
+            <span class="fw-bold">Current Access Token</span>
+            <div class="text-muted @displayCopySuccessCss">Copied!</div>
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-primary" @onclick="CopyAccessTokenToClipboard">
+                <i class="fa-regular fa-copy"></i>
+            </button>
+        </div>
     </div>
-    <div class="col-auto py-2">
-        <button class="btn btn-primary" @onclick="CopyAccessTokenToClipboard">
-            <i class="fa-regular fa-copy"></i>
-        </button>
+
+    <div id="accessTokenText" class="p-2 font-monospace bg-light text-break border">
+        @_accessToken
     </div>
-</div>
-
-<div id="accessTokenText" class="p-2 font-monospace bg-light text-break border">
-    @_accessToken
-</div>
-
+</Section>
 
 
 
