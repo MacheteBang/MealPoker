@@ -35,9 +35,11 @@
         <div class="row">
             @foreach (var meal in _userMealsResponse.Value)
             {
-                <Section Css="col-sm-6">
-                    <MealRow Meal="@meal" OnDelete="HandleDelete" />
-                </Section>
+                <div class="col-12 col-sm-6 col-lg-4 mb-4">
+                    <Section>
+                        <MealRow Meal="@meal" OnDelete="HandleDelete" />
+                    </Section>
+                </div>
             }
         </div>
     }
@@ -66,9 +68,11 @@
                 <div class="row">
                     @foreach (var meal in _familyMealsResponse.Value)
                     {
-                        <Section Css="col-sm-6">
-                            <FamilyMealRow Meal="@meal" />
-                        </Section>
+                        <div class="col-12 col-sm-6 col-lg-4 mb-4">
+                            <Section>
+                                <FamilyMealRow Meal="@meal" />
+                            </Section>
+                        </div>
                     }
                 </div>
             }
