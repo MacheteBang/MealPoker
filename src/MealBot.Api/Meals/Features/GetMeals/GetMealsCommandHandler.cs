@@ -34,6 +34,7 @@ internal sealed class GetMealsQueryHandler(
 
         var meals = await _mealBotDbContext.Meals
             .Include(m => m.Owner)
+            .Include(m => m.Ratings)
             .Where(m => m.Owner.FamilyId == user.FamilyId)
             .Where(m => query.IncludeCurrentUser || m.OwnerUserId != query.OwnerUserId)
             .ToListAsync(cancellationToken);

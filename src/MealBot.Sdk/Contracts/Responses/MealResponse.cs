@@ -7,5 +7,6 @@ public record MealResponse(
     string OwnerLastName,
     string Name,
     string? Description,
-    List<MealPart>? MealParts
+    List<MealPart>? MealParts,
+    List<MealRatingResponse>? Ratings
 );

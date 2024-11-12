@@ -54,4 +54,25 @@ public static class ModelConfigurationExtensions
 
         return modelBuilder;
     }
+    public static ModelBuilder ConfigureUserMealRating(this ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<UserMealRating>()
+            .HasKey(umr => new { umr.MealId, umr.UserId })
+            .HasName("PK_UserMealRatings");
+
+        modelBuilder.Entity<UserMealRating>()
+            .HasOne(umr => umr.Meal)
+            .WithMany(m => m.Ratings);
+
+        modelBuilder.Entity<UserMealRating>()
+            .HasOne(umr => umr.User);
+
+        modelBuilder.Entity<UserMealRating>()
+            .Property(u => u.Rating)
+            .HasConversion(
+                v => v.ToString(),
+                v => (MealRating)Enum.Parse(typeof(MealRating), v));
+
+        return modelBuilder;
+    }
 }

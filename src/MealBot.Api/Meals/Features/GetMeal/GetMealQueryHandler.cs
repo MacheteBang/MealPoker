@@ -18,6 +18,8 @@ internal sealed class GetMealQueryHandler(
         }
 
         var meal = await _mealBotDbContext.Meals
+            .Include(m => m.Owner)
+            .Include(m => m.Ratings)
             .FirstOrDefaultAsync(m =>
                 m.OwnerUserId == query.OwnerUserId
                 && m.MealId == query.MealId,

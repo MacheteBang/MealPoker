@@ -9,6 +9,7 @@ public class Meal
     public ICollection<MealPart>? MealParts { get; set; } = [];
 
     public virtual User Owner { get; set; }
+    public virtual ICollection<UserMealRating>? Ratings { get; set; }
 
     public MealResponse ToResponse() => new(
         MealId,
@@ -17,6 +18,7 @@ public class Meal
         Owner.LastName,
         Name,
         Description,
-        MealParts is null ? null : [.. MealParts]
+        MealParts is null ? null : [.. MealParts],
+        Ratings?.Select(r => new MealRatingResponse(r.UserId, r.Rating.ToString())).ToList()
     );
 }
