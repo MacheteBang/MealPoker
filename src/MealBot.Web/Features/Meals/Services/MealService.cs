@@ -8,8 +8,12 @@ internal interface IMealService
     Task<ApiResult<List<MealResponse>>> GetFamilyMealsAsync(CancellationToken cancellationToken);
     Task<ApiResult<bool>> AddMealAsync(CreateMealRequest request, CancellationToken cancellationToken);
     Task<ApiResult<bool>> DeleteMealAsync(Guid id, CancellationToken cancellationToken);
+    Task<ApiResult<bool>> RateMealAsync(Guid id, MealRating rating, CancellationToken cancellationToken);
+    Task<ApiResult<bool>> UnrateMealAsync(Guid id, CancellationToken cancellationToken);
     string? GetEmojiForCategory(string category);
     string? GetEmojiForCategory(MealPartCategory category);
+    string? GetEmojiForMealRating(string category);
+    string? GetEmojiForMealRating(MealRating mealRating);
 }
 
 internal sealed class MealService(IHttpClientFactory httpClientFactory) : IMealService
@@ -77,6 +81,35 @@ internal sealed class MealService(IHttpClientFactory httpClientFactory) : IMealS
 
         return true;
     }
+    public async Task<ApiResult<bool>> RateMealAsync(Guid id, MealRating rating, CancellationToken cancellationToken)
+    {
+        using var client = _httpClientFactory.CreateClient();
+        var response = await client.PostAsync(
+            $"meals/{id}/ratings/{rating}",
+            new StringContent(string.Empty),
+            cancellationToken);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            return response.StatusCode.ToApiResultError();
+        }
+
+        return true;
+    }
+    public async Task<ApiResult<bool>> UnrateMealAsync(Guid id, CancellationToken cancellationToken)
+    {
+        using var client = _httpClientFactory.CreateClient();
+        var response = await client.DeleteAsync(
+            $"meals/{id}/ratings",
+            cancellationToken);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            return response.StatusCode.ToApiResultError();
+        }
+
+        return true;
+    }
     public string? GetEmojiForCategory(string category)
     {
         Dictionary<string, string> dictionary = new()
@@ -94,4 +127,21 @@ internal sealed class MealService(IHttpClientFactory httpClientFactory) : IMealS
             : null;
     }
     public string? GetEmojiForCategory(MealPartCategory category) => GetEmojiForCategory(category.ToString());
+
+    public string? GetEmojiForMealRating(string category)
+    {
+        Dictionary<string, string> dictionary = new()
+        {
+            { "Hate", "😡" },
+            { "Dislike", "😒" },
+            { "Neutral", "😐" },
+            { "Like", "😊" },
+            { "Love", "😍" },
+        };
+
+        return dictionary.TryGetValue(category, out var emoji)
+            ? emoji
+            : null;
+    }
+    public string? GetEmojiForMealRating(MealRating mealRating) => GetEmojiForMealRating(mealRating.ToString());
 }

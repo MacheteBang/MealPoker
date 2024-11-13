@@ -21,6 +21,7 @@ internal sealed class GetMealsQueryHandler(
         {
             return await _mealBotDbContext.Meals
                 .Include(m => m.Owner)
+            .Include(m => m.Ratings)
                 .Where(m => m.OwnerUserId == query.OwnerUserId)
                 .ToListAsync(cancellationToken);
         }

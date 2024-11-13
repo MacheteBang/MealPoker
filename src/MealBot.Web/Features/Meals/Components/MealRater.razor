@@ -1,0 +1,30 @@
+@inject IMealService _mealService
+
+<div class="d-flex flex-row">
+    @foreach (MealRating mealRating in Enum.GetValues(typeof(MealRating)))
+    {
+        bool isSelected = Rating.HasValue && Rating == mealRating;
+        <div class="emoji @(isSelected ? "choice" : "" )" title="@(mealRating.ToString())"
+            @onclick="() => Choose(mealRating)">
+            @(_mealService.GetEmojiForMealRating(mealRating))
+        </div>
+    }
+</div>
+
+
+@code
+{
+    [Parameter] public MealRating? Rating { get; set; } = MealRating.Hate;
+    [Parameter] public EventCallback<MealRating?> OnChoose { get; set; }
+
+    private async Task Choose(MealRating mealRating)
+    {
+        if (Rating == mealRating)
+        {
+            await OnChoose.InvokeAsync(null);
+            return;
+        }
+
+        await OnChoose.InvokeAsync(mealRating);
+    }
+}

@@ -1,34 +1,76 @@
-<div class="w-100">
-    <div class="row">
-        <div class="col">
-            <h5>@Meal.Name</h5>
-        </div>
-        <p class="text-secondary">@Meal.Description</p>
-        @foreach (var mealPart in Meal.MealParts ?? [])
-        {
-            <MealPartRow MealPart="mealPart" />
-        }
+@inject IMealService _mealService
+@inject UserAuthenticationStateProvider _userAuthenticationStateProvider
+
+<div class="row">
+    <div class="col">
+        <h5>@Meal.Name</h5>
     </div>
-    <div class="row my-1">
-        <div class="col text-end">
-            <div class="border-top pt-2">
+
+    @if (!_isOwner)
+    {
+        <div class="col-auto">
+            <ProfilePicture UserId="@Meal.OwnerUserId" FirstName="@Meal.OwnerFirstName" LastName="@Meal.OwnerLastName" />
+        </div>
+    }
+
+    <p class="text-secondary">@Meal.Description</p>
+    @foreach (var mealPart in Meal.MealParts ?? [])
+    {
+        <span class="fs-3">
+            <span class="me-1" title="@mealPart.Name">@_mealService.GetEmojiForCategory(mealPart.Category)</span>
+        </span>
+    }
+</div>
+
+<hr class="mb-2">
+<div class="row align-items-center">
+    <div class="col">
+        <MealRater OnChoose="HandleChooseRating" Rating="_userMealRating" />
+    </div>
+    @if (_isOwner)
+    {
+        <div class="col-auto">
+            <div class="">
                 <a class="link-danger" @onclick="Delete">
                     <i class="fa-solid fa-trash-can"></i>
                 </a>
             </div>
         </div>
-    </div>
+    }
 </div>
+
 
 @code
 {
-    [Parameter]
-    public required MealResponse Meal { get; set; }
-    [Parameter]
-    public EventCallback<MealResponse> OnDelete { get; set; }
+    [Parameter] public required MealResponse Meal { get; set; }
+    [Parameter] public EventCallback<MealResponse> OnDelete { get; set; }
+    private bool _isOwner { get; set; }
+    private MealRating? _userMealRating;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (Guid.TryParse(_userAuthenticationStateProvider.CurrentUser.UserId, out Guid userId))
+        {
+            _isOwner = Meal.OwnerUserId == userId;
+            _userMealRating = Meal.Ratings?.FirstOrDefault(r => r.UserId == userId)?.Rating;
+        }
+    }
 
     private async Task Delete()
     {
         await OnDelete.InvokeAsync(Meal);
+    }
+
+    private async Task HandleChooseRating(MealRating? rating)
+    {
+        if (rating is null)
+        {
+            _userMealRating = rating;
+            await _mealService.UnrateMealAsync(Meal.MealId, CancellationToken.None);
+            return;
+        }
+
+        _userMealRating = rating;
+        await _mealService.RateMealAsync(Meal.MealId, (MealRating)rating, CancellationToken.None);
     }
 }
