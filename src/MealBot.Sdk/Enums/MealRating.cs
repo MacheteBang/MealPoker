@@ -1,5 +1,6 @@
 namespace MealBot.Sdk.Enums;
 
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum MealRating
 {
     Hate,
