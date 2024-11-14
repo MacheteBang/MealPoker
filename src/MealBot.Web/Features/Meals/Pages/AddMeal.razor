@@ -1,89 +1,96 @@
 @page "/meals/add"
-@layout ModalLayout
+@layout ItemLayout
 @attribute [Authorize]
 @inject IMealService _mealService
 @inject NavigationManager NavigationManager
 
 <PageTitle>Add Meal</PageTitle>
 <form method="post" @onsubmit="Submit">
-
-    <div class="row">
-        <div class="col-auto">
-            <button type="submit" class="btn btn-primary-outline ms-auto"
-                @onclick='() => NavigationManager.NavigateTo("/meals")'>
-                <i class="fa-solid fa-chevron-left fa-xl"></i>
-            </button>
-        </div>
-        <div class="col">
-            <h1>Add Meal</h1>
-            <p class="text-muted">Add a meal to your collection.</p>
-        </div>
-        <div class="col-auto">
-            <button type="submit" class="btn btn-primary ms-auto" disabled="@_isSubmitting">
-                <i class="fa-solid fa-floppy-disk"></i>
-            </button>
-        </div>
-    </div>
-
-    <div class="mb-3">
-        <label for="nameInput" class="form-label">Name</label>
-        <InputText @bind-Value="@Model.Name" class="form-control" id="nameInput" required />
-    </div>
-    <div class=" mb-3">
-        <label for="descriptionInput" class="form-label">
-            Description
-            <span class="text-muted">(optional)</span>
-        </label>
-        <InputTextArea @bind-Value="@Model.Description" class="form-control" id="descriptionInput" />
-    </div>
-
-    <div class="contaier">
+    <div class="sticky-top bg-body pt-4">
         <div class="row">
             <div class="col">
-                <h4>Dishes</h4>
-                <p class="text-muted">
-                    Dishes are the different parts of the meal. Add the main course, side dishes, and even dessert!
-                </p>
+                <h1>Add Meal</h1>
+                <p class="text-muted">Create a new meal to share with your friends and family.</p>
             </div>
-            <div class="col-auto">
-                <a class="link-success" @onclick="AddPart">
-                    <i class="fa-solid fa-circle-plus fa-2xl"></i>
+            <div class="col-auto position-relative" style="cursor:pointer">
+                <a class="stretched-link" onclick="history.back();">
+                    <i class="fa-solid fa-xmark fa-2xl"></i>
                 </a>
             </div>
         </div>
-    </div>
-    @if (Model.Parts.Count == 0)
-    {
-        <div class="border rounded p-3 text-center text-muted">
-            No dishes added yet.
-        </div>
-    }
+        <div class="row">
+            <div class="col">
+                <InputText @bind-Value="@Model.Name" class="form-control form-control-lg" id="nameInput"
+                    placeholder="Meal Name" required />
+                @if (!_showDescription)
+                {
+                    <div class="col text-end">
+                        <a class="link-info fst-italic" style="cursor:pointer" @onclick="() => _showDescription = true">Add
+                            Description...</a>
+                    </div>
+                }
+                else
+                {
+                    <div class="mt-2">
+                        <InputTextArea @bind-Value="@Model.Description" class="form-control" id="descriptionInput"
+                            placeholder="Description" />
+                    </div>
+                }
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary" disabled="@_isSubmitting">
+                    <i class="fa-solid fa-floppy-disk"></i>
+                    <span class="ms-2 d-none d-md-inline">Save Meal</span>
+                </button>
+            </div>
 
-    @foreach (var part in Model.Parts)
-    {
-        <div class="border rounded mb-2 p-2">
-            <div class="row">
+        </div>
+    </div>
+    <div class="row">
+
+    </div>
+    <div class="row mt-4">
+        <div class="col">
+            <h2>Dishes</h2>
+            <div class="text-muted">
+                Dishes are the different parts of the meal. Add the main course, side dishes, and even dessert!
+            </div>
+        </div>
+    </div>
+    <div class="mt-2">
+        @if (Model.Parts.Count == 0)
+        {
+            <div class="border rounded py-5 text-center text-muted">
+                <a class="btn btn-primary" @onclick="AddPart">
+                    <i class="fa-solid fa-circle-plus fa-2xl"></i>
+                    <span class="ms-2">Add Dish</span>
+                </a>
+            </div>
+        }
+
+        @foreach (var part in Model.Parts)
+        {
+            <div class="row align-items-center">
                 <div class="col">
-                    <h5>
-                        @if (string.IsNullOrEmpty(part.Name))
-                        {
-                            <span class="text-muted">New Dish</span>
-                        }
-                        else
-                        {
-                            <span>@part.Name</span>
-                        }
-                    </h5>
+                    <InputText @bind-Value="@part.Name" id="@($"dishName{Model.Parts.IndexOf(part)}Input")"
+                        class="form-control" required placeholder="Dish Name" />
                 </div>
                 <div class="col-auto">
-                    <a class="link-danger" @onclick="() => RemovePart(part)">
-                        <i class="fa-solid fa-trash-can fa-lg"></i>
-                    </a>
+                    <button type="submit" class="btn btn-danger" @onclick="() => RemovePart(part)">
+                        <i class="fa-solid fa-trash-can"></i>
+                        <span class="ms-2 d-none d-md-inline">Delete</span>
+                    </button>
                 </div>
             </div>
-            <div class="row mb-3">
+            <div class="row mt-2">
+                <div class="col">
+                    <InputTextArea @bind-Value="@part.Description"
+                        id="@($"dishDescription{Model.Parts.IndexOf(part)}Input")" class="form-control"
+                        placeholder="Description (optional)" />
+                </div>
+            </div>
+            <div class="row mt-2">
                 <div class="col-auto">
-                    <label for="@($"dishCategory{Model.Parts.IndexOf(part)}Input")" class="form-label">Category</label>
                     <InputSelect @bind-Value="@part.Category" id="@($"dishCategory{Model.Parts.IndexOf(part)}Input")"
                         class="form-select" aria-label="Dish Category" required>
                         @foreach (var category in MealPartCategories)
@@ -96,37 +103,29 @@
                     </InputSelect>
                 </div>
                 <div class="col">
-                    <label for="@($"dishName{Model.Parts.IndexOf(part)}Input")" class="form-label"
-                        aria-label="Dish Name">Name</label>
-                    <InputText @bind-Value="@part.Name" id="@($"dishName{Model.Parts.IndexOf(part)}Input")"
-                        class="form-control" required />
+                    <InputText @bind-Value="@part.Url" id="@($"dishUrl{Model.Parts.IndexOf(part)}Input")"
+                        class="form-control" placeholder="Link to Recipe (optional" />
                 </div>
             </div>
-            <div class="mb-3">
-                <label for="@($"dishDescription{Model.Parts.IndexOf(part)}Input")" class="form-label">
-                    Description
-                    <span class="text-muted">(optional)</span>
-                </label>
-                <InputTextArea @bind-Value="@part.Description" id="@($"dishDescription{Model.Parts.IndexOf(part)}Input")"
-                    class="form-control" />
+            <hr class="my-4">
+        }
+        @if (Model.Parts.Count > 0)
+        {
+            <div class="mt-2 text-center">
+                <a class="btn btn-primary" @onclick="AddPart">
+                    <i class="fa-solid fa-circle-plus fa-2xl"></i>
+                    <span class="ms-2">Add Dish</span>
+                </a>
             </div>
-            <div class="mb-3">
-                <label for="@($"dishUrl{Model.Parts.IndexOf(part)}Input")" class="form-label" aria-label="Dish Name">
-                    Link to Recipe
-                    <span class="text-muted">(optional)</span>
-                </label>
-                <InputText @bind-Value="@part.Url" id="@($"dishUrl{Model.Parts.IndexOf(part)}Input")"
-                    class="form-control" />
-            </div>
-        </div>
-    }
+        }
+    </div>
 </form>
 
 @code
 {
-    [SupplyParameterFromForm]
-    public required MealFormModel Model { get; set; }
+    [SupplyParameterFromForm] public required MealFormModel Model { get; set; }
 
+    private bool _showDescription = false;
     private bool _isSubmitting = false;
 
     private IEnumerable<MealPartCategory> MealPartCategories => Enum
