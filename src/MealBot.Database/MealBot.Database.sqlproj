@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build">
-  <Sdk Name="Microsoft.Build.Sql" Version="0.1.12-preview" />
+  <Sdk Name="Microsoft.Build.Sql" Version="0.2.4-preview" />
   <PropertyGroup>
     <Name>MealBot</Name>
     <ProjectGuid>{402C5283-2481-409E-A27B-A4EA5F15EAEB}</ProjectGuid>
