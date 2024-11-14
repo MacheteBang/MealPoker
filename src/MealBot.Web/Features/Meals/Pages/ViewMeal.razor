@@ -1,0 +1,111 @@
+@page "/meals/{MealId}/view"
+@layout ItemLayout
+@attribute [Authorize]
+@inject IMealService _mealService
+@inject UserAuthenticationStateProvider _userAuthenticationStateProvider
+
+@if (_mealNotFound)
+{
+    <p>Meal not found</p>
+}
+else if (_meal != null)
+{
+    <div class="row sticky-top bg-body pt-4">
+        <div class="col">
+            <h1>@_meal.Name</h1>
+        </div>
+        <div class="col-auto position-relative" style="cursor:pointer">
+            <a class="stretched-link" onclick="history.back();">
+                <i class="fa-solid fa-xmark fa-2xl"></i>
+            </a>
+        </div>
+    </div>
+    <div class="row mb-2 align-items-center">
+        <div class="col-auto d-none d-md-block fw-bold">
+            Your Rating:
+        </div>
+        <div class="col">
+            <MealRater OnChoose="HandleChooseRating" Rating="@_userMealRating" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="text-muted">@_meal.Description</div>
+        </div>
+    </div>
+    <div class="row mt-3">
+        <div class="col">
+            <h2>Dishes</h2>
+        </div>
+    </div>
+    @foreach (var dish in _meal.MealParts)
+    {
+        <div class="row">
+            <div class="col-auto fs-3">
+                @_mealService.GetEmojiForCategory(dish.Category)
+            </div>
+            <div class="col d-flex flex-column">
+                <div class="fw-bold">@dish.Name</div>
+                @if (!string.IsNullOrWhiteSpace(dish.Description))
+                {
+                    <div class="text-muted">
+                        @dish.Description
+                    </div>
+                }
+            </div>
+            @if (!string.IsNullOrWhiteSpace(dish.Url))
+            {
+                <div class="col-auto">
+                    <a href="@dish.Url" target="_blank" class="btn btn-sm btn-primary">
+                        <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        View Recipe</a>
+                </div>
+            }
+            <hr class="mt-3">
+        </div>
+    }
+}
+
+@code
+{
+    [Parameter] public string? MealId { get; set; }
+    private Guid _mealId;
+    private MealResponse _meal = default!;
+    private bool _mealNotFound = false;
+    private MealRating? _userMealRating;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        if (!Guid.TryParse(MealId, out _mealId))
+        {
+            _mealNotFound = true;
+            return;
+        }
+
+        var meal = await _mealService.GetMealAsync(_mealId, CancellationToken.None);
+        if (meal.IsError && meal.Error is NotFoundApiResultError)
+        {
+            _mealNotFound = true;
+            return;
+        }
+
+        _meal = meal.Value;
+        if (Guid.TryParse(_userAuthenticationStateProvider.CurrentUser.UserId, out Guid userId))
+        {
+            _userMealRating = _meal.Ratings?.FirstOrDefault(r => r.UserId == userId)?.Rating;
+        }
+    }
+
+    private async Task HandleChooseRating(MealRating? rating)
+    {
+        if (rating is null)
+        {
+            _userMealRating = rating;
+            await _mealService.UnrateMealAsync(_meal.MealId, CancellationToken.None);
+            return;
+        }
+
+        _userMealRating = rating;
+        await _mealService.RateMealAsync(_meal.MealId, (MealRating)rating, CancellationToken.None);
+    }
+}

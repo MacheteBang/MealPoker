@@ -4,6 +4,7 @@ namespace MealBot.Web.Features.Meals.Services;
 
 internal interface IMealService
 {
+    Task<ApiResult<MealResponse>> GetMealAsync(Guid mealId, CancellationToken cancellationToken);
     Task<ApiResult<List<MealResponse>>> GetUserMealsAsync(CancellationToken cancellationToken);
     Task<ApiResult<List<MealResponse>>> GetFamilyMealsAsync(CancellationToken cancellationToken);
     Task<ApiResult<bool>> AddMealAsync(CreateMealRequest request, CancellationToken cancellationToken);
@@ -19,6 +20,21 @@ internal interface IMealService
 internal sealed class MealService(IHttpClientFactory httpClientFactory) : IMealService
 {
     private readonly IHttpClientFactory _httpClientFactory = httpClientFactory;
+
+    public async Task<ApiResult<MealResponse>> GetMealAsync(Guid mealId, CancellationToken cancellationToken)
+    {
+        using var client = _httpClientFactory.CreateClient();
+        var response = await client.GetAsync($"meals/{mealId}", cancellationToken);
+        if (!response.IsSuccessStatusCode)
+        {
+            return response.StatusCode.ToApiResultError();
+        }
+
+        var value = await response.Content.ReadFromJsonAsync<MealResponse>(cancellationToken);
+        if (value is null) return new ServerErrorApiResultError();
+
+        return value;
+    }
 
     public async Task<ApiResult<List<MealResponse>>> GetUserMealsAsync(CancellationToken cancellationToken)
     {

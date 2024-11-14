@@ -1,9 +1,11 @@
 @inject IMealService _mealService
 @inject UserAuthenticationStateProvider _userAuthenticationStateProvider
+@inject NavigationManager _navigationManager
 
-<div class="row">
+<div class="row position-relative">
     <div class="col">
         <h5>@Meal.Name</h5>
+        <a href="@(_navigationManager.ToAbsoluteUri($"/meals/{Meal.MealId}/view"))" class="stretched-link"></a>
     </div>
 
     @if (!_isOwner)
@@ -13,15 +15,7 @@
         </div>
     }
 
-    <p class="text-secondary">@Meal.Description</p>
-    <div class="col">
-        @foreach (var mealPart in Meal.MealParts ?? [])
-        {
-            <span class="fs-3">
-                <span class="me-1" title="@mealPart.Name">@_mealService.GetEmojiForCategory(mealPart.Category)</span>
-            </span>
-        }
-    </div>
+    <div class="text-secondary">@Meal.Description</div>
 </div>
 
 <hr class="mb-2">
