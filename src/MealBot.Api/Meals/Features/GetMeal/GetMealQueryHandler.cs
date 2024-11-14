@@ -17,13 +17,33 @@ internal sealed class GetMealQueryHandler(
                 .ToList();
         }
 
-        var meal = await _mealBotDbContext.Meals
-            .Include(m => m.Owner)
-            .Include(m => m.Ratings)
-            .FirstOrDefaultAsync(m =>
-                m.OwnerUserId == query.OwnerUserId
-                && m.MealId == query.MealId,
-                cancellationToken);
+        var user = await _mealBotDbContext.Users.SingleOrDefaultAsync(u => u.UserId == query.OwnerUserId);
+        if (user is null)
+        {
+            return Users.Errors.UserNotFound();
+        }
+
+        Meal? meal;
+        if (user.FamilyId.HasValue)
+        {
+            meal = await _mealBotDbContext.Meals
+                .Include(m => m.Owner)
+                .Include(m => m.Ratings)
+                .FirstOrDefaultAsync(m =>
+                    m.Owner.FamilyId == user.FamilyId
+                    && m.MealId == query.MealId,
+                    cancellationToken);
+        }
+        else
+        {
+            meal = await _mealBotDbContext.Meals
+                .Include(m => m.Owner)
+                .Include(m => m.Ratings)
+                .FirstOrDefaultAsync(m =>
+                    m.OwnerUserId == query.OwnerUserId
+                    && m.MealId == query.MealId,
+                    cancellationToken);
+        }
 
         return meal switch
         {

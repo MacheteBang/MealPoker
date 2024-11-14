@@ -6,7 +6,23 @@
 
 @if (_mealNotFound)
 {
-    <p>Meal not found</p>
+    <div class="row pt-4">
+        <div class="col">
+            <h1>Meal Not Found!</h1>
+        </div>
+        <div class="col-auto position-relative" style="cursor:pointer">
+            <a class="stretched-link" onclick="history.back();">
+                <i class="fa-solid fa-xmark fa-2xl"></i>
+            </a>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+            <div class="text-muted text-center p-5 fs-4">
+                The meal you are looking for does not exist or you don't have access.
+            </div>
+        </div>
+    </div>
 }
 else if (_meal != null)
 {
@@ -58,7 +74,8 @@ else if (_meal != null)
                 <div class="col-auto">
                     <a href="@dish.Url" target="_blank" class="btn btn-sm btn-primary">
                         <i class="fa-solid fa-arrow-up-right-from-square"></i>
-                        View Recipe</a>
+                        <span class="ms-1">View Recipe</span>
+                    </a>
                 </div>
             }
             <hr class="mt-3">
