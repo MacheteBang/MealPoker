@@ -132,7 +132,7 @@ internal sealed class MealService(IHttpClientFactory httpClientFactory) : IMealS
     {
         Dictionary<string, string> dictionary = new()
         {
-            { "Hate", "😡" },
+            { "Hate", "🤮" },
             { "Dislike", "😒" },
             { "Neutral", "😐" },
             { "Like", "😊" },

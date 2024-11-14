@@ -14,12 +14,14 @@
     }
 
     <p class="text-secondary">@Meal.Description</p>
-    @foreach (var mealPart in Meal.MealParts ?? [])
-    {
-        <span class="fs-3">
-            <span class="me-1" title="@mealPart.Name">@_mealService.GetEmojiForCategory(mealPart.Category)</span>
-        </span>
-    }
+    <div class="col">
+        @foreach (var mealPart in Meal.MealParts ?? [])
+        {
+            <span class="fs-3">
+                <span class="me-1" title="@mealPart.Name">@_mealService.GetEmojiForCategory(mealPart.Category)</span>
+            </span>
+        }
+    </div>
 </div>
 
 <hr class="mb-2">
