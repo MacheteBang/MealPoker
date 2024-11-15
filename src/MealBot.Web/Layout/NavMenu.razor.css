@@ -1,17 +1,83 @@
-.nav-item {
-  font-size: 0.9rem;
-  border-radius: 32px;
+.top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
 }
 
-.nav-item ::deep a {
-  border-radius: 32px;
+.logo {
+  flex-grow: 1;
 }
 
-.nav-item ::deep a.active {
-  background-color: #eae2e2;
-  border-radius: 32px;
+.menu {
+  display: flex;
+  flex: 2;
+  justify-content: flex-end;
 }
 
-.nav-item ::deep a:hover {
-  border-radius: 32px;
+.menu a {
+  padding: 0.2rem 1rem;
+  text-decoration: none;
+  transition: all 0.33s ease;
+}
+
+.menu a:hover {
+  background-color: rgb(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.profile img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.hamburger {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+.side-panel {
+  display: none;
+  position: fixed;
+  top: 68px; /* Adjust this value to match the height of your top bar */
+  left: 0;
+  width: 250px;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  z-index: 1;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+  transform: translateY(-100%);
+}
+
+.side-panel a {
+  padding: 0.5rem;
+  margin: 0 1rem 0.5rem;
+  display: block;
+  text-decoration: none;
+}
+
+.side-panel a:hover {
+  background-color: rgb(0, 0, 0, 0.1);
+  border-radius: 8px;
+}
+
+.side-panel.open {
+  display: block;
+  transform: translateY(0);
+}
+
+@media (max-width: 576px) {
+  .menu {
+    display: none;
+  }
+
+  .hamburger {
+    display: block;
+    position: absolute;
+    left: 1rem; /* Move the hamburger menu to the left side */
+  }
+  .logo {
+    margin-left: 2rem; /* Adjust this value to give enough room for the hamburger menu */
+  }
 }

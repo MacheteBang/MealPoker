@@ -1,55 +1,51 @@
-﻿<nav class="navbar navbar-expand-sm bg-body border-bottom">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="home">MealPoker</a>
-        <AuthorizeView>
-            <Authorized>
-                <button class="navbar-toggler" type="button" @onclick="ToggleNav" aria-label="Toggle navigation">
-                    <i class="fa-solid fa-bars"></i>
-                </button>
-            </Authorized>
-            <Authorizing>
-                <div>Signing in...</div>
-            </Authorizing>
-            <NotAuthorized>
+﻿<nav class="top-bar bg-body border-bottom">
+    <div class="logo">
+        <span class="fs-2">♠</span>
+        <span class="fs-2" style="color:red">♥</span>
+        <span class="fs-2">♣</span>
+        <span class="fs-2" style="color:red">♦</span>
+        <span class="fs-2">MealPoker</span>
+    </div>
+    <div class="menu" id="menu">
+        <a class="fs-5" href="/home">Home</a>
+        <a class="fs-5" href="/meals">Meals</a>
+    </div>
+    <AuthorizeView>
+        <NotAuthorized>
+            <div class="ms-2">
                 <GoogleLoginButton />
-            </NotAuthorized>
-        </AuthorizeView>
-        <AuthorizeView>
-            <Authorized>
-                <div class="collapse navbar-collapse @showNavBarCss">
-                    <ul class="navbar-nav ms-auto align-items-sm-center align-items-end">
-                        <li class="nav-item">
-                            <NavLink class="nav-link p-2" href="home" @onclick="ToggleNav">
-                                Home
-                            </NavLink>
-                        </li>
-                        <li class="nav-item ms-2">
-                            <NavLink class="nav-link p-2" href="meals" @onclick="ToggleNav">
-                                Meals
-                            </NavLink>
-                        </li>
-                        <li class="nav-item ms-2" @onclick="ToggleNav">
-                            <ProfileButton ShowName=true />
-                        </li>
-                    </ul>
-                </div>
-            </Authorized>
-        </AuthorizeView>
+            </div>
+        </NotAuthorized>
+        <Authorizing>
+            <div>Signing in...</div>
+        </Authorizing>
+        <Authorized>
+            <div class="profile">
+                <ProfileButton ShowName=false />
+            </div>
+        </Authorized>
+    </AuthorizeView>
+    <div class="hamburger" id="hamburger">
+        <i class="fa-solid fa-bars"></i>
     </div>
 </nav>
+<div class="side-panel bg-body border-end border-bottom" id="side-panel">
+    <a class="fs-5" href="/home">Home</a>
+    <a class="fs-5" href="/meals">Meals</a>
+</div>
 
-@code {
-    private string showNavBarCss = "";
+<script>
+    // script.js
+    document.getElementById('hamburger').addEventListener('click', function () {
+        var sidePanel = document.getElementById('side-panel');
+        sidePanel.classList.toggle('open');
+    });
 
-    private void ToggleNav()
-    {
-        if (showNavBarCss == "")
-        {
-            showNavBarCss = "show";
-        }
-        else
-        {
-            showNavBarCss = "";
-        }
-    }
-}
+    var sidePanelLinks = document.querySelectorAll('.side-panel a');
+    sidePanelLinks.forEach(function (link) {
+        link.addEventListener('click', function () {
+            var sidePanel = document.getElementById('side-panel');
+            sidePanel.classList.remove('open');
+        });
+    });
+</script>
