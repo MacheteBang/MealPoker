@@ -5,11 +5,13 @@
   transition: all 0.25s ease;
 }
 
-.emoji:hover {
-  background-color: rgb(0, 0, 0, 0.1);
-  border-radius: 25%;
-  cursor: pointer;
-  filter: grayscale(0%);
+@media (hover: hover) {
+  .emoji:hover {
+    background-color: rgb(0, 0, 0, 0.1);
+    border-radius: 25%;
+    cursor: pointer;
+    filter: grayscale(0%);
+  }
 }
 
 .emoji.choice {
