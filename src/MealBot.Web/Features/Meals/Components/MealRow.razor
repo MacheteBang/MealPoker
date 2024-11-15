@@ -5,7 +5,7 @@
 <div class="row position-relative">
     <div class="col">
         <h5>@Meal.Name</h5>
-        <a href="@(_navigationManager.ToAbsoluteUri($"/meals/{Meal.MealId}/view"))" class="stretched-link"></a>
+        <a href="@(_navigationManager.ToAbsoluteUri($"/meals/view/{Meal.MealId}"))" class="stretched-link"></a>
     </div>
 
     @if (!_isOwner)
